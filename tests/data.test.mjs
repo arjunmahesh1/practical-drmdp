@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {label,activeModel,nearestPoint,bounds,factorLabel} from '../assets/model.mjs';
+import {label,activeModel,nearestPoint,bounds,factorLabel,gridMean,bestModelOnAxis,axisLabel} from '../assets/model.mjs';
 const root=new URL('../',import.meta.url);
 const json=async path=>JSON.parse(await readFile(new URL(path,root),'utf8'));
 const catalog=await json('data/catalog.json');
@@ -56,4 +56,41 @@ test('unmeasured nominal noise point is not invented',async()=>{
   const s=await json('data/ppo_tv_walker.json');
   const a=s.axes.find(a=>a.id==='action_noise');
   assert.equal(a.nominal,0);assert(!a.curves.vanilla.some(p=>p.x===0));
+});
+test('best means highest full-grid mean, not the best single severity or an inactive control',()=>{
+  const study={baseline:'vanilla',models:['vanilla','tvc1e9','tvc3','tvc10']};
+  const axis={curves:{vanilla:[{mean:100},{mean:100}],tvc1e9:[{mean:999},{mean:999}],tvc3:[{mean:20},{mean:-30}],tvc10:[{mean:0},{mean:0}]}};
+  assert.equal(bestModelOnAxis(study,axis),'tvc10');
+  assert.equal(gridMean(axis.curves.tvc3),-5);
+});
+test('paper six-cell ex-post choices are preserved',async()=>{
+  const expected={ppo_tv_pickcube:'tv_c3',ppo_tv_pusher:'tv_c-1',td3_tv_pickcube:'tv_c20',td3_kl_pickcube:'kl_beta10'};
+  for(const [cell,model] of Object.entries(expected)){
+    const s=await json('data/'+cell+'.json');
+    for(const a of s.axes)assert.equal(bestModelOnAxis(s,a),model,cell+' '+a.id);
+  }
+  const s=await json('data/sac_tv_pusher.json');
+  assert.equal(bestModelOnAxis(s,s.axes.find(a=>a.id==='goal_distance')),'tv_c-2.5');
+  assert.equal(bestModelOnAxis(s,s.axes.find(a=>a.id==='object_mass')),'tv_c-1.5');
+});
+test('axis labels distinguish scales, action probabilities and dimensional gravity',()=>{
+  assert.equal(axisLabel({id:'mass'},'Walker2d-v5'),'Parameter scale (×)');
+  assert.equal(axisLabel({id:'action_replacement'},'Pusher-v5'),'Replacement probability');
+  assert.equal(axisLabel({id:'gravity'},'LunarLander-v3'),'Gravity (m/s²)');
+});
+test('linked recordings are exact study/model/axis/value selections, not fabricated aggregate episodes',async()=>{
+  for(const meta of catalog.studies){
+    const s=await json('data/'+meta.file);
+    for(const [model,entries] of Object.entries(s.replays||{}))for(const [key,path] of Object.entries(entries)){
+      const r=await json(path);assert.equal(r.study,s.id);assert.equal(r.model,model);
+      assert.equal(key,r.axis+'|'+r.value);assert.equal(r.kind,'video');
+      assert(r.deterministic&&r.observationNormalizationFrozen);assert(r.timeline.length>1);
+      assert(r.steps<=({'Pusher-v5':100,'Walker2d-v5':1000,'HalfCheetah-v4':1000}[r.environment]));
+      assert.equal(r.timeline.at(-1).step,r.steps);
+      assert.equal(r.timeline.at(-1).reward,r.returnValue);
+      assert(r.timeline.every(p=>[p.step,p.time,p.reward].every(Number.isFinite)));
+      const bytes=await readFile(new URL(r.video,root));assert(bytes.length>1000);
+      assert.equal(bytes.subarray(4,8).toString(),'ftyp');
+    }
+  }
 });

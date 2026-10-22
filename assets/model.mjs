@@ -17,6 +17,20 @@ export function label(model) {
 export function activeModel(models) {
   return models.find(m => m !== 'vanilla' && !['a1e9','tvc1e9','tvc500','tv_noop','rsc_noop','ctxkl0','ctxkluniform','klprho0'].includes(m)) || models.find(m=>m!=='vanilla');
 }
+export function gridMean(points) {
+  return points.reduce((sum,p)=>sum+p.mean,0)/points.length;
+}
+export function bestModelOnAxis(study,axis) {
+  const controls=new Set([study.baseline,'a1e9','tvc1e9','tvc500','tv_noop','rsc_noop','ctxkl0','ctxkluniform','klprho0']);
+  const candidates=study.models.filter(m=>!controls.has(m)&&axis.curves[m]?.length);
+  return candidates.reduce((best,m)=>best===null||gridMean(axis.curves[m])>gridMean(axis.curves[best])?m:best,null);
+}
+export function axisLabel(axis,environment) {
+  if (/replace|bernoulli/.test(axis.id)) return 'Replacement probability';
+  if (axis.id==='gravity'&&environment.startsWith('Lunar')) return 'Gravity (m/s²)';
+  if (/noise|wind|turbulence/.test(axis.id)) return 'Disturbance amplitude';
+  return 'Parameter scale (×)';
+}
 export function nearestPoint(points, value) {
   if (!points.length) throw new Error('No measured points');
   return points.reduce((best,p,i)=>Math.abs(p.x-value)<Math.abs(points[best].x-value)?i:best,0);

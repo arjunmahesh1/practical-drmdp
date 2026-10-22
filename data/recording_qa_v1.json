@@ -1,0 +1,4044 @@
+{
+  "verified_utc": "2026-10-22T23:18:09.309426+00:00",
+  "recordings": 366,
+  "coverage": {
+    "sac_tv_walker": 90,
+    "sac_tv_halfcheetah": 45,
+    "sac_kl_walker": 90,
+    "sac_kl_halfcheetah": 30,
+    "ppo_tv_pusher": 111
+  },
+  "recordings_with_archived_individual_return": 111,
+  "archived_individual_returns_matched": 111,
+  "max_absolute_return_error": 4.9991802413273945e-05,
+  "interpretation": "New deterministic replays. Original cohort curves and failed-seed accounting unchanged.",
+  "unrecorded_selections": "Remain explicitly unavailable; no other model or simulator is substituted.",
+  "records": [
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-0p1.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-0p1.mp4",
+      "video_sha256": "392a0ee566a9c8256947af87191be70de1f8363a4401ddd478e66f8d40a449af",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-0p2.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-0p2.mp4",
+      "video_sha256": "9f7bec642d87af9bdae9da157745e224c4cddcbc3a5b0c6c6118dc3622388560",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-0p3.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-0p3.mp4",
+      "video_sha256": "d489f4faf300791cff69f8822677cf04b5999a520908b3a63bcb9297982ef3e0",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-0p4.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-0p4.mp4",
+      "video_sha256": "b922f9927162a12801333a162ec5e6dde8ff9192623bc3980f2e2b8ee3832478",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-0p5.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-0p5.mp4",
+      "video_sha256": "9aa2cd43c75804206409fca092bb8824b314776f1edab4dcd53b28b1e8f627ec",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-0p6.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-0p6.mp4",
+      "video_sha256": "b6781278e81986750ad2d07d075c8767bdd4d0f4c64be17f79b7e5e7fc4a04d5",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-0p7.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-0p7.mp4",
+      "video_sha256": "c07c789eb25a8718e2b42b87b5d9a819ab340dc3695ef38be0f001f42ee20c87",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-0p8.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-0p8.mp4",
+      "video_sha256": "23c1dc6630f1e80382877862d0fbfae373246bb8a2ac30704c97e0b9fe4163ec",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-0p9.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-0p9.mp4",
+      "video_sha256": "218de00def1ee4c972233f16e5f42cdc099f1664b1bb07fc7f2ae52e7c16de6b",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-1p0.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-1p0.mp4",
+      "video_sha256": "d0cfd4c246e9a5425de307c2542eb6cb9c99019f3124200e4566d5b949d378a7",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-1p1.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-1p1.mp4",
+      "video_sha256": "4e6017af1fb40957a902845b2765101f21e639770e783621400ffcde0791b390",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-1p3.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-1p3.mp4",
+      "video_sha256": "32b27c9bf59688e28938cc4af8298ecf18800b384e201605ef68c68b92384bd8",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-1p5.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-1p5.mp4",
+      "video_sha256": "f61b1346df78cefa551deb0621241e14c269aa268e6b27d8bf03ac6b95ed59e5",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-1p7.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-1p7.mp4",
+      "video_sha256": "b6722bd4343a31259cb2f74dccb974df845930c9a1e78cdc9dd960fb147bc136",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/vanilla/mass-2p0.json",
+      "video": "assets/replays/sac_tv_walker/vanilla/mass-2p0.mp4",
+      "video_sha256": "a0cb8af9f398a86a7cb6b4373cb87335c7fbebaddd5fb5f5fcaf7bddb2c9c4da",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-0p1.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-0p1.mp4",
+      "video_sha256": "e6935619f783c0ef092500321e68d006c8dffe0ab4807ddbac305e887b1100c4",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-0p2.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-0p2.mp4",
+      "video_sha256": "9ace8c823ac883c5d2b9820bb5271057e6ccfed47fee1077c080b760d9a2c6bc",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-0p3.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-0p3.mp4",
+      "video_sha256": "d584a0dc89540635dcba424fc12d32e5ae048039a83dad2526b891d6626c8cf0",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-0p4.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-0p4.mp4",
+      "video_sha256": "b7ff0d339e18bdda6da46d567ae8ab95f6c8826ba949e930f898cc17cbbc5854",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-0p5.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-0p5.mp4",
+      "video_sha256": "de9a651a016c92ad907a92660ea5f95b15ce52b6d99587060485b093228ce0c5",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-0p6.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-0p6.mp4",
+      "video_sha256": "9171aa1e4d12f8a664593338a3b008aa28f59cdcfe7bf8625a847a895f62423f",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-0p7.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-0p7.mp4",
+      "video_sha256": "96471eeb8b093d7cd71099ec8a54f6754934a064ceab885d769491ccddb1c2ca",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-0p8.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-0p8.mp4",
+      "video_sha256": "99edc59bb89a6a853ac90a08bdc7bf0a30112d8ef4792d7cdd9887887076b006",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-0p9.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-0p9.mp4",
+      "video_sha256": "ceb6cc3a514d16894791c34fa8b56fdb00d1f001629d31afc44d95ea280c85b4",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-1p0.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-1p0.mp4",
+      "video_sha256": "5f5c0e88ff3ec8d9578e40d4ab81c85b11cc2374fae8d3c1fd55cbaeba6a9dc4",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-1p1.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-1p1.mp4",
+      "video_sha256": "f83987b6cfc6561a6f2c90c00d0562872a33fb63f741160411a4535349577d7b",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-1p3.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-1p3.mp4",
+      "video_sha256": "f581013180f7376420712d0bc7ebcf61e92bd184308e666872ebadfb88c1520a",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-1p5.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-1p5.mp4",
+      "video_sha256": "9873b52ca4dedb0be641f79fccc086f623da8e9ea8dc32e0e04226c409154ded",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-1p7.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-1p7.mp4",
+      "video_sha256": "129f2934b352c329b441115087363b9e09f76a119df58cc00578abd64a6c01a5",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc55/mass-2p0.json",
+      "video": "assets/replays/sac_tv_walker/tvc55/mass-2p0.mp4",
+      "video_sha256": "f65efcc6ee0f32dc0cb9411b127316b2d909bbe142559e958128dbafc53e4a96",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-0p1.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-0p1.mp4",
+      "video_sha256": "5d6f8133b6b23070632327e57a1784ec7e6c058000d0efbbfa94a3e9fd389694",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-0p2.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-0p2.mp4",
+      "video_sha256": "c9c7f01ba288bdc24fc093b8129f83cdf4e5061ce93ed2b7ba8fd0340e62d253",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-0p3.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-0p3.mp4",
+      "video_sha256": "d681dd27868503366dd2c6cac29d424150785e2d49e393d8bc4c1926dc1a1215",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-0p4.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-0p4.mp4",
+      "video_sha256": "55de7cd76cdf727523584301efcfd8f6c146a59c8f7665131e916d0a765eb110",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-0p5.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-0p5.mp4",
+      "video_sha256": "75ea2193f3c09b44f2aef6270858bd2426d4d44b736d2a8ac244a6e9ff23466c",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-0p6.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-0p6.mp4",
+      "video_sha256": "f7fb67f4868495258bc717c9bc00b527f7b8fff2241819947cc5363589990aae",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-0p7.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-0p7.mp4",
+      "video_sha256": "10926d459baa568526fe85bec086cde00f5df328dad7cca169e5191e3fa1c567",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-0p8.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-0p8.mp4",
+      "video_sha256": "fe506bb82d9c123e99cbe24b212d1ca04f97c900424fe15a7f25ee6030e5fa72",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-0p9.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-0p9.mp4",
+      "video_sha256": "2257f11e1d7ad10bbc96211b41571e2b998f44b608ff8c2e43795ce1d103891f",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-1p0.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-1p0.mp4",
+      "video_sha256": "76c20751f1b8d382b933494b57b661a02055766ce9d4a758fc291cb75a6e4b14",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-1p1.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-1p1.mp4",
+      "video_sha256": "d35d0dc4ea403822e6579f7afd49d2f07db86a9274d2cc7920746c123cdd7578",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-1p3.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-1p3.mp4",
+      "video_sha256": "303cb4267372715ab80b18bb078b2e4b2d61a56bb5744b20623732fb22a97cd0",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-1p5.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-1p5.mp4",
+      "video_sha256": "e2f6cbcfd0bf4ba9848bfcca8bba58f67d95849e5720353adcd69d0d72d0190a",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-1p7.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-1p7.mp4",
+      "video_sha256": "4b331ba3c9173a3a64969e45a2c0476a82d1d1070ce929a3f5ed27031344ff81",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc60/mass-2p0.json",
+      "video": "assets/replays/sac_tv_walker/tvc60/mass-2p0.mp4",
+      "video_sha256": "17d6f589a376a6505b22131d91f6574c325793073139bf0f365ef69a98522e43",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-0p1.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-0p1.mp4",
+      "video_sha256": "392a0ee566a9c8256947af87191be70de1f8363a4401ddd478e66f8d40a449af",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-0p2.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-0p2.mp4",
+      "video_sha256": "9f7bec642d87af9bdae9da157745e224c4cddcbc3a5b0c6c6118dc3622388560",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-0p3.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-0p3.mp4",
+      "video_sha256": "d489f4faf300791cff69f8822677cf04b5999a520908b3a63bcb9297982ef3e0",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-0p4.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-0p4.mp4",
+      "video_sha256": "b922f9927162a12801333a162ec5e6dde8ff9192623bc3980f2e2b8ee3832478",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-0p5.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-0p5.mp4",
+      "video_sha256": "9aa2cd43c75804206409fca092bb8824b314776f1edab4dcd53b28b1e8f627ec",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-0p6.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-0p6.mp4",
+      "video_sha256": "b6781278e81986750ad2d07d075c8767bdd4d0f4c64be17f79b7e5e7fc4a04d5",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-0p7.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-0p7.mp4",
+      "video_sha256": "c07c789eb25a8718e2b42b87b5d9a819ab340dc3695ef38be0f001f42ee20c87",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-0p8.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-0p8.mp4",
+      "video_sha256": "23c1dc6630f1e80382877862d0fbfae373246bb8a2ac30704c97e0b9fe4163ec",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-0p9.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-0p9.mp4",
+      "video_sha256": "218de00def1ee4c972233f16e5f42cdc099f1664b1bb07fc7f2ae52e7c16de6b",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-1p0.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-1p0.mp4",
+      "video_sha256": "d0cfd4c246e9a5425de307c2542eb6cb9c99019f3124200e4566d5b949d378a7",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-1p1.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-1p1.mp4",
+      "video_sha256": "4e6017af1fb40957a902845b2765101f21e639770e783621400ffcde0791b390",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-1p3.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-1p3.mp4",
+      "video_sha256": "32b27c9bf59688e28938cc4af8298ecf18800b384e201605ef68c68b92384bd8",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-1p5.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-1p5.mp4",
+      "video_sha256": "f61b1346df78cefa551deb0621241e14c269aa268e6b27d8bf03ac6b95ed59e5",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-1p7.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-1p7.mp4",
+      "video_sha256": "b6722bd4343a31259cb2f74dccb974df845930c9a1e78cdc9dd960fb147bc136",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc65/mass-2p0.json",
+      "video": "assets/replays/sac_tv_walker/tvc65/mass-2p0.mp4",
+      "video_sha256": "a0cb8af9f398a86a7cb6b4373cb87335c7fbebaddd5fb5f5fcaf7bddb2c9c4da",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-0p1.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-0p1.mp4",
+      "video_sha256": "d3655a8a37734197ed0089c27b01dd619523f9e30fcdf00dd677f8eeecac81c2",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-0p2.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-0p2.mp4",
+      "video_sha256": "0eaee345984a9b3dcb944e4d84347edfbe30bb298f8b58bc686df3633fec5261",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-0p3.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-0p3.mp4",
+      "video_sha256": "ed88713d6b835583bee75cdedc96429ab4c893fadb2fbe17b39708bcef91bd10",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-0p4.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-0p4.mp4",
+      "video_sha256": "4e91f9a77cc812577ffc8e8fd2a82764ae749b72bbae2d102d83cb07399be82d",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-0p5.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-0p5.mp4",
+      "video_sha256": "d6e0b5d3df2a3a6005193f9804ab9be7a40c296b288bb88f0d910a286d176003",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-0p6.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-0p6.mp4",
+      "video_sha256": "4e94ccc35abc003278a9c64cd8f7cbe5f99fb83e6cabf12a305d82843fd4003d",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-0p7.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-0p7.mp4",
+      "video_sha256": "90af25596b3002d8827a551060e0c3f3182f75c1dd3b8b7e1d8095b2225f20ef",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-0p8.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-0p8.mp4",
+      "video_sha256": "c5196ae3736845eb1ee8a2f37692e07aab92e212cde5077f8c76cd57d5db2dc4",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-0p9.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-0p9.mp4",
+      "video_sha256": "8bb2884e1c4e95737227881ff62106fda0f44fa93e0201c4728bb4c109b98804",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-1p0.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-1p0.mp4",
+      "video_sha256": "2f0a2cb966da69f613d4a5ad5394883446b9d88810cc49c8201cf253025d5fd8",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-1p1.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-1p1.mp4",
+      "video_sha256": "4d538bf5129199278320f1e5edbd2cf016c6d870dc8b5df6ff7ed04c8e104b80",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-1p3.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-1p3.mp4",
+      "video_sha256": "407be7f43f5a5f4f4cad8c740cf12f635685c584f27ac59ec5080b2cb3720a38",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-1p5.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-1p5.mp4",
+      "video_sha256": "99c05adfb507e0dc6a5c07eb005c29dfa136343639ebd7615a409128bfb0ccfd",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-1p7.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-1p7.mp4",
+      "video_sha256": "322681155fe7e22863c691cd50b134a4354d573fec7c159501664dfc46afc1aa",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc1e9/mass-2p0.json",
+      "video": "assets/replays/sac_tv_walker/tvc1e9/mass-2p0.mp4",
+      "video_sha256": "0b0db60f1b696c7ad59b7561fa5f0eece5e6bded4bc553bdafbd332ac0f1981f",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-0p1.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-0p1.mp4",
+      "video_sha256": "7c8f1ebafae4017c8f730e867e7c947961d063a5abb51aedd389ff226a59a631",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-0p2.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-0p2.mp4",
+      "video_sha256": "74373aa9ec9ec464fdb1ab42973935b6b339d593a441fbffa44a5b98acc48d37",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-0p3.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-0p3.mp4",
+      "video_sha256": "a021ad1e4dd4a831cc480d9b2d15616245bd7aa5daf26418e810f25620f038aa",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-0p4.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-0p4.mp4",
+      "video_sha256": "04143e0e2962ba6074dd9b86a1e4647313ac8b0885175d94f9239b3fc9d644d4",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-0p5.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-0p5.mp4",
+      "video_sha256": "f70a0f161e9253b7374c16ab223ba2cc74aaf88498ec9dc3426f2ce3235a521e",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-0p6.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-0p6.mp4",
+      "video_sha256": "60c2d57eb5713007f3ce3e2e5545e5f92c056f1f531446f68a26fa50aec84f87",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-0p7.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-0p7.mp4",
+      "video_sha256": "0f1eace4be560a62100b7e612808c1470d6997e82ce0be495a9eff82369aaabd",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-0p8.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-0p8.mp4",
+      "video_sha256": "87d9369819be90b7923c9e44deb89458fb336a594d22538dd7c5638ecfae8155",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-0p9.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-0p9.mp4",
+      "video_sha256": "905090de931d3092af64dbc344ef6d378a25833ef66a4a459357f2c48b6219f8",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-1p0.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-1p0.mp4",
+      "video_sha256": "cd20c1ca9217e0ff14f3ea94bdcacf544cd48815b0332ecb2b4adc34e28793df",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-1p1.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-1p1.mp4",
+      "video_sha256": "4e16a9c6252449b918dbfffb77e9ea8ac3dcdac37f7b5a1555141dfa898edcdd",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-1p3.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-1p3.mp4",
+      "video_sha256": "82007af53200a11642335bada1e8a8e26f10ae94ea9a25071480a93ecd11ff46",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-1p5.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-1p5.mp4",
+      "video_sha256": "207bf008ecdf36dbc4cbfa213247b17708f2013407c7d8ee1b1c46436cb9f956",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-1p7.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-1p7.mp4",
+      "video_sha256": "04b4f24f151cd31b9f87e53941913f2ad3a10d40d289ed4a1c0a5b0fae3717c2",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_walker/tvc50/mass-2p0.json",
+      "video": "assets/replays/sac_tv_walker/tvc50/mass-2p0.mp4",
+      "video_sha256": "b44445a670022fc2adbe9d188f8ac22300b54e6f817f9862bf0c59a930468dac",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p1.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p1.mp4",
+      "video_sha256": "dae0674c66907ea0994b566aba53db8d946c56c78f8d36402aab11ea9d766192",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p2.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p2.mp4",
+      "video_sha256": "cec1105ce7a9f53c4a98baab84bb20663388aa6fae373fa4fd561f484dcc45da",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p3.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p3.mp4",
+      "video_sha256": "7c9cddfc3a1348ca92e475b463c33ab8ed7f275fd8088346490593129a3e4eeb",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p4.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p4.mp4",
+      "video_sha256": "46cb0812ae5544b6958c637ed3c4aa64d54ce1d5c6d3c76caf9c727bcb037971",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p5.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p5.mp4",
+      "video_sha256": "1682b9881b5a78ea625c71a3264e16ae7dddbfa79a8e925bd720b3ff91b67538",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p6.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p6.mp4",
+      "video_sha256": "b3658d916b466fd920941fa71389d7782da7221cd76e6a251cd2601f39ebbd2b",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p7.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p7.mp4",
+      "video_sha256": "2e85c5f1828207b8d090f902e5b8120041630529a2deb7b275887fd63af9fc4e",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p8.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p8.mp4",
+      "video_sha256": "85e32fbe8b4b2f87a32dcfce2b0a41b6c09775e9be4616005fb8e9ec3495fafb",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p9.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-0p9.mp4",
+      "video_sha256": "70df8e2dfe8794d946008582f2d3c2a5432f0621552cc4ea4086d2946017279e",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-1p0.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-1p0.mp4",
+      "video_sha256": "591e35d6deaa007f0709731d4c3c097ad2b61e0917abc8c1d97004e9bba0869c",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-1p1.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-1p1.mp4",
+      "video_sha256": "7ab2842c2d404d066991a515ffa786eff7ef9f46ac070e2b770b34cc81f05356",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-1p3.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-1p3.mp4",
+      "video_sha256": "d647d4a641f8abb1e164ea68742b4055770023bd1b1f0ed161feed2d2256ffa0",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-1p5.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-1p5.mp4",
+      "video_sha256": "778ecb00ed15cd8e06e6d31cb7858049f711566e09faac9a273864a8b80e192e",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-1p7.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-1p7.mp4",
+      "video_sha256": "a928b9ea4cafc509b7c234392cd878181b1a2b1c9a79cd0a40c85f5f5bc8b28a",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/vanilla/mass-2p0.json",
+      "video": "assets/replays/sac_tv_halfcheetah/vanilla/mass-2p0.mp4",
+      "video_sha256": "aa06511239fbc4e34cb77a1f3ef2805fa467fae0fc7ef532b1758cde9ec070f5",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p1.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p1.mp4",
+      "video_sha256": "dae0674c66907ea0994b566aba53db8d946c56c78f8d36402aab11ea9d766192",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p2.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p2.mp4",
+      "video_sha256": "cec1105ce7a9f53c4a98baab84bb20663388aa6fae373fa4fd561f484dcc45da",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p3.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p3.mp4",
+      "video_sha256": "7c9cddfc3a1348ca92e475b463c33ab8ed7f275fd8088346490593129a3e4eeb",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p4.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p4.mp4",
+      "video_sha256": "46cb0812ae5544b6958c637ed3c4aa64d54ce1d5c6d3c76caf9c727bcb037971",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p5.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p5.mp4",
+      "video_sha256": "1682b9881b5a78ea625c71a3264e16ae7dddbfa79a8e925bd720b3ff91b67538",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p6.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p6.mp4",
+      "video_sha256": "b3658d916b466fd920941fa71389d7782da7221cd76e6a251cd2601f39ebbd2b",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p7.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p7.mp4",
+      "video_sha256": "2e85c5f1828207b8d090f902e5b8120041630529a2deb7b275887fd63af9fc4e",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p8.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p8.mp4",
+      "video_sha256": "85e32fbe8b4b2f87a32dcfce2b0a41b6c09775e9be4616005fb8e9ec3495fafb",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p9.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-0p9.mp4",
+      "video_sha256": "70df8e2dfe8794d946008582f2d3c2a5432f0621552cc4ea4086d2946017279e",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-1p0.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-1p0.mp4",
+      "video_sha256": "591e35d6deaa007f0709731d4c3c097ad2b61e0917abc8c1d97004e9bba0869c",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-1p1.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-1p1.mp4",
+      "video_sha256": "7ab2842c2d404d066991a515ffa786eff7ef9f46ac070e2b770b34cc81f05356",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-1p3.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-1p3.mp4",
+      "video_sha256": "d647d4a641f8abb1e164ea68742b4055770023bd1b1f0ed161feed2d2256ffa0",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-1p5.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-1p5.mp4",
+      "video_sha256": "778ecb00ed15cd8e06e6d31cb7858049f711566e09faac9a273864a8b80e192e",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-1p7.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-1p7.mp4",
+      "video_sha256": "a928b9ea4cafc509b7c234392cd878181b1a2b1c9a79cd0a40c85f5f5bc8b28a",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-2p0.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc1e9/mass-2p0.mp4",
+      "video_sha256": "aa06511239fbc4e34cb77a1f3ef2805fa467fae0fc7ef532b1758cde9ec070f5",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p1.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p1.mp4",
+      "video_sha256": "cf2e566b2d8d7d67e11db00568b52055315c0149db414436153f4be49f23a114",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p2.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p2.mp4",
+      "video_sha256": "dca32a493d99f2d7783fcc59dd4cf8b1eba4a57acb2f15b563f45917efa239cc",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p3.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p3.mp4",
+      "video_sha256": "2ea0b76ae51cc71badba415ffae70805d2dba49515c487027f793459676edf34",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p4.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p4.mp4",
+      "video_sha256": "6b8d9cfca3798593ccc71825c9742d6eaf6ad4c63f083aa5a0aa54ca1397dac6",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p5.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p5.mp4",
+      "video_sha256": "02aac4bb79858b07a1fca3431f1e1047c8e5627ad729d25807d933d076f12c96",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p6.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p6.mp4",
+      "video_sha256": "525cfb9e981dfdd5f6f64acac30f3ab46328911db618987d2e65a33216949f2d",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p7.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p7.mp4",
+      "video_sha256": "5195925888b77871caee8c77640de7100d85487bdc786743190999c26a957ffb",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p8.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p8.mp4",
+      "video_sha256": "ad09e02c7687691759257ca7a14b9e5960ea21ba9d76e4b1a8142c28111952b8",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p9.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-0p9.mp4",
+      "video_sha256": "278b76cbe19606a7114d7745b4daeda3a22f8744261da31892d910cf5b284c8b",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-1p0.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-1p0.mp4",
+      "video_sha256": "9b1d9d7651fc01752e28d0c943d81cf627921f2c395734f95dc45a313819992d",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-1p1.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-1p1.mp4",
+      "video_sha256": "49ca7e6cb414db92502bc0244920ae8cb81ff69b4927e776da351dea7a545943",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-1p3.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-1p3.mp4",
+      "video_sha256": "074677113d03a3c418de847a35227dde5bf324a218e9894aa67f65772d819ad6",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-1p5.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-1p5.mp4",
+      "video_sha256": "3457ec8083b972b4ed995bb54da111b410d32886ea205e952e8f5f44bd12df25",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-1p7.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-1p7.mp4",
+      "video_sha256": "5f3ac7def434bfd2aa3134db6fb9bec17b31a827b59f66c9064f74cd6e03271a",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_tv_halfcheetah/tvc100/mass-2p0.json",
+      "video": "assets/replays/sac_tv_halfcheetah/tvc100/mass-2p0.mp4",
+      "video_sha256": "519f9cc4aec929468646d7b64703c537be89e35407c6e129639adce049da317f",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-0p1.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-0p1.mp4",
+      "video_sha256": "392a0ee566a9c8256947af87191be70de1f8363a4401ddd478e66f8d40a449af",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-0p2.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-0p2.mp4",
+      "video_sha256": "9f7bec642d87af9bdae9da157745e224c4cddcbc3a5b0c6c6118dc3622388560",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-0p3.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-0p3.mp4",
+      "video_sha256": "d489f4faf300791cff69f8822677cf04b5999a520908b3a63bcb9297982ef3e0",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-0p4.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-0p4.mp4",
+      "video_sha256": "b922f9927162a12801333a162ec5e6dde8ff9192623bc3980f2e2b8ee3832478",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-0p5.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-0p5.mp4",
+      "video_sha256": "9aa2cd43c75804206409fca092bb8824b314776f1edab4dcd53b28b1e8f627ec",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-0p6.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-0p6.mp4",
+      "video_sha256": "b6781278e81986750ad2d07d075c8767bdd4d0f4c64be17f79b7e5e7fc4a04d5",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-0p7.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-0p7.mp4",
+      "video_sha256": "c07c789eb25a8718e2b42b87b5d9a819ab340dc3695ef38be0f001f42ee20c87",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-0p8.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-0p8.mp4",
+      "video_sha256": "23c1dc6630f1e80382877862d0fbfae373246bb8a2ac30704c97e0b9fe4163ec",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-0p9.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-0p9.mp4",
+      "video_sha256": "218de00def1ee4c972233f16e5f42cdc099f1664b1bb07fc7f2ae52e7c16de6b",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-1p0.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-1p0.mp4",
+      "video_sha256": "d0cfd4c246e9a5425de307c2542eb6cb9c99019f3124200e4566d5b949d378a7",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-1p1.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-1p1.mp4",
+      "video_sha256": "4e6017af1fb40957a902845b2765101f21e639770e783621400ffcde0791b390",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-1p3.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-1p3.mp4",
+      "video_sha256": "32b27c9bf59688e28938cc4af8298ecf18800b384e201605ef68c68b92384bd8",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-1p5.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-1p5.mp4",
+      "video_sha256": "f61b1346df78cefa551deb0621241e14c269aa268e6b27d8bf03ac6b95ed59e5",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-1p7.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-1p7.mp4",
+      "video_sha256": "b6722bd4343a31259cb2f74dccb974df845930c9a1e78cdc9dd960fb147bc136",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/vanilla/mass-2p0.json",
+      "video": "assets/replays/sac_kl_walker/vanilla/mass-2p0.mp4",
+      "video_sha256": "a0cb8af9f398a86a7cb6b4373cb87335c7fbebaddd5fb5f5fcaf7bddb2c9c4da",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-0p1.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-0p1.mp4",
+      "video_sha256": "4f31c0b0517350b227154fee81e3a1040f1a8cda3c317e76f9707163d79be166",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-0p2.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-0p2.mp4",
+      "video_sha256": "294eb05c5d14120b6f5251558d2ea2609273c841d0bd8a76c1aa80da1ed0a046",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-0p3.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-0p3.mp4",
+      "video_sha256": "462c3e1f12bc438b2d919088449667307ae7193dbdea5eaa6697e19716ba570e",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-0p4.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-0p4.mp4",
+      "video_sha256": "d951b508377e46606c70c144b0cd4503efd51585c012892c8a5a9eb1904676be",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-0p5.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-0p5.mp4",
+      "video_sha256": "9c3b26fe38ffc396ee52edf57b1d9de67c53c471120206f5fa0490988d1a0f7f",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-0p6.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-0p6.mp4",
+      "video_sha256": "ba0e0ff491d52ba9b47e35002760594e3651df9380516865f4cd296aac52113d",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-0p7.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-0p7.mp4",
+      "video_sha256": "95ebad70ede0ca68d1d411d7edf8c2efc29d6857e62103e0eff0552d50dc484b",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-0p8.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-0p8.mp4",
+      "video_sha256": "dcc960f036d94fb7d9e2aeab25841d7eba038ee1372a88d92014fbbbff3cc099",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-0p9.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-0p9.mp4",
+      "video_sha256": "b19391b5f58e3653e07b3f2d2a1d9c024567b55fd4fca687e100dce70d226bba",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-1p0.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-1p0.mp4",
+      "video_sha256": "b5dc17dc441af7207dc6e24b8665cfaf1c0b5a05473fb9608856b8933c4b2583",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-1p1.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-1p1.mp4",
+      "video_sha256": "cb0f47936f504e879b5f4d926f00a9c0afa873cad700d8ffc7932227017b8e8a",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-1p3.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-1p3.mp4",
+      "video_sha256": "b8e491ca383b1f5f5d943aaab07e062075d65d17a7ea87a2d7792201d31f2729",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-1p5.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-1p5.mp4",
+      "video_sha256": "2e1c9876cc994640259bc654148483eb5b7fac2433679e0a057f205f3137bca1",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-1p7.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-1p7.mp4",
+      "video_sha256": "80ec646e5c8ae33a696952822400de3c146b312ce983ffb7263032ad0a788a5a",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb50/mass-2p0.json",
+      "video": "assets/replays/sac_kl_walker/klb50/mass-2p0.mp4",
+      "video_sha256": "dbc0563769a425837b93838d47fb33c09277de541638a321b098bc2b40e8e2ab",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-0p1.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-0p1.mp4",
+      "video_sha256": "816c210970d4bc71085e7245e7128d4f3c6f4410cc79548be8b95aabea37e57a",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-0p2.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-0p2.mp4",
+      "video_sha256": "bbe8da40e53721658bb66f42f548211af417a8943ec88429c168a14d917da40a",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-0p3.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-0p3.mp4",
+      "video_sha256": "e7aaa7437533c39d46d04109016dc4ac8d9ca5bcc4e3cc2480252a9120352a3c",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-0p4.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-0p4.mp4",
+      "video_sha256": "c44db3259e8b50424871e5eed30d1eda2b3f4b630b11669e37c20e737575a44b",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-0p5.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-0p5.mp4",
+      "video_sha256": "e003bb4d55368acc704c90359a89514009a7be3756db4b432192f1854c188f77",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-0p6.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-0p6.mp4",
+      "video_sha256": "520bbd8f65243468f0357fa50a24857ee18fdb76493aae2447d0de47cfe247c7",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-0p7.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-0p7.mp4",
+      "video_sha256": "65e1fbb9cee907df4cfc6f885ddcaef1c341004d526a2ce17b6b6b168f8073d1",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-0p8.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-0p8.mp4",
+      "video_sha256": "5c0e66523c51aa18ed6b10c8b47d73ea22c1f7f22f62ee0e0af110309470f98e",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-0p9.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-0p9.mp4",
+      "video_sha256": "64b90949f39581ffb1827ab8da334c2c1c4e3d63487c15883bc4370bd2791b07",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-1p0.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-1p0.mp4",
+      "video_sha256": "aa907ced5de1b8c20c85d15ef79a1fae9e679ec8153e70ced73560be3317b2f8",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-1p1.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-1p1.mp4",
+      "video_sha256": "11a2dda5109fc8041689573ac8b2dd91d130a732e5ef1963c1470c02d4dd264a",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-1p3.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-1p3.mp4",
+      "video_sha256": "fab916219e83545b78bb0bb331a5e1e892416ada97094a9db95ac1834483553a",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-1p5.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-1p5.mp4",
+      "video_sha256": "0fa313af6827b641030edd8568d3b44239e8a036388d6d9052e7f9891004deb5",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-1p7.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-1p7.mp4",
+      "video_sha256": "c6b6c47c630030d9620be4d1ec2efb0d9b28e1af4d0993ec74a684d822e3cf05",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb55/mass-2p0.json",
+      "video": "assets/replays/sac_kl_walker/klb55/mass-2p0.mp4",
+      "video_sha256": "5b350ceda01f1d0c96c1e2d728e1ce695a47e95ef2250086c695593aa3692409",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-0p1.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-0p1.mp4",
+      "video_sha256": "25d8701a2a14fb8a482568d6e0b390dbf1dfd2a43ec1bc65df32cc741dc5c708",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-0p2.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-0p2.mp4",
+      "video_sha256": "310ac3c73ced0b4b720381d41d26e9ce3c6aac43887009f85070e7702ceb072f",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-0p3.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-0p3.mp4",
+      "video_sha256": "e7250b0918f56bacc9e65f9007115ecab3439fdeea3f11aadb934afdcd7add78",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-0p4.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-0p4.mp4",
+      "video_sha256": "bb35e98fd581007a03334958ee26f61c033e7d4e8695711922e7a137be614930",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-0p5.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-0p5.mp4",
+      "video_sha256": "35e955d0293b61f4203eeef98c3fea57c4689742647caf5af3f52aa5ad719d0a",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-0p6.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-0p6.mp4",
+      "video_sha256": "656c1e1b43a110e2eeab290e17f9a9b194204ed94c5a142dd2e70cb91de93f37",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-0p7.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-0p7.mp4",
+      "video_sha256": "8233ae9a26a218c37b8ecb4b0081c7b9f350a085e635746de85bab1b7e24cf66",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-0p8.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-0p8.mp4",
+      "video_sha256": "17f85614829a5f7922244dac3d6759745d181ff4688b81410dea53429f80884c",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-0p9.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-0p9.mp4",
+      "video_sha256": "c68956c6f44efb1b33ddb94c59a699b673216cfc5510042527480cd8e2cf46c4",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-1p0.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-1p0.mp4",
+      "video_sha256": "ea14c0527dcafa7b07f3221a65667f283aae81cf9959fb5bda435297b08b15cb",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-1p1.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-1p1.mp4",
+      "video_sha256": "b301f56bbf1614a17469190eff4f1012b01c79f08995ace07bfd3b469beedfd7",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-1p3.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-1p3.mp4",
+      "video_sha256": "1fd8da50ea89158bece8cda5d78b5cd38dc86f94efbf70c451e84909cb990811",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-1p5.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-1p5.mp4",
+      "video_sha256": "5040b248f7854f90a36560c2a1fc7d63f87db2d0e09b96b0e53ccb504977e0ba",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-1p7.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-1p7.mp4",
+      "video_sha256": "95bf8297531c8b95c3232b2d40fc3a66ff6af20b466f77db497f96e86a207a15",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb60/mass-2p0.json",
+      "video": "assets/replays/sac_kl_walker/klb60/mass-2p0.mp4",
+      "video_sha256": "cfb3c843307bdd3aecba5cca6d9f300002fc00f6ba0a4e2f5a3f834d8f1061e6",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-0p1.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-0p1.mp4",
+      "video_sha256": "ecb5f14058646f396f4e5e08f2b0fd64a2ee81159e55b36ae4ba0ca0bdf9f862",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-0p2.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-0p2.mp4",
+      "video_sha256": "8cf87a81c90d2d71eefce70546524313f34294658acb3ae7289db06fb975c1f0",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-0p3.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-0p3.mp4",
+      "video_sha256": "470545263ac730a2c183ef93ed0ebb3023b0ce2aa0c103de346f8d4f68fb8948",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-0p4.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-0p4.mp4",
+      "video_sha256": "f14a0785bb853876d1c9a92c6a4c3e5e99b17ca2ca1c8979e5c99c7d64e3839f",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-0p5.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-0p5.mp4",
+      "video_sha256": "6e7a114166d9f0ccc327bf662d31006a3a228a5f3611928aa438a5b03ebc524b",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-0p6.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-0p6.mp4",
+      "video_sha256": "9026b6a3a760ff5285a580703fe22e4a4cfb0516e2308f054b9aea7bc1cc06a1",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-0p7.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-0p7.mp4",
+      "video_sha256": "f0aa00a5cdcfc9fed140247bdece52482f4f200005973bd60e0ae08a107c1f5a",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-0p8.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-0p8.mp4",
+      "video_sha256": "dde0513440563f21406574d9d12abfbb187039078e5faa5ed5b5da90238d2e16",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-0p9.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-0p9.mp4",
+      "video_sha256": "3ce60f6f9278b61910fa31bc6f4c134ead28b7df53369ff6c1fc42c2c399d2e1",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-1p0.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-1p0.mp4",
+      "video_sha256": "0bb390fb59e4616838ba4ab96fc9bda73fd89435f4c4528cedd33f188b184014",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-1p1.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-1p1.mp4",
+      "video_sha256": "c54085b5b5589183441438a8ccee869bc78e34ce0a1fae785a797bb50365bc82",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-1p3.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-1p3.mp4",
+      "video_sha256": "5f4a7f923273f443a83069bc1f0547c24924f6a63b5355466650e972fa33814c",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-1p5.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-1p5.mp4",
+      "video_sha256": "f545d03b2022cbfa1b3f06129c1e522686e58483ddff1a64953b670c0fbd8e3f",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-1p7.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-1p7.mp4",
+      "video_sha256": "860928b14a0ca18b937c1bbe965fbaa664ddc482cd4c567642df5008d1163f31",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb65/mass-2p0.json",
+      "video": "assets/replays/sac_kl_walker/klb65/mass-2p0.mp4",
+      "video_sha256": "25aca7022ece026eb06e4f4403a2f25d26a855e7fcdbde5a18b58f7024f00d61",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-0p1.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-0p1.mp4",
+      "video_sha256": "5ea42153dd8127027f82d600b007f11070a8fd7350400b0593f2fb4704ddb239",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-0p2.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-0p2.mp4",
+      "video_sha256": "7019d15204ed7eb55a9dea0160e64edda6e64e469aeff8d29daf171c76c33f79",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-0p3.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-0p3.mp4",
+      "video_sha256": "a98cb7ed80d40d8c8ccc24dd25896c75927dcf20c1f3712e09703304506f9b10",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-0p4.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-0p4.mp4",
+      "video_sha256": "6ce4241e47677a496dd3c40dc52432fed72a0e1143fbacc5e1366f8dc49b2970",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-0p5.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-0p5.mp4",
+      "video_sha256": "f168ccd2aea234d1be843559897c69620626aa07968e997e3765013f14e60a8f",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-0p6.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-0p6.mp4",
+      "video_sha256": "84a7769dc22018f939939ac90fe73748754646495b1f8c8b1e29a480c220e626",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-0p7.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-0p7.mp4",
+      "video_sha256": "78fb82a04585e4f911f737833029edec0bde15f68ef2381fa8d3ea4af85353c9",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-0p8.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-0p8.mp4",
+      "video_sha256": "428b35a403296b2e3a4cc7360ebb447e27c38b039f0095644186c9a00649d332",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-0p9.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-0p9.mp4",
+      "video_sha256": "5e3339e52c7a983123203ba330de02438d998223a09c45e05ff5d7b7defdba40",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-1p0.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-1p0.mp4",
+      "video_sha256": "6eca21ba34d3269f971cc951bb30cebd48d3c0bf3c83ad17ad5fd95e94cb5ca8",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-1p1.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-1p1.mp4",
+      "video_sha256": "bfb1154caf4cffc81c7579506a7277d03e61608814fe1c86b9012c38ac4a012c",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-1p3.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-1p3.mp4",
+      "video_sha256": "72cd10c585f3ac30d7ed48830ac837a505173850e84f9b01bd6eb4f625ec31c5",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-1p5.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-1p5.mp4",
+      "video_sha256": "e41dd58cd517633667e585cd7d5af7f403d2ef7af1d6469db6dc57f36f1f75d8",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-1p7.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-1p7.mp4",
+      "video_sha256": "ea5998239d9cd338b8ebd9449d14cc9ebf1aa93801c28c0a88bb9d28c1f12bf9",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_walker/klb70/mass-2p0.json",
+      "video": "assets/replays/sac_kl_walker/klb70/mass-2p0.mp4",
+      "video_sha256": "dedff3949d9e6bd9ac0e87dddf1c8000042bdc0b230ed4bfb818f7486826853d",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p1.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p1.mp4",
+      "video_sha256": "dae0674c66907ea0994b566aba53db8d946c56c78f8d36402aab11ea9d766192",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p2.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p2.mp4",
+      "video_sha256": "cec1105ce7a9f53c4a98baab84bb20663388aa6fae373fa4fd561f484dcc45da",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p3.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p3.mp4",
+      "video_sha256": "7c9cddfc3a1348ca92e475b463c33ab8ed7f275fd8088346490593129a3e4eeb",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p4.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p4.mp4",
+      "video_sha256": "46cb0812ae5544b6958c637ed3c4aa64d54ce1d5c6d3c76caf9c727bcb037971",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p5.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p5.mp4",
+      "video_sha256": "1682b9881b5a78ea625c71a3264e16ae7dddbfa79a8e925bd720b3ff91b67538",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p6.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p6.mp4",
+      "video_sha256": "b3658d916b466fd920941fa71389d7782da7221cd76e6a251cd2601f39ebbd2b",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p7.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p7.mp4",
+      "video_sha256": "2e85c5f1828207b8d090f902e5b8120041630529a2deb7b275887fd63af9fc4e",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p8.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p8.mp4",
+      "video_sha256": "85e32fbe8b4b2f87a32dcfce2b0a41b6c09775e9be4616005fb8e9ec3495fafb",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p9.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-0p9.mp4",
+      "video_sha256": "70df8e2dfe8794d946008582f2d3c2a5432f0621552cc4ea4086d2946017279e",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-1p0.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-1p0.mp4",
+      "video_sha256": "591e35d6deaa007f0709731d4c3c097ad2b61e0917abc8c1d97004e9bba0869c",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-1p1.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-1p1.mp4",
+      "video_sha256": "7ab2842c2d404d066991a515ffa786eff7ef9f46ac070e2b770b34cc81f05356",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-1p3.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-1p3.mp4",
+      "video_sha256": "d647d4a641f8abb1e164ea68742b4055770023bd1b1f0ed161feed2d2256ffa0",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-1p5.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-1p5.mp4",
+      "video_sha256": "778ecb00ed15cd8e06e6d31cb7858049f711566e09faac9a273864a8b80e192e",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-1p7.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-1p7.mp4",
+      "video_sha256": "a928b9ea4cafc509b7c234392cd878181b1a2b1c9a79cd0a40c85f5f5bc8b28a",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/vanilla/mass-2p0.json",
+      "video": "assets/replays/sac_kl_halfcheetah/vanilla/mass-2p0.mp4",
+      "video_sha256": "aa06511239fbc4e34cb77a1f3ef2805fa467fae0fc7ef532b1758cde9ec070f5",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p1.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p1.mp4",
+      "video_sha256": "305977812356e0771f4bd95f2b1546865a9770b7968ac595ea6dcd1e913f1dca",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p2.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p2.mp4",
+      "video_sha256": "5d14c5bf7b1b6a3d70e204dab3aabae0f70871f0e17f7423679c82d61fef6f91",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p3.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p3.mp4",
+      "video_sha256": "e743290299b743dbe2149f9917b80fa3691514473177e91f19fc8c62f8439326",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p4.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p4.mp4",
+      "video_sha256": "c7a3127ec432e403e8692ac1b7ef6499f0c99c6bab1b2989b2e3563cd269e50d",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p5.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p5.mp4",
+      "video_sha256": "5215c92713e11ac5266d9969882b164ebda4572ac32260d479b3746d7e8b0dfe",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p6.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p6.mp4",
+      "video_sha256": "eb22963e8f101304a195e313c78e3ecf7519ce6dacfb09036f00534c192237d7",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p7.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p7.mp4",
+      "video_sha256": "7480cc19a9b2974c3ab4542963ad54b04d68cf812949bbf4d84807af862eb40f",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p8.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p8.mp4",
+      "video_sha256": "9b2f0ddf0f3bbeb6c5be8d3dc8e7ed149b4b7b3ea1a256a28d066881f5b34a80",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p9.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-0p9.mp4",
+      "video_sha256": "ea325f57e1b79e6b8a9df667718e1258de0a6de59d624f4d2eaf0090bcb2a767",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-1p0.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-1p0.mp4",
+      "video_sha256": "f67733334af90386d2610e5e3e3bd54e6e0628f0dfe8dfe7f86c13750b580b5c",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-1p1.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-1p1.mp4",
+      "video_sha256": "94770ed66e822eb533420161dfb4c04ef734d13c7471c9aa95cce8d65fed551f",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-1p3.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-1p3.mp4",
+      "video_sha256": "569c05652d7a441690b6246d1ddbd03bd78fb9d76824f2d8c388b5c148c47706",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-1p5.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-1p5.mp4",
+      "video_sha256": "bb8968a28377fd54fa2b20b1cd03c73d169b1402c31560820f207446ef5dc445",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-1p7.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-1p7.mp4",
+      "video_sha256": "776faf839ad9b91fe7522339ac844c232208666be8c101a1d2e215289698397d",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/sac_kl_halfcheetah/klb85/mass-2p0.json",
+      "video": "assets/replays/sac_kl_halfcheetah/klb85/mass-2p0.mp4",
+      "video_sha256": "666c9c9930b3d6620562f8de6c68ccd3239b6ed76920d1bccff94825dc8d42f8",
+      "decoded_size": [
+        480,
+        480
+      ],
+      "training_seed": 0,
+      "episode_seed": 0
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/friction-0p25.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/friction-0p25.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/friction-0p5.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/friction-0p5.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/friction-0p75.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/friction-0p75.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/friction-1p0.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/friction-1p0.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/friction-1p25.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/friction-1p25.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/friction-1p5.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/friction-1p5.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/friction-2p0.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/friction-2p0.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/action_replacement-0p0.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/action_replacement-0p0.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/action_replacement-0p05.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/action_replacement-0p05.mp4",
+      "video_sha256": "3cc005849fff74cdb656a07a78e486377d86277ea76eebf41759e4accad94502",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/action_replacement-0p1.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/action_replacement-0p1.mp4",
+      "video_sha256": "60ae535379c1f18b841ccc41a45e33a211fb62026b08f9af5c0ee9749311648b",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/action_replacement-0p2.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/action_replacement-0p2.mp4",
+      "video_sha256": "f54ee31b8a2bc7ee4611fd7f62f0c7def6dba8dc7e71517590a8ecf23aa608a2",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/action_replacement-0p3.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/action_replacement-0p3.mp4",
+      "video_sha256": "3c7a168c199aab945609cc7456f80e6d43c0fd43e18cb6e5c0c644763e53af76",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/actuator_strength-0p25.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/actuator_strength-0p25.mp4",
+      "video_sha256": "82d6d25a764e9d1e9da00cb4bb30b7bfa5d1039bd673cdc96dde5758c5664dba",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/actuator_strength-0p5.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/actuator_strength-0p5.mp4",
+      "video_sha256": "a0566d7dd37b4f11c6a34fea713f20561a8629bdb006be37918df1087680fd13",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/actuator_strength-0p75.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/actuator_strength-0p75.mp4",
+      "video_sha256": "ead48a840db0056b31debfca873282192c3a75f802d6f19bd8236e4ce5fd126d",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/actuator_strength-1p0.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/actuator_strength-1p0.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/actuator_strength-1p25.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/actuator_strength-1p25.mp4",
+      "video_sha256": "5e84482aeacf9f9d0e7c67760268b124995c65db130c3c6b7eef945ddbaa93b8",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/actuator_strength-1p5.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/actuator_strength-1p5.mp4",
+      "video_sha256": "aaa5bdef57726be1e9f56a4aa60123e1241c6cdb70359bd7fbcde744893e4fd5",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/actuator_strength-2p0.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/actuator_strength-2p0.mp4",
+      "video_sha256": "a11fe488c70d82bc44cfb1fa5d2004142e86ad0117ed3939de5936a4efc64e08",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/gaussian_action_noise-0p0.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/gaussian_action_noise-0p0.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/gaussian_action_noise-0p05.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/gaussian_action_noise-0p05.mp4",
+      "video_sha256": "f3d2ef7a8fa23cb6d9d38d199ba177618e3e298a7fce0226a7077a3c2d66ae7a",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/gaussian_action_noise-0p1.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/gaussian_action_noise-0p1.mp4",
+      "video_sha256": "e02c2d820d85588c35d762a2c624af555646048afe58e94afbc6f1ddf8d48a81",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/gaussian_action_noise-0p2.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/gaussian_action_noise-0p2.mp4",
+      "video_sha256": "4e1a9b5e82c9ac70a3d00c970a7b60907176a112957c775303345ff3103271ca",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/gaussian_action_noise-0p3.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/gaussian_action_noise-0p3.mp4",
+      "video_sha256": "2abb567c37d059c94a0eff668d36b327929e8a7575a162f826ac645a30ab178f",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/goal_distance-0p5.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/goal_distance-0p5.mp4",
+      "video_sha256": "1a16f0da2743897c08c2f974511b9a350356a2f3c3e2e6b4ec453575365e331f",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/goal_distance-0p75.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/goal_distance-0p75.mp4",
+      "video_sha256": "7863791693951a242d707bd41e37d26ff05780074a44d666dcf7051320169e1b",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/goal_distance-1p0.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/goal_distance-1p0.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/goal_distance-1p25.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/goal_distance-1p25.mp4",
+      "video_sha256": "4c519c5bafcbeb879ba2121e23cacc688af102dfc8e3ce61a149804dfe10f71d",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/goal_distance-1p5.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/goal_distance-1p5.mp4",
+      "video_sha256": "2160ceb0a58c066d9f9704deba0c8c8738cfd0632eede9669b09bc87438390c3",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/object_mass-0p25.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/object_mass-0p25.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/object_mass-0p5.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/object_mass-0p5.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/object_mass-0p75.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/object_mass-0p75.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/object_mass-1p0.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/object_mass-1p0.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/object_mass-1p25.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/object_mass-1p25.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/object_mass-1p5.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/object_mass-1p5.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/object_mass-2p0.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/object_mass-2p0.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/vanilla/object_mass-4p0.json",
+      "video": "assets/replays/ppo_tv_pusher/vanilla/object_mass-4p0.mp4",
+      "video_sha256": "c40b9b14268fad4a205618607be5c6a47464f5f8366491504c973554f657b0ee",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/friction-0p25.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/friction-0p25.mp4",
+      "video_sha256": "7ecd58d3d31e1cfd96e072f8530a5ae29e9cdae3c1ec63669af9d2a6e80dc9bf",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/friction-0p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/friction-0p5.mp4",
+      "video_sha256": "7ecd58d3d31e1cfd96e072f8530a5ae29e9cdae3c1ec63669af9d2a6e80dc9bf",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/friction-0p75.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/friction-0p75.mp4",
+      "video_sha256": "7ecd58d3d31e1cfd96e072f8530a5ae29e9cdae3c1ec63669af9d2a6e80dc9bf",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/friction-1p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/friction-1p0.mp4",
+      "video_sha256": "7ecd58d3d31e1cfd96e072f8530a5ae29e9cdae3c1ec63669af9d2a6e80dc9bf",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/friction-1p25.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/friction-1p25.mp4",
+      "video_sha256": "7ecd58d3d31e1cfd96e072f8530a5ae29e9cdae3c1ec63669af9d2a6e80dc9bf",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/friction-1p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/friction-1p5.mp4",
+      "video_sha256": "7ecd58d3d31e1cfd96e072f8530a5ae29e9cdae3c1ec63669af9d2a6e80dc9bf",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/friction-2p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/friction-2p0.mp4",
+      "video_sha256": "7ecd58d3d31e1cfd96e072f8530a5ae29e9cdae3c1ec63669af9d2a6e80dc9bf",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/action_replacement-0p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/action_replacement-0p0.mp4",
+      "video_sha256": "7ecd58d3d31e1cfd96e072f8530a5ae29e9cdae3c1ec63669af9d2a6e80dc9bf",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/action_replacement-0p05.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/action_replacement-0p05.mp4",
+      "video_sha256": "38ee4f864a0aa683f51d2c29540a6fd6d1f9c5521142d6d3e2dac9c1d3d3e571",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/action_replacement-0p1.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/action_replacement-0p1.mp4",
+      "video_sha256": "db80c3d27b537bcf5fa79565e879195d2864b4a9cc3c9bb304d8fa5ff1b95bf0",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/action_replacement-0p2.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/action_replacement-0p2.mp4",
+      "video_sha256": "6f8358b5cead2ea5ea9b5bf88b9d61a7de8fbf96b7201b83295f99813289e58b",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/action_replacement-0p3.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/action_replacement-0p3.mp4",
+      "video_sha256": "f26be203fd8414afcd081d7c54cfe47aefb50a5d0187f16c386d3d527f1d099e",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/actuator_strength-0p25.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/actuator_strength-0p25.mp4",
+      "video_sha256": "16344fafe79e00cb7d4aa02b64ce124c3760e435a01cd32a3d65a8cce4e76d65",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/actuator_strength-0p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/actuator_strength-0p5.mp4",
+      "video_sha256": "f9f613b9bfd59167b9296dd75f374ae4bf26d7c3f009baaa032522bd11f4cc1d",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/actuator_strength-0p75.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/actuator_strength-0p75.mp4",
+      "video_sha256": "c95b284157d4de241976002a345ff8e9d1392f681182f2bd95265dd7dbf6ff1c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/actuator_strength-1p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/actuator_strength-1p0.mp4",
+      "video_sha256": "7ecd58d3d31e1cfd96e072f8530a5ae29e9cdae3c1ec63669af9d2a6e80dc9bf",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/actuator_strength-1p25.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/actuator_strength-1p25.mp4",
+      "video_sha256": "6970e5166f0322e282b0ac9a5e80d463c14d6900159ec81e0154acf16a5d04aa",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/actuator_strength-1p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/actuator_strength-1p5.mp4",
+      "video_sha256": "98d7bb50ac7e4c81b798d688008fe5f058fe2b75800f1288fbe790aea58d0ccd",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/actuator_strength-2p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/actuator_strength-2p0.mp4",
+      "video_sha256": "a4f673a1cafc890034259f7537c19cad0555fac902b2705fd77c702bb294c473",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/gaussian_action_noise-0p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/gaussian_action_noise-0p0.mp4",
+      "video_sha256": "7ecd58d3d31e1cfd96e072f8530a5ae29e9cdae3c1ec63669af9d2a6e80dc9bf",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/gaussian_action_noise-0p05.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/gaussian_action_noise-0p05.mp4",
+      "video_sha256": "b234381d47e32542d88b86418070fa7560afb9a0e051c4069ee560893f5c3ba2",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/gaussian_action_noise-0p1.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/gaussian_action_noise-0p1.mp4",
+      "video_sha256": "c8966abdb35f71222aef8c62b79e1d9242639ce5d1e77af9d95f80259cabeeaa",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/gaussian_action_noise-0p2.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/gaussian_action_noise-0p2.mp4",
+      "video_sha256": "7d0033ee46de2c3bd454f168c19d669fc6fcd57bdb10ef153712ef25af05bf81",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/gaussian_action_noise-0p3.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/gaussian_action_noise-0p3.mp4",
+      "video_sha256": "c0962277124f55736e69e5712e04d3e40f948f66b5767d83089dc67138e2689d",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/goal_distance-0p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/goal_distance-0p5.mp4",
+      "video_sha256": "16a0dcebc019eb4344f92fe950c0d2a98e3c137fb1900d46b71ae28dfb614e7a",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/goal_distance-0p75.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/goal_distance-0p75.mp4",
+      "video_sha256": "1759158ba7ad27f9aaca1fc0241d68e9f171bea15d37edc7ff9b9f7b12721c5b",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/goal_distance-1p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/goal_distance-1p0.mp4",
+      "video_sha256": "7ecd58d3d31e1cfd96e072f8530a5ae29e9cdae3c1ec63669af9d2a6e80dc9bf",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/goal_distance-1p25.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/goal_distance-1p25.mp4",
+      "video_sha256": "edd06144d3fa51df2341458d9e92c28ba7c07ccca96ef31cd78ccd29fb4418fc",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/goal_distance-1p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/goal_distance-1p5.mp4",
+      "video_sha256": "ed1e502d2bc35de61f399ac670ddb35d15c8d9587b3592c4382bdf734de25ae6",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-0p25.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-0p25.mp4",
+      "video_sha256": "d7df431e5ec63564c121cd160ae7f8a42ff0f150e594101f60161ea07923334f",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-0p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-0p5.mp4",
+      "video_sha256": "d16c828192affb8383a7cf71fc2af5b7cdd5dbbb4d3abd749adca9e35fb8cdc0",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-0p75.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-0p75.mp4",
+      "video_sha256": "66dd874a7cea9843cf1b286162d78a8b1c98b4278075274e0a90063d23d1045d",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-1p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-1p0.mp4",
+      "video_sha256": "7ecd58d3d31e1cfd96e072f8530a5ae29e9cdae3c1ec63669af9d2a6e80dc9bf",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-1p25.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-1p25.mp4",
+      "video_sha256": "b5927b9a6cee17c55f1073ebbf1ef116f00354bde707299d6b301b68823d262d",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-1p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-1p5.mp4",
+      "video_sha256": "599db2d6767dac05dc376757f0eac6b6bc90d5147f93fae3319e1261260aa910",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-2p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-2p0.mp4",
+      "video_sha256": "417740b21a330ef8022ef81c9221b51edee7d574679c0c7bf9c641743213bf5e",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-4p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c-1/object_mass-4p0.mp4",
+      "video_sha256": "104eceb197de301a8932ae227f401ceb86a4f21b3103f9cf315d6dffab478c52",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/friction-0p25.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/friction-0p25.mp4",
+      "video_sha256": "9b9f78a2ba78395b5a4aa23237b6de76e07089cb4bdb36806f09b00317a6e33c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/friction-0p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/friction-0p5.mp4",
+      "video_sha256": "9b9f78a2ba78395b5a4aa23237b6de76e07089cb4bdb36806f09b00317a6e33c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/friction-0p75.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/friction-0p75.mp4",
+      "video_sha256": "9b9f78a2ba78395b5a4aa23237b6de76e07089cb4bdb36806f09b00317a6e33c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/friction-1p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/friction-1p0.mp4",
+      "video_sha256": "9b9f78a2ba78395b5a4aa23237b6de76e07089cb4bdb36806f09b00317a6e33c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/friction-1p25.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/friction-1p25.mp4",
+      "video_sha256": "9b9f78a2ba78395b5a4aa23237b6de76e07089cb4bdb36806f09b00317a6e33c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/friction-1p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/friction-1p5.mp4",
+      "video_sha256": "9b9f78a2ba78395b5a4aa23237b6de76e07089cb4bdb36806f09b00317a6e33c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/friction-2p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/friction-2p0.mp4",
+      "video_sha256": "9b9f78a2ba78395b5a4aa23237b6de76e07089cb4bdb36806f09b00317a6e33c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/action_replacement-0p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/action_replacement-0p0.mp4",
+      "video_sha256": "9b9f78a2ba78395b5a4aa23237b6de76e07089cb4bdb36806f09b00317a6e33c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/action_replacement-0p05.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/action_replacement-0p05.mp4",
+      "video_sha256": "6ed2476577fcb763eb8dc68bd4cd61d86797dd78ef8117ff673ceecf04cf0da5",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/action_replacement-0p1.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/action_replacement-0p1.mp4",
+      "video_sha256": "949b624514db2a2a20d05f8e3635f80ddf72e93effb106f31106caab9dc77675",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/action_replacement-0p2.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/action_replacement-0p2.mp4",
+      "video_sha256": "b2575e9e19d3c9876e55ade7a0fef743312662c4fb7ad58e02eab11ce9d67bc6",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/action_replacement-0p3.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/action_replacement-0p3.mp4",
+      "video_sha256": "55081b023a59e256c44cc027924fab7fb22ec543e9bcb415f5648ce078568bf1",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/actuator_strength-0p25.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/actuator_strength-0p25.mp4",
+      "video_sha256": "92620f02ca9068ae2a62d50fc91f07a8df1555454e1e3f6efc15b8b1585d86c7",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/actuator_strength-0p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/actuator_strength-0p5.mp4",
+      "video_sha256": "bf91d570cbacfb68d13e5f5b0d86895fb2a0f149166522ea02b1ade69119ec08",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/actuator_strength-0p75.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/actuator_strength-0p75.mp4",
+      "video_sha256": "db4c9622a20802dd1faf4f7adab56d33d8ff18025960b20c409ade9d237b8366",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/actuator_strength-1p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/actuator_strength-1p0.mp4",
+      "video_sha256": "9b9f78a2ba78395b5a4aa23237b6de76e07089cb4bdb36806f09b00317a6e33c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/actuator_strength-1p25.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/actuator_strength-1p25.mp4",
+      "video_sha256": "9223024a005c16bcc826f46a041e5eaa6c9da5d6c6c5eac45510e4ac72848fb0",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/actuator_strength-1p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/actuator_strength-1p5.mp4",
+      "video_sha256": "974031ff62a32a206e6f58c16d44a3b2a3eb8680bcfd7da36b7d293e29ff37bd",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/actuator_strength-2p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/actuator_strength-2p0.mp4",
+      "video_sha256": "2f7fc5dc8266e9ac61293b77a196aca0b447faaa507797ed8dd2ee11d0aa79d0",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/gaussian_action_noise-0p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/gaussian_action_noise-0p0.mp4",
+      "video_sha256": "9b9f78a2ba78395b5a4aa23237b6de76e07089cb4bdb36806f09b00317a6e33c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/gaussian_action_noise-0p05.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/gaussian_action_noise-0p05.mp4",
+      "video_sha256": "7cb3866857f70d9c5def42391a2adafd447010381ffa46dc8254fb21b8c1ddc8",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/gaussian_action_noise-0p1.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/gaussian_action_noise-0p1.mp4",
+      "video_sha256": "e7030124fce13f7420f40b0213e4cb84d2de89864982e58e54c98f176081451c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/gaussian_action_noise-0p2.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/gaussian_action_noise-0p2.mp4",
+      "video_sha256": "f78286b9e546fc95b5573d6bc5d0349d0ef50df3e05d02d64d9fcac12b14c365",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/gaussian_action_noise-0p3.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/gaussian_action_noise-0p3.mp4",
+      "video_sha256": "e86f44bd5e8bc4c50d83491845f78fcb41a64cf4f7a7a55e5bf5877328d2d3be",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/goal_distance-0p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/goal_distance-0p5.mp4",
+      "video_sha256": "217441462f2fc824f8c3b629da9c5b8305b53b361e29bdc5acd7fece54b0fc4a",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/goal_distance-0p75.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/goal_distance-0p75.mp4",
+      "video_sha256": "c568410b2943c8f93252ae7c6884c51bd84001a738b02c1147fe28862b436d6c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/goal_distance-1p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/goal_distance-1p0.mp4",
+      "video_sha256": "9b9f78a2ba78395b5a4aa23237b6de76e07089cb4bdb36806f09b00317a6e33c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/goal_distance-1p25.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/goal_distance-1p25.mp4",
+      "video_sha256": "aa8feee29ec3dfc7ebe8c114c2c715fbb9b57618057d227086801c500e3c55ff",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/goal_distance-1p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/goal_distance-1p5.mp4",
+      "video_sha256": "2f1a48fa274f99b301b338cb5cdf49d48e8a1242686c292f04341c6a00259b27",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-0p25.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-0p25.mp4",
+      "video_sha256": "f405b50fff39b65764432254db6a1a13e793dd5c5727940b88c148fdd82a4ecb",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-0p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-0p5.mp4",
+      "video_sha256": "b7858252a368087b64bfcc870de727e9a09edcc432ede28eb99b9f3a6a372a96",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-0p75.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-0p75.mp4",
+      "video_sha256": "fe2300abf7014342b8d8ece27a08ea2ff026140e6f40a8b861897d82a62eea41",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-1p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-1p0.mp4",
+      "video_sha256": "9b9f78a2ba78395b5a4aa23237b6de76e07089cb4bdb36806f09b00317a6e33c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-1p25.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-1p25.mp4",
+      "video_sha256": "66223239eac036fc9a5a64dcabc29ac841ab0f291271df7d78473c2de67eafad",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-1p5.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-1p5.mp4",
+      "video_sha256": "b05c7a4e16b03f5d2f6d48ee8fd39956339d7589633c899234b091084485a779",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-2p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-2p0.mp4",
+      "video_sha256": "ee7d70268a068e551319b3984be5f631c45e7bfad58332e9345b1f1e44432568",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    },
+    {
+      "metadata": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-4p0.json",
+      "video": "assets/replays/ppo_tv_pusher/tv_c0/object_mass-4p0.mp4",
+      "video_sha256": "5a34c556562750c73d29795e84571c0fa038c6b7a810797dfd57e855d84acb6c",
+      "decoded_size": [
+        640,
+        480
+      ],
+      "training_seed": 1000,
+      "episode_seed": 100000
+    }
+  ]
+}
