@@ -1,9 +1,10 @@
 import {baselineColor,robustColor,fmt,escape as esc,label,activeModel,nearestPoint,bounds,factorLabel,gridMean,bestModelOnAxis,axisLabel} from './model.mjs?v=20261022-recordings1';
+import {episodeTraceSVG} from './replay-chart.mjs?v=20261023-replayaxes1';
 import {environments,parameterNote} from './environments.mjs';
 
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
-const build='20261022-recordings1';
+const build='20261023-replayaxes1';
 const cache=new Map();
 const state={catalog:null,study:null,axis:null,model:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||'explore',bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
 let pendingStudy=0, pendingReplay=0, lastFrame=0, animation;
@@ -176,12 +177,10 @@ function syncVideo(){
   state.frame=Math.min(r.timeline.length-1,Math.floor($('rollout-video').currentTime*r.fps));
   $('frame').value=state.frame;
   const f=r.timeline[state.frame];$('frame-label').textContent=fmt(f.time,1)+' s · episode R '+fmt(f.reward,1);
-  const W=600,H=105,L=12,R=12,T=27,B=15,ts=r.timeline;
-  const lo=Math.min(...ts.map(p=>p.reward)),hi=Math.max(...ts.map(p=>p.reward)),span=hi-lo||1;
-  const x=p=>L+p.time/(ts.at(-1).time||1)*(W-L-R),y=p=>H-B-(p.reward-lo)/span*(H-T-B);
   const color=state.replayPolicy==='standard'?baselineColor:robustColor;
-  $('episode-trace').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Cumulative return of the recorded episode"><text x="${L}" y="17" font-size="15" fill="#59656a">Recorded episode · cumulative return</text><path d="${ts.map((p,i)=>(i?'L':'M')+x(p)+','+y(p)).join(' ')}" fill="none" stroke="${color}" stroke-width="2"/><circle cx="${x(f)}" cy="${y(f)}" r="5" fill="${color}"/></svg>`;
+  $('episode-trace').innerHTML=episodeTraceSVG(r.timeline,state.frame,color,$('episode-trace').clientWidth<460);
 }
+window.addEventListener('resize',syncVideo);
 async function loadReplay(){
   const ticket=++pendingReplay;stopReplay();state.replay=null;state.frame=0;
   const video=$('rollout-video');video.onerror=null;video.onloadedmetadata=null;video.hidden=true;video.removeAttribute('src');video.load();$('episode-trace').hidden=true;
