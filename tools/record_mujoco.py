@@ -1,7 +1,6 @@
 """Record completed paper checkpoints locally, without changing evaluation tables."""
 import argparse
 import contextlib
-import csv
 import hashlib
 import importlib.util
 import json
@@ -15,6 +14,7 @@ import imageio_ffmpeg
 import mujoco
 import numpy as np
 import torch
+from recording_sources import archived_rows, condition
 
 
 def digest(path):
@@ -31,7 +31,9 @@ def load_actor(item,cache,root,env):
     actor_path=cache/item['key']/'checkpoint.bin';norm_path=cache/item['key']/'normalization.bin'
     if digest(actor_path)!=item['checkpoint_sha256'] or digest(norm_path)!=item['normalization_sha256']:
         raise ValueError('Recording input changed after verification')
-    if item['algorithm']=='PPO':
+    loader=item.get('loader',{'PPO':'ppo_cont','SAC':'yiting_sac'}.get(item['algorithm']))
+    mean=std=None
+    if loader=='ppo_cont':
         source=root/'cleanrl/ppo_continuous_action.py'
         if digest(source)!=item['expected_hashes']['ppo_definition_sha256']:
             raise ValueError('PPO actor definition differs from archived evaluation')
@@ -42,7 +44,7 @@ def load_actor(item,cache,root,env):
         def action(observation):
             x=torch.as_tensor(np.clip((observation-mean)/std,-10,10),dtype=torch.float32)
             return actor.actor_mean(x).numpy().clip(env.action_space.low,env.action_space.high)
-    elif item['algorithm']=='SAC':
+    elif loader=='yiting_sac':
         from experiments.yiting_sac30.eval_model import YitingSACActor
         mean,std=np.load(norm_path)
         actor=YitingSACActor(env.observation_space.shape[0],env.action_space.shape[0])
@@ -51,9 +53,36 @@ def load_actor(item,cache,root,env):
             x=torch.as_tensor((observation-mean)/std,dtype=torch.float32)
             unit=actor.deterministic_unit_action(x).numpy()
             return ((1-unit)*env.action_space.low/2+(1+unit)*env.action_space.high/2).clip(env.action_space.low,env.action_space.high)
+    elif loader=='td3':
+        from cleanrl.td3_continuous_action import Actor
+        actor=Actor(SimpleNamespace(single_observation_space=env.observation_space,single_action_space=env.action_space))
+        checkpoint=torch.load(actor_path,map_location='cpu',weights_only=False)
+        actor.load_state_dict(checkpoint[0],strict=True)
+        def action(observation):
+            return actor(torch.as_tensor(observation,dtype=torch.float32)).numpy().clip(env.action_space.low,env.action_space.high)
+    elif loader in ['yiting_td3','rsc_sac']:
+        checkpoint=torch.load(actor_path,map_location='cpu',weights_only=False)
+        expected='yiting_td3_baseline_v1' if loader=='yiting_td3' else 'yiting_rsc_sac_mujoco_v1'
+        if checkpoint.get('format')!=expected:raise ValueError('Unexpected saved actor format')
+        mean=checkpoint['obs_mean'].numpy();std=checkpoint['obs_std'].numpy()
+        if loader=='yiting_td3':
+            from baselines.yiting_td3.model import YitingTD3Actor
+            actor=YitingTD3Actor(env.observation_space.shape[0],env.action_space.shape[0])
+        else:
+            from baselines.yiting_rsc_sac.source.rsc_sac import GaussianActor
+            actor=GaussianActor(obs_dim=env.observation_space.shape[0],action_dim=env.action_space.shape[0],
+                hidden_dim=int(checkpoint.get('config',{}).get('hidden_dim',256)))
+        actor.load_state_dict(checkpoint['actor_state_dict'],strict=True)
+        def action(observation):
+            x=torch.as_tensor((observation-mean)/std,dtype=torch.float32)
+            if loader=='yiting_td3':
+                unit=actor(x).numpy()
+                result=(1-unit)*env.action_space.low/2+(1+unit)*env.action_space.high/2
+            else:result=actor.deterministic(x).numpy()
+            return result.clip(env.action_space.low,env.action_space.high)
     else:
         raise ValueError('Unsupported recording actor; do not substitute another algorithm')
-    if not np.isfinite([mean,std]).all() or (std<=0).any():raise ValueError('Invalid frozen normalization')
+    if mean is not None and (not np.isfinite([mean,std]).all() or (std<=0).any()):raise ValueError('Invalid frozen normalization')
     actor.eval().requires_grad_(False)
     return action
 
@@ -124,9 +153,10 @@ def record(item,axis,value,env,cache,root,site,episode_seed,reference=None):
     matched=bool(expected is not None and abs(total-expected)<=max(.001,abs(expected)*1e-5))
     payload=dict(kind='video',video=str(video_path.relative_to(site)),environment=item['environment'],study=item['cell'],
         model=item['model'],trainingSeed=item['training_seed'],episodeSeed=episode_seed,axis=axis,value=value,
-        checkpointSha256=item['checkpoint_sha256'],normalizationSha256=item['normalization_sha256'],
+        checkpointSha256=item['checkpoint_sha256'],normalizationSha256=item['normalization_sha256'] if item.get('normalization_mode')!='none' else None,
+        normalizationMode=item.get('normalization_mode','sidecar'),loader=item.get('loader',item['algorithm']),
         fps=fps,steps=steps,horizon=horizon,returnValue=total,referenceReturn=expected,referenceMatched=matched,
-        referenceEpisodeAvailable=expected is not None,deterministic=True,observationNormalizationFrozen=True,
+        referenceEpisodeAvailable=expected is not None,deterministic=True,observationNormalizationFrozen=item.get('normalization_mode')!='none',
         timeline=timeline,movingFrames=motion,runtime=dict(gymnasium=gym.__version__,mujoco=mujoco.__version__,torch=torch.__version__),
         interpretation='New deterministic checkpoint replay, not a recovered video or cohort-average episode.')
     json_path.write_text(json.dumps(payload,separators=(',',':'),allow_nan=False))
@@ -145,9 +175,10 @@ def main():
     if not items:raise ValueError('No verified completed policy inputs for this selection')
     rows={}
     if study['environment'] not in ['Pusher-v5','PickCube-v1']:
-        with (args.root/study['source']).open() as stream:
-            for row in csv.DictReader(stream):
-                if row['seed']=='0':rows[(row['model_label'],row['axis'],float(row['factor']))]=row
+        seeds={item['model']:item['training_seed'] for item in items}
+        for row in archived_rows(args.root,study):
+            if int(row['seed'])==seeds.get(row['model_label']):
+                rows[(row['model_label'],*condition(row))]=row
     count=0
     for item in items:
         reference={}
@@ -159,13 +190,13 @@ def main():
         for axis in study['axes']:
             if args.axis!='all' and axis['id']!=args.axis:continue
             for point in axis['curves'][item['model']]:
-                value=point['x'];condition=(axis['id'],value)
+                value=point['x'];selection=(axis['id'],value)
                 if study['environment']=='PickCube-v1':raise RuntimeError('PickCube requires original Linux ManiSkill/SAPIEN runtime; no simulator substitution')
                 if study['environment']=='Pusher-v5':
-                    env=pusher_env(*condition);seed=100000
+                    env=pusher_env(*selection);seed=100000
                 else:
-                    env=legacy_env(rows[(item['model'],*condition)],args.root,args.cache/'xml');seed=item['training_seed']
-                try:path=record(item,*condition,env,args.cache,args.root,args.site,seed,reference.get(condition))
+                    env=legacy_env(rows[(item['model'],*selection)],args.root,args.cache/'xml');seed=item['training_seed']
+                try:path=record(item,*selection,env,args.cache,args.root,args.site,seed,reference.get(selection))
                 finally:env.close()
                 study.setdefault('replays',{}).setdefault(item['model'],{})[axis['id']+'|'+format(value,'g')]=path
                 study_path.write_text(json.dumps(study,separators=(',',':'),allow_nan=False))

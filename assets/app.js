@@ -1,10 +1,10 @@
-import {baselineColor,robustColor,fmt,escape as esc,label,activeModel,nearestPoint,bounds,factorLabel,gridMean,bestModelOnAxis,axisLabel} from './model.mjs?v=20261022-recordings1';
+import {baselineColor,robustColor,fmt,escape as esc,label,activeModel,nearestPoint,bounds,factorLabel,gridMean,bestModelOnAxis,axisLabel,recordingCount} from './model.mjs?v=20261023-morepolicies1';
 import {episodeTraceSVG} from './replay-chart.mjs?v=20261023-replayaxes1';
 import {environments,parameterNote} from './environments.mjs';
 
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
-const build='20261023-replayaxes1';
+const build='20261023-morepolicies1';
 const cache=new Map();
 const state={catalog:null,study:null,axis:null,model:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||'explore',bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
 let pendingStudy=0, pendingReplay=0, lastFrame=0, animation;
@@ -92,6 +92,9 @@ function showPage(){
 function renderAll(){
   if(state.selection==='best')state.model=bestModelOnAxis(state.study,state.axis);
   updateVariantControl();
+  options('axis',state.study.axes.map(a=>[a.id,a.title]),state.axis.id);
+  const replayModel=state.replayPolicy==='standard'?state.study.baseline:state.model;
+  $('axis-playback-label').textContent='Perturbation · '+recordingCount(state.study,state.axis,replayModel)+'/'+state.axis.curves[replayModel].length+' recorded';
   renderChart();renderLegend();renderPoint();renderGallery();renderTable();
   const best=bestModelOnAxis(state.study,state.axis);
   $('select-best').textContent=best?'Select best: '+label(best):'No active setting';$('select-best').disabled=!best;$('select-best').setAttribute('aria-pressed',String(state.selection==='best'));
@@ -155,8 +158,8 @@ function setPoint(i){
   state.index=Math.max(0,Math.min(Number(i),points().length-1));renderChart();renderPoint();syncURL();loadReplay();
 }
 function renderGallery(){
-  const available=Object.keys(state.study.replays?.[state.model]||{}).length,total=state.study.axes.reduce((n,a)=>n+a.curves[state.model].length,0);
-  $('axis-count').textContent=state.study.axes.length+' axes · '+available+'/'+total+' recordings for '+label(state.model);
+  const available=state.study.axes.reduce((n,a)=>n+recordingCount(state.study,a,modelForAxis(a)),0),total=state.study.axes.reduce((n,a)=>n+a.curves[modelForAxis(a)].length,0);
+  $('axis-count').textContent=state.study.axes.length+' axes · '+available+'/'+total+' recordings for '+(state.selection==='best'?'axis-specific best settings':label(state.model));
   $('axis-gallery').replaceChildren(...state.study.axes.map(axis=>{const b=document.createElement('button');b.className='mini-axis'+(axis.id===state.axis.id?' active':'');b.innerHTML='<h3>'+esc(axis.title)+'</h3>'+svgChart(axis,true)+'<p class="mini-setting">'+esc(label(modelForAxis(axis)))+(state.selection==='best'?' · best on this axis':'')+'</p>';b.setAttribute('aria-label','View '+axis.title);b.onclick=()=>{chooseAxis(axis.id);$('axis').focus();};return b;}));
   const query=$('search').value.toLowerCase();
   $('returns-gallery').replaceChildren(...state.study.axes.filter(a=>(a.title+' '+a.id).toLowerCase().includes(query)).map(axis=>{const model=modelForAxis(axis),item=document.createElement('article');item.className='return-axis';const legend=state.allSettings?'<div class="return-legend">'+state.study.models.map(m=>'<span style="color:'+curveColor(m,model,true)+'">'+esc(label(m))+'</span>').join('')+'</div>':'';item.innerHTML='<h3>'+esc(axis.title)+'</h3>'+svgChart(axis,false,state.allSettings)+legend+'<p class="small">'+(state.allSettings?'All settings · mean ±1 across-policy SD':esc(label(model))+' versus standard'+(state.selection==='best'?' · best on this axis (ex post)':'')+' · '+axis.curves[model][0].n+' measured policies at the first grid point')+'</p>';return item;}));
@@ -205,7 +208,7 @@ async function loadReplay(){
       video.hidden=false;$('replay-canvas').hidden=true;$('task-image').hidden=true;
       $('playback-status').textContent='Recorded paper checkpoint';$('scene-tag').textContent=label(replayModel)+' · training seed '+replay.trainingSeed;
       $('scene-explanation').textContent='Episode seed '+replay.episodeSeed+' · return '+fmt(replay.returnValue)+'. '+state.axis.title+' '+factorLabel(state.axis,factor,state.study.environment)+'.';
-      $('scene-note').textContent='New deterministic replay of the selected trained checkpoint, with frozen normalization. One fixed training/episode seed, not the cohort mean. '+(replay.referenceMatched?'Archived episode return reproduced within tolerance.':replay.referenceEpisodeAvailable?'The replay return differs from the archived episode; it does not replace the saved result.':'The original episode-level return was not available for exact comparison.')+' The main graph retains the original evaluation means.';
+      $('scene-note').textContent='New deterministic replay of the selected trained checkpoint, '+(replay.normalizationMode==='none'?'with raw observations as in its original evaluation.':'with frozen normalization.')+' One fixed training/episode seed, not the cohort mean. '+(replay.referenceMatched?'Archived episode return reproduced within tolerance.':replay.referenceEpisodeAvailable?'The replay return differs from the archived episode; it does not replace the saved result.':'The original episode-level return was not available for exact comparison.')+' The main graph retains the original evaluation means.';
       $('play').disabled=false;$('frame').disabled=false;$('frame').max=replay.timeline.length-1;$('episode-trace').hidden=false;
       video.onloadedmetadata=()=>{if(ticket!==pendingReplay)return;syncVideo();if(state.playbackWanted&&state.page==='explore')video.play().catch(()=>{});};
       video.onerror=()=>{if(ticket!==pendingReplay)return;stopReplay();$('play').disabled=true;$('frame').disabled=true;$('playback-status').textContent='Recording could not load';$('scene-note').textContent='The matching video could not be loaded. No other policy or severity has been substituted.';};
@@ -251,7 +254,7 @@ $('severity').oninput=e=>setPoint(e.target.value);$('nominal').onclick=()=>setPo
 $('search').oninput=()=>{renderTable();renderGallery();};$('paper-search').oninput=renderPaper;
 $('play').onclick=()=>{if(state.replay?.kind==='video'){const v=$('rollout-video');state.playbackWanted=v.paused;if(v.paused)v.play().catch(()=>{});else v.pause();return;}if(state.playing)stopReplay();else{state.playing=true;$('play').textContent='Ⅱ';$('play').setAttribute('aria-label','Pause recorded-policy replay');lastFrame=0;animation=requestAnimationFrame(animate);}};
 $('frame').oninput=e=>{stopReplay();state.playbackWanted=false;state.frame=Number(e.target.value);if(state.replay?.kind==='video'){$('rollout-video').currentTime=state.frame/state.replay.fps;syncVideo();}else drawScene();};
-$('replay-policy').onchange=e=>{state.replayPolicy=e.target.value;syncURL();loadReplay();};
+$('replay-policy').onchange=e=>{state.replayPolicy=e.target.value;renderAll();};
 $('rollout-video').ontimeupdate=syncVideo;$('rollout-video').onseeked=syncVideo;
 $('rollout-video').onplay=()=>{state.playing=true;$('play').textContent='Ⅱ';$('play').setAttribute('aria-label','Pause recorded-policy replay');};
 $('rollout-video').onpause=()=>{state.playing=false;$('play').textContent='▶';$('play').setAttribute('aria-label','Play recorded-policy replay');};

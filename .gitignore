@@ -2,3 +2,5 @@ __pycache__/
 .DS_Store
 node_modules/
 tests/screenshots/
+# New recordings are published as verified release assets, not Pages binaries.
+assets/replays/**/*.mp4

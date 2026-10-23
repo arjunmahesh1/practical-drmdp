@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {label,activeModel,nearestPoint,bounds,factorLabel,gridMean,bestModelOnAxis,axisLabel} from '../assets/model.mjs';
+import {label,activeModel,nearestPoint,bounds,factorLabel,gridMean,bestModelOnAxis,axisLabel,recordingCount} from '../assets/model.mjs';
 const root=new URL('../',import.meta.url);
 const json=async path=>JSON.parse(await readFile(new URL(path,root),'utf8'));
 const catalog=await json('data/catalog.json');
@@ -78,19 +78,37 @@ test('axis labels distinguish scales, action probabilities and dimensional gravi
   assert.equal(axisLabel({id:'action_replacement'},'Pusher-v5'),'Replacement probability');
   assert.equal(axisLabel({id:'gravity'},'LunarLander-v3'),'Gravity (m/s²)');
 });
+test('recording counts require exact model, axis and severity',()=>{
+  const axis={id:'mass',curves:{vanilla:[{x:1},{x:2}],tvc60:[{x:1},{x:2}]}};
+  const study={replays:{vanilla:{'mass|1':'one.json','friction|2':'other.json'},tvc60:{'mass|1':'cap.json','mass|2':'two.json'}}};
+  assert.equal(recordingCount(study,axis,'vanilla'),1);
+  assert.equal(recordingCount(study,axis,'tvc60'),2);
+  assert.equal(recordingCount({},axis,'vanilla'),0);
+});
 test('linked recordings are exact study/model/axis/value selections, not fabricated aggregate episodes',async()=>{
   for(const meta of catalog.studies){
     const s=await json('data/'+meta.file);
     for(const [model,entries] of Object.entries(s.replays||{}))for(const [key,path] of Object.entries(entries)){
       const r=await json(path);assert.equal(r.study,s.id);assert.equal(r.model,model);
       assert.equal(key,r.axis+'|'+r.value);assert.equal(r.kind,'video');
-      assert(r.deterministic&&r.observationNormalizationFrozen);assert(r.timeline.length>1);
-      assert(r.steps<=({'Pusher-v5':100,'Walker2d-v5':1000,'HalfCheetah-v4':1000}[r.environment]));
+      assert(r.deterministic);
+      if(r.normalizationMode==='none'){
+        assert.equal(r.loader,'td3');assert.equal(r.normalizationSha256,null);
+        assert.equal(r.observationNormalizationFrozen,false);
+      }else assert(r.observationNormalizationFrozen);
+      assert(r.timeline.length>1);
+      assert(r.steps<=({'Pusher-v5':100,'Walker2d-v4':1000,'Walker2d-v5':1000,'HalfCheetah-v4':1000}[r.environment]));
       assert.equal(r.timeline.at(-1).step,r.steps);
       assert.equal(r.timeline.at(-1).reward,r.returnValue);
       assert(r.timeline.every(p=>[p.step,p.time,p.reward].every(Number.isFinite)));
-      const bytes=await readFile(new URL(r.video,root));assert(bytes.length>1000);
-      assert.equal(bytes.subarray(4,8).toString(),'ftyp');
+      if(r.video.startsWith('https:')){
+        assert(r.video.startsWith('https://github.com/arjunmahesh1/practical-drmdp/releases/download/'));
+        assert.match(r.videoSha256,/^[a-f0-9]{64}$/);assert(r.releaseAssetId>0);
+      }
+      if(!r.video.startsWith('https:')){
+        const bytes=await readFile(new URL(r.video,root));assert(bytes.length>1000);
+        assert.equal(bytes.subarray(4,8).toString(),'ftyp');
+      }
     }
   }
 });

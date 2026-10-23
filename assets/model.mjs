@@ -20,6 +20,9 @@ export function activeModel(models) {
 export function gridMean(points) {
   return points.reduce((sum,p)=>sum+p.mean,0)/points.length;
 }
+export function recordingCount(study,axis,model) {
+  return (axis.curves[model]||[]).filter(p=>study.replays?.[model]?.[axis.id+'|'+p.x]).length;
+}
 export function bestModelOnAxis(study,axis) {
   const controls=new Set([study.baseline,'a1e9','tvc1e9','tvc500','tv_noop','rsc_noop','ctxkl0','ctxkluniform','klprho0']);
   const candidates=study.models.filter(m=>!controls.has(m)&&axis.curves[m]?.length);

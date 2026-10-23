@@ -25,9 +25,9 @@ The website uses only previously completed local summary tables. `tools/export_r
 
 ## Environment visuals
 
-Where linked, MP4 recordings are new deterministic rollouts of the actual completed checkpoints with frozen normalization and the archived perturbation wrapper. They use a named, fixed training seed and episode seed; they are not recovered original videos or cohort-average episodes. Changing the setting or severity selects a different matching recording. The cumulative-return trace describes that one recording; the main curve retains the paper's saved cohort means. Archived individual returns are compared where available, and mismatches are disclosed without overwriting research data.
+Where linked, MP4 recordings are new deterministic rollouts of the actual completed checkpoints with the archived perturbation wrapper. Normalization is frozen where used by the original evaluation; legacy CleanRL TD3 uses raw observations and is labeled accordingly. Recordings use a named, fixed training seed and episode seed; they are not recovered original videos or cohort-average episodes. Changing the setting or severity selects a different matching recording. The cumulative-return trace describes that one recording; the main curve retains the paper's saved cohort means. Archived individual returns are compared where available, and mismatches are disclosed without overwriting research data.
 
-Current recording coverage (366 clips):
+Published explorer coverage before the October 23 expansion (366 clips):
 
 | Study | Coverage | Clips |
 | --- | --- | ---: |
@@ -38,6 +38,28 @@ Current recording coverage (366 clips):
 | HalfCheetah SAC-KL | Both settings; mass grid only | 30 |
 
 Pusher uses training seed 1000 and episode seed 100000. Legacy SAC uses training seed 0 and episode seed 0. All 111 Pusher recordings reproduce their archived individual episode returns within tolerance. Legacy aggregate tables do not establish individual-episode identity. PickCube, Delta Pusher SAC/TD3, and the remaining study/axis combinations are not recorded by this package. Checkpoint weights and frozen normalization remain in a private cache outside the public repository.
+
+### October 23 recording expansion
+
+The expansion contains 1,821 recordings across twelve study groups, including the original 366. `data/recording_coverage_20261023.json` records each actual selection and the missing combinations; `data/recording_qa_v2.json` records encoded-video checks. `data/recording_publication_v1.json` records the release-hosted files and exact hashes, not a live-deployment check. Do not claim full coverage of the 28,151 displayed selections.
+
+| Study coverage | Clips |
+| --- | ---: |
+| Walker PPO-TV: all eleven settings, mass | 165 |
+| HalfCheetah PPO-TV: all fifteen settings, mass | 225 |
+| Walker TD3: all TV, physical-KL and context-KL settings, mass | 345 |
+| Walker/HalfCheetah RSC-SAC: all settings, mass | 90 |
+| Walker SAC-TV: standard and cap 60, all twenty axes; other settings, mass and friction | 720 |
+| Other SAC TV/KL mass recordings, unchanged | 165 |
+| Pusher PPO-TV, unchanged, all six axes | 111 |
+
+The user explicitly approved public video uploads to this repository on October 23. All 1,455 additions, including the pilot, are publicly hosted in GitHub Releases `recordings-20261023-01` (900 files) and `recordings-20261023-02` (555 files). Every uploaded file's size, content type and GitHub SHA-256 digest matched the verified local recording before its URL was linked. The original 366 videos remain hosted with the Pages assets. No checkpoint weights or credentials were uploaded.
+
+The exact completed actor/normalization fetcher now supports all eleven legacy MuJoCo study groups. It chooses the smallest available training seed covering every displayed condition, never a seed chosen by return. PPO/TD3/RSC-SAC source loaders follow the canonical evaluator; displayed RSC-SAC controls can use the ordinary SAC loader where their archived source specifies it. This is not retraining or a change to published outcomes.
+
+New MP4s are ignored by Git to avoid growing the Pages branch. `tools/package_release_recordings.py` prepares video-only batches for an explicitly approved public upload to the same repository's GitHub Releases. Its `--apply` step reads public release metadata and verifies every asset's size, content type, and SHA-256 before changing any recording URL. `--missing-output` reconciles absent files without blindly re-uploading a batch. New local recordings are not automatically public.
+
+PickCube still requires an original Linux ManiSkill/SAPIEN runtime with a working RGB renderer. LunarLander requires Box2D/pygame and verified matching final actors, not just summary returns. Delta Pusher SAC/TD3 actor availability remains unresolved; no Delta authentication or cluster jobs are performed by these tools.
 
 Official Gymnasium and ManiSkill documentation media remain linked and attributed for selections without a recording. **They are not our evaluated policies and do not show the selected perturbation.** Missing playback is never replaced with another cap or policy. Episode totals alone cannot reconstruct motion. PickCube needs the original Linux ManiSkill/SAPIEN runtime; it is not a MuJoCo task.
 
