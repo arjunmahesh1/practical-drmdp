@@ -1,10 +1,11 @@
-import {baselineColor,robustColor,fmt,escape as esc,label,activeModel,nearestPoint,bounds,factorLabel,gridMean,bestModelOnAxis,axisLabel,recordingCount} from './model.mjs?v=20261023-morepolicies1';
+import {baselineColor,robustColor,fmt,escape as esc,label,activeModel,nearestPoint,bounds,factorLabel,gridMean,bestModelOnAxis,axisLabel,recordingCount} from './model.mjs?v=20261023-fullmatrix1';
 import {episodeTraceSVG} from './replay-chart.mjs?v=20261023-replayaxes1';
+import {segmentWindow,segmentFrame,segmentTime,segmentSource} from './video-segment.mjs?v=20261023-fullmatrix1';
 import {environments,parameterNote} from './environments.mjs';
 
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
-const build='20261023-morepolicies1';
+const build='20261023-fullmatrix1';
 const cache=new Map();
 const state={catalog:null,study:null,axis:null,model:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||'explore',bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
 let pendingStudy=0, pendingReplay=0, lastFrame=0, animation;
@@ -177,16 +178,24 @@ function renderPaper(){
 function stopReplay(){state.playing=false;cancelAnimationFrame(animation);$('rollout-video').pause();$('play').textContent='▶';$('play').setAttribute('aria-label','Play recorded-policy replay');}
 function syncVideo(){
   const r=state.replay;if(r?.kind!=='video')return;
-  state.frame=Math.min(r.timeline.length-1,Math.floor($('rollout-video').currentTime*r.fps));
+  state.frame=segmentFrame(r,$('rollout-video').currentTime);
   $('frame').value=state.frame;
   const f=r.timeline[state.frame];$('frame-label').textContent=fmt(f.time,1)+' s · episode R '+fmt(f.reward,1);
   const color=state.replayPolicy==='standard'?baselineColor:robustColor;
   $('episode-trace').innerHTML=episodeTraceSVG(r.timeline,state.frame,color,$('episode-trace').clientWidth<460);
 }
 window.addEventListener('resize',syncVideo);
+function watchVideoSegment(){
+  const r=state.replay,v=$('rollout-video');
+  if(!state.playing||!r?.videoSegment)return;
+  const {start,end}=segmentWindow(r);
+  if(v.currentTime>=end-.001)v.currentTime=start;
+  const frame=segmentFrame(r,v.currentTime);if(frame!==state.frame)syncVideo();
+  animation=requestAnimationFrame(watchVideoSegment);
+}
 async function loadReplay(){
   const ticket=++pendingReplay;stopReplay();state.replay=null;state.frame=0;
-  const video=$('rollout-video');video.onerror=null;video.onloadedmetadata=null;video.hidden=true;video.removeAttribute('src');video.load();$('episode-trace').hidden=true;
+  const video=$('rollout-video');video.onerror=null;video.onloadedmetadata=null;video.oncanplay=null;video.onprogress=null;video.onseeked=syncVideo;video.hidden=true;video.removeAttribute('src');video.load();$('episode-trace').hidden=true;
   const factor=points()[state.index].x,key=state.axis.id+'|'+factor;
   const replayModel=state.replayPolicy==='standard'?state.study.baseline:state.model;
   const entry=state.study.replays?.[replayModel]?.[key];
@@ -205,14 +214,25 @@ async function loadReplay(){
   $('playback-status').textContent='Loading checkpoint replay…';
   try{const r=await fetch(entry);if(!r.ok)throw Error('Replay unavailable');const replay=await r.json();if(ticket!==pendingReplay)return;state.replay=replay;
     if(replay.kind==='video'){
-      video.hidden=false;$('replay-canvas').hidden=true;$('task-image').hidden=true;
+      $('replay-canvas').hidden=true;$('task-image').hidden=true;
       $('playback-status').textContent='Recorded paper checkpoint';$('scene-tag').textContent=label(replayModel)+' · training seed '+replay.trainingSeed;
       $('scene-explanation').textContent='Episode seed '+replay.episodeSeed+' · return '+fmt(replay.returnValue)+'. '+state.axis.title+' '+factorLabel(state.axis,factor,state.study.environment)+'.';
       $('scene-note').textContent='New deterministic replay of the selected trained checkpoint, '+(replay.normalizationMode==='none'?'with raw observations as in its original evaluation.':'with frozen normalization.')+' One fixed training/episode seed, not the cohort mean. '+(replay.referenceMatched?'Archived episode return reproduced within tolerance.':replay.referenceEpisodeAvailable?'The replay return differs from the archived episode; it does not replace the saved result.':'The original episode-level return was not available for exact comparison.')+' The main graph retains the original evaluation means.';
-      $('play').disabled=false;$('frame').disabled=false;$('frame').max=replay.timeline.length-1;$('episode-trace').hidden=false;
-      video.onloadedmetadata=()=>{if(ticket!==pendingReplay)return;syncVideo();if(state.playbackWanted&&state.page==='explore')video.play().catch(()=>{});};
+      $('frame').max=replay.timeline.length-1;
+      let prepared=false;
+      const prepare=()=>{
+        if(ticket!==pendingReplay||prepared||video.seeking||video.readyState<2)return;
+        const {start,end}=segmentWindow(replay);
+        if(video.currentTime<start-.001||video.currentTime>=end){
+          if(Array.from({length:video.seekable.length},(_,i)=>i).some(i=>video.seekable.start(i)<=start&&video.seekable.end(i)>=start))video.currentTime=start;
+          return;
+        }
+        prepared=true;video.hidden=false;$('play').disabled=false;$('frame').disabled=false;$('episode-trace').hidden=false;syncVideo();
+        if(state.playbackWanted&&state.page==='explore')video.play().catch(()=>{});
+      };
+      video.onloadedmetadata=()=>{video.loop=!replay.videoSegment;prepare();};video.oncanplay=prepare;video.onprogress=prepare;video.onseeked=()=>{prepare();if(prepared)syncVideo();};
       video.onerror=()=>{if(ticket!==pendingReplay)return;stopReplay();$('play').disabled=true;$('frame').disabled=true;$('playback-status').textContent='Recording could not load';$('scene-note').textContent='The matching video could not be loaded. No other policy or severity has been substituted.';};
-      video.src=replay.video;video.load();return;
+      video.src=segmentSource(replay);video.load();return;
     }
     $('playback-status').textContent='Saved-policy replay';$('scene-tag').textContent=label(state.model)+' · training seed '+replay.trainingSeed;
     $('scene-explanation').textContent='Episode '+replay.episodeSeed+' · return '+fmt(replay.return)+'. A checkpoint illustration; the plot uses the original evaluation cohort.';
@@ -253,11 +273,11 @@ $('select-best').onclick=()=>chooseModel('best');$('all-settings').onchange=e=>{
 $('severity').oninput=e=>setPoint(e.target.value);$('nominal').onclick=()=>setPoint(nearestPoint(points(),state.axis.nominal));$('bands').onchange=e=>{state.bands=e.target.checked;renderChart();renderGallery();};
 $('search').oninput=()=>{renderTable();renderGallery();};$('paper-search').oninput=renderPaper;
 $('play').onclick=()=>{if(state.replay?.kind==='video'){const v=$('rollout-video');state.playbackWanted=v.paused;if(v.paused)v.play().catch(()=>{});else v.pause();return;}if(state.playing)stopReplay();else{state.playing=true;$('play').textContent='Ⅱ';$('play').setAttribute('aria-label','Pause recorded-policy replay');lastFrame=0;animation=requestAnimationFrame(animate);}};
-$('frame').oninput=e=>{stopReplay();state.playbackWanted=false;state.frame=Number(e.target.value);if(state.replay?.kind==='video'){$('rollout-video').currentTime=state.frame/state.replay.fps;syncVideo();}else drawScene();};
+$('frame').oninput=e=>{stopReplay();state.playbackWanted=false;state.frame=Number(e.target.value);if(state.replay?.kind==='video'){$('rollout-video').currentTime=segmentTime(state.replay,state.frame);syncVideo();}else drawScene();};
 $('replay-policy').onchange=e=>{state.replayPolicy=e.target.value;renderAll();};
 $('rollout-video').ontimeupdate=syncVideo;$('rollout-video').onseeked=syncVideo;
-$('rollout-video').onplay=()=>{state.playing=true;$('play').textContent='Ⅱ';$('play').setAttribute('aria-label','Pause recorded-policy replay');};
-$('rollout-video').onpause=()=>{state.playing=false;$('play').textContent='▶';$('play').setAttribute('aria-label','Play recorded-policy replay');};
+$('rollout-video').onplay=()=>{state.playing=true;$('play').textContent='Ⅱ';$('play').setAttribute('aria-label','Pause recorded-policy replay');cancelAnimationFrame(animation);if(state.replay?.videoSegment)animation=requestAnimationFrame(watchVideoSegment);};
+$('rollout-video').onpause=()=>{const v=$('rollout-video'),r=state.replay;state.playing=false;cancelAnimationFrame(animation);if(!v.hidden&&r?.videoSegment&&state.playbackWanted&&state.page==='explore'){const {start,end,fps}=segmentWindow(r);if(v.currentTime>=end-.5/fps){v.currentTime=start;v.play().catch(()=>{});return;}}$('play').textContent='▶';$('play').setAttribute('aria-label','Play recorded-policy replay');};
 window.addEventListener('hashchange',()=>{state.page=location.hash.slice(1);showPage();});
 document.querySelectorAll('[data-page]').forEach(a=>a.onclick=()=>{state.page=a.dataset.page;showPage();});
 $('share').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);$('toast').textContent='Comparison link copied';$('toast').classList.add('visible');setTimeout(()=>$('toast').classList.remove('visible'),2000);}catch{$('toast').textContent='Copy the current address to share this comparison';$('toast').classList.add('visible');}};

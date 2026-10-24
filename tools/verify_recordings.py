@@ -22,26 +22,29 @@ def decode_first_frame(movie):
         capture_output=True,check=True,timeout=20)
     frame=np.frombuffer(result.stdout,dtype=np.uint8).reshape(size[1],size[0],3)
     if frame.std()<1:raise ValueError('Blank encoded video frame')
-    return dict(size=size,duration=float(info['format']['duration']))
+    return dict(size=size,duration=float(info['format']['duration']),frame_sha256=hashlib.sha256(result.stdout).hexdigest())
 
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--site',type=Path,required=True)
-    parser.add_argument('--output',type=Path,required=True);args=parser.parse_args()
+    parser.add_argument('--output',type=Path,required=True);parser.add_argument('--cells',nargs='+')
+    parser.add_argument('--models',nargs='+');args=parser.parse_args()
     coverage=collections.Counter();matched=0;with_reference=0;max_error=0.;records=[]
     catalog=json.loads((args.site/'data/catalog.json').read_text())
     for meta in catalog['studies']:
+        if args.cells and meta['id'] not in args.cells:continue
         study=json.loads((args.site/'data'/meta['file']).read_text())
         for model,entries in study.get('replays',{}).items():
+            if args.models and model not in args.models:continue
             for key,path in entries.items():
                 record=json.loads((args.site/path).read_text())
-                movie=(args.site/path).with_suffix('.mp4') if record['video'].startswith('https:') else args.site/record['video']
+                movie=(args.site/path).with_suffix('.mp4') if record['video'].startswith('https:') or record.get('videoSegment') else args.site/record['video']
                 if record.get('videoSha256') and hashlib.sha256(movie.read_bytes()).hexdigest()!=record['videoSha256']:
                     raise ValueError('Local video differs from verified public release asset')
                 if (record['study']!=study['id'] or record['model']!=model or key!=record['axis']+'|'+str(record['value']).removesuffix('.0')):
                     raise ValueError('Recording identity mismatch')
                 video_meta=decode_first_frame(movie)
-                if record['steps']>({'Pusher-v5':100,'Walker2d-v4':1000,'Walker2d-v5':1000,'HalfCheetah-v4':1000}[record['environment']]):
+                if record['steps']>({'Pusher-v5':100,'PickCube-v1':50,'LunarLander-v3':1000,'Walker2d-v4':1000,'Walker2d-v5':1000,'HalfCheetah-v4':1000}[record['environment']]):
                     raise ValueError('Replay exceeds declared horizon')
                 if record['timeline'][-1]['step']!=record['steps'] or record['timeline'][-1]['reward']!=record['returnValue']:
                     raise ValueError('Recording timeline mismatch')
@@ -56,6 +59,7 @@ def main():
                 coverage[study['id']]+=1
                 records.append(dict(metadata=path,video=record['video'],
                     video_sha256=hashlib.sha256(movie.read_bytes()).hexdigest(),decoded_size=video_meta['size'],
+                    decoded_first_frame_sha256=video_meta['frame_sha256'],
                     training_seed=record['trainingSeed'],episode_seed=record['episodeSeed']))
         print(json.dumps(dict(study=study['id'],checked=coverage[study['id']])),flush=True)
     payload=dict(verified_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),

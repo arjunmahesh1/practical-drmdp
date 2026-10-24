@@ -97,7 +97,7 @@ test('linked recordings are exact study/model/axis/value selections, not fabrica
         assert.equal(r.observationNormalizationFrozen,false);
       }else assert(r.observationNormalizationFrozen);
       assert(r.timeline.length>1);
-      assert(r.steps<=({'Pusher-v5':100,'Walker2d-v4':1000,'Walker2d-v5':1000,'HalfCheetah-v4':1000}[r.environment]));
+      assert(r.steps<=({'Pusher-v5':100,'PickCube-v1':50,'LunarLander-v3':1000,'Walker2d-v4':1000,'Walker2d-v5':1000,'HalfCheetah-v4':1000}[r.environment]));
       assert.equal(r.timeline.at(-1).step,r.steps);
       assert.equal(r.timeline.at(-1).reward,r.returnValue);
       assert(r.timeline.every(p=>[p.step,p.time,p.reward].every(Number.isFinite)));

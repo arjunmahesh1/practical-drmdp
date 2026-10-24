@@ -5,6 +5,7 @@ import hashlib
 import importlib.util
 import json
 import math
+import os
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -98,7 +99,8 @@ def legacy_env(row,root,output):
     from cleanrl_utils.perturbation_config import apply_env_perturbations
     number=lambda key,default:float(row[key]) if row.get(key) not in (None,'','nan') else default
     text=lambda key:row.get(key,'') if row.get(key,'')!='nan' else ''
-    env=make_mujoco_env(row['env_id'],xml_out_dir=str(output),run_name='recording',
+    # The XML builder reuses its run name; concurrent workers must never share that path.
+    env=make_mujoco_env(row['env_id'],xml_out_dir=str(output/'workers'/str(os.getpid())),run_name='recording',
         total_mass_scale=number('xml_total_mass_scale',1),body_mass_scale=number('xml_body_mass_scale',1),
         body_name_selector=text('xml_body_name_selector'),geom_friction_scale=number('xml_geom_friction_scale',1),
         geom_friction_component=int(number('xml_geom_friction_component',-1)),geom_name_selector=text('xml_geom_name_selector'),
@@ -112,7 +114,7 @@ def legacy_env(row,root,output):
         action_replace_prob=number('action_replace_prob',0),param_override_spec='',param_randomize_spec='',param_strict=True,seed=int(row['seed']))
 
 
-def record(item,axis,value,env,cache,root,site,episode_seed,reference=None):
+def record(item,axis,value,env,cache,root,site,episode_seed,reference=None,action=None,dt=None):
     stem=axis+'-'+str(value).replace('.','p').replace('-','m')
     directory=site/'assets/replays'/item['cell']/item['model'];directory.mkdir(parents=True,exist_ok=True)
     json_path=directory/(stem+'.json');video_path=directory/(stem+'.mp4')
@@ -121,14 +123,14 @@ def record(item,axis,value,env,cache,root,site,episode_seed,reference=None):
         if (saved['checkpointSha256']!=item['checkpoint_sha256'] or saved['episodeSeed']!=episode_seed):
             raise ValueError('Existing replay has a different policy identity')
         return str(json_path.relative_to(site))
-    action=load_actor(item,cache,root,env)
-    dt=float(env.unwrapped.dt);stride=max(1,math.ceil(1/(dt*12)));fps=1/(dt*stride)
+    action=load_actor(item,cache,root,env) if action is None else action
+    dt=float(env.unwrapped.dt if dt is None else dt);stride=max(1,math.ceil(1/(dt*12)));fps=1/(dt*stride)
     observation,_=env.reset(seed=episode_seed)
     total=0.;timeline=[];steps=0;first_frame=None;motion=0
     horizon=gym.spec(item['environment']).max_episode_steps
     if not horizon:raise ValueError('Recording requires the declared evaluation horizon')
     initial=np.asarray(env.render())
-    writer=imageio_ffmpeg.write_frames(str(video_path),size=(initial.shape[1],initial.shape[0]),fps=fps,codec='libx264',quality=6,macro_block_size=16,ffmpeg_log_level='error')
+    writer=imageio_ffmpeg.write_frames(str(video_path),size=(initial.shape[1],initial.shape[0]),fps=fps,codec='libx264',quality=6,macro_block_size=16,ffmpeg_log_level='error',output_params=['-threads','1'])
     writer.send(None)
     with contextlib.closing(writer):
         def frame():
@@ -168,11 +170,17 @@ def main():
     parser.add_argument('--root',type=Path,required=True);parser.add_argument('--site',type=Path,required=True)
     parser.add_argument('--cache',type=Path,required=True);parser.add_argument('--cell',required=True)
     parser.add_argument('--axis',default='all');parser.add_argument('--model',default='all')
+    parser.add_argument('--index-output',type=Path)
     args=parser.parse_args();args.root=args.root.resolve();sys.path.insert(0,str(args.root))
     torch.set_num_threads(1);torch.set_num_interop_threads(1)
     study_path=args.site/'data'/f'{args.cell}.json';study=json.loads(study_path.read_text())
     items=[item for item in json.loads((args.cache/'manifest.json').read_text()) if item['cell']==args.cell and item['status']=='ready' and (args.model=='all' or item['model']==args.model)]
     if not items:raise ValueError('No verified completed policy inputs for this selection')
+    if args.index_output and args.model=='all':raise ValueError('Isolated worker indexes require one exact model')
+    index=dict(cell=args.cell,model=args.model,replays={})
+    if args.index_output and args.index_output.exists():
+        index=json.loads(args.index_output.read_text())
+        if index['cell']!=args.cell or index['model']!=args.model:raise ValueError('Worker index identity differs')
     rows={}
     if study['environment'] not in ['Pusher-v5','PickCube-v1']:
         seeds={item['model']:item['training_seed'] for item in items}
@@ -191,6 +199,15 @@ def main():
             if args.axis!='all' and axis['id']!=args.axis:continue
             for point in axis['curves'][item['model']]:
                 value=point['x'];selection=(axis['id'],value)
+                key=axis['id']+'|'+format(value,'g')
+                existing=index['replays'].get(key) or study.get('replays',{}).get(item['model'],{}).get(key)
+                if existing:
+                    saved=json.loads((args.site/existing).read_text())
+                    if (saved['study']!=args.cell or saved['model']!=item['model'] or saved['axis']!=axis['id']
+                            or saved['value']!=value or saved['checkpointSha256']!=item['checkpoint_sha256']):
+                        raise ValueError('Existing recording identity differs')
+                    index['replays'][key]=existing
+                    continue
                 if study['environment']=='PickCube-v1':raise RuntimeError('PickCube requires original Linux ManiSkill/SAPIEN runtime; no simulator substitution')
                 if study['environment']=='Pusher-v5':
                     env=pusher_env(*selection);seed=100000
@@ -198,9 +215,18 @@ def main():
                     env=legacy_env(rows[(item['model'],*selection)],args.root,args.cache/'xml');seed=item['training_seed']
                 try:path=record(item,*selection,env,args.cache,args.root,args.site,seed,reference.get(selection))
                 finally:env.close()
-                study.setdefault('replays',{}).setdefault(item['model'],{})[axis['id']+'|'+format(value,'g')]=path
-                study_path.write_text(json.dumps(study,separators=(',',':'),allow_nan=False))
+                if args.index_output:
+                    index['replays'][key]=path
+                    args.index_output.parent.mkdir(parents=True,exist_ok=True)
+                    temporary=args.index_output.with_suffix('.tmp')
+                    temporary.write_text(json.dumps(index,separators=(',',':'),allow_nan=False));temporary.replace(args.index_output)
+                else:
+                    study.setdefault('replays',{}).setdefault(item['model'],{})[key]=path
+                    study_path.write_text(json.dumps(study,separators=(',',':'),allow_nan=False))
                 count+=1;print(json.dumps(dict(cell=item['cell'],model=item['model'],axis=axis['id'],value=value,recordings=count)),flush=True)
+    if args.index_output:
+        args.index_output.parent.mkdir(parents=True,exist_ok=True)
+        args.index_output.write_text(json.dumps(index,separators=(',',':'),allow_nan=False))
 
 
 if __name__=='__main__':main()
