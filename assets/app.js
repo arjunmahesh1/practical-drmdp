@@ -4,10 +4,10 @@ import {segmentWindow,segmentFrame,segmentTime,segmentSource} from './video-segm
 import {environments,parameterNote} from './environments.mjs?v=20261029-pickcube1';
 
 const $=id=>document.getElementById(id);
-const params=new URLSearchParams(location.search);
-const build='20261029-videos1';
+let params=new URLSearchParams(location.search);
+const build='20261029-appendix1';
 const cache=new Map();
-const state={catalog:null,study:null,axis:null,model:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||'explore',bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
+const state={catalog:null,study:null,axis:null,model:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||'appendix',bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
 let pendingStudy=0, pendingReplay=0, lastFrame=0, animation;
 const group=env=>env.split('-v')[0];
 const points=()=>state.axis.curves[state.study.baseline];
@@ -76,6 +76,7 @@ function chooseModel(model) {
   state.model=model==='best'?bestModelOnAxis(state.study,state.axis):model;renderAll();
 }
 function syncURL() {
+  if(['appendix','evidence','metrics','figures'].includes(state.page))return;
   const u=new URL(location.href);
   u.search=new URLSearchParams({study:state.study.id,axis:state.axis.id,setting:state.selection==='best'?'best':state.model,point:state.index}).toString();u.hash=state.page;
   if(state.allSettings)u.searchParams.set('all','1');
@@ -83,7 +84,18 @@ function syncURL() {
   history.replaceState(null,'',u);
 }
 function showPage(){
-  if(!['explore','returns','methods'].includes(state.page))state.page='explore';
+  if(!['explore','returns','methods','appendix','evidence','metrics','figures'].includes(state.page))state.page='appendix';
+  const appendixPage=['appendix','evidence','metrics','figures'].includes(state.page);
+  if(!appendixPage&&state.study){
+    const current=new URLSearchParams(location.search),id=current.get('study');
+    const changedAxis=current.has('axis')&&state.study.axes.some(a=>a.id===current.get('axis'))&&current.get('axis')!==state.axis.id;
+    const changedSetting=current.has('setting')&&(current.get('setting')==='best'||state.study.models.includes(current.get('setting')))&&current.get('setting')!==(state.selection==='best'?'best':state.model);
+    if(id&&state.catalog.studies.some(s=>s.id===id)&&(id!==state.study.id||changedAxis||changedSetting)){
+      params=current;chooseStudy(id,true);return;
+    }
+  }
+  document.querySelector('.workspace').hidden=appendixPage;
+  $('appendix-root').hidden=!appendixPage;
   for(const p of ['explore','returns','methods'])$(p+'-page').hidden=p!==state.page||!state.study;
   document.querySelectorAll('nav a').forEach(a=>{a.classList.toggle('active',a.dataset.page===state.page);if(a.dataset.page===state.page)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   if(state.study)syncURL();
@@ -108,7 +120,7 @@ function renderAll(){
   $('replay-policy').options[0].textContent=label(state.model);
   $('replay-policy').value=state.replayPolicy;
   $('parameter-note').textContent=parameterNote(state.study.environment,state.axis.id);
-  syncURL();loadReplay();
+  syncURL();if(state.page==='explore')loadReplay();
 }
 function svgChart(axis,mini=false,all=false){
   const {W,H,L,R,T,B}=chartLayout(mini),selected=modelForAxis(axis);
@@ -278,7 +290,7 @@ $('replay-policy').onchange=e=>{state.replayPolicy=e.target.value;renderAll();};
 $('rollout-video').ontimeupdate=syncVideo;$('rollout-video').onseeked=syncVideo;
 $('rollout-video').onplay=()=>{state.playing=true;$('play').textContent='Ⅱ';$('play').setAttribute('aria-label','Pause recorded-policy replay');cancelAnimationFrame(animation);if(state.replay?.videoSegment)animation=requestAnimationFrame(watchVideoSegment);};
 $('rollout-video').onpause=()=>{const v=$('rollout-video'),r=state.replay;state.playing=false;cancelAnimationFrame(animation);if(!v.hidden&&r?.videoSegment&&state.playbackWanted&&state.page==='explore'){const {start,end,fps}=segmentWindow(r);if(v.currentTime>=end-.5/fps){v.currentTime=start;v.play().catch(()=>{});return;}}$('play').textContent='▶';$('play').setAttribute('aria-label','Play recorded-policy replay');};
-window.addEventListener('hashchange',()=>{state.page=location.hash.slice(1);showPage();});
+window.addEventListener('hashchange',()=>{state.page=location.hash.slice(1);showPage();if(state.page==='explore'&&state.study&&!state.replay)loadReplay();});
 document.querySelectorAll('[data-page]').forEach(a=>a.onclick=()=>{state.page=a.dataset.page;showPage();});
 $('share').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);$('toast').textContent='Comparison link copied';$('toast').classList.add('visible');setTimeout(()=>$('toast').classList.remove('visible'),2000);}catch{$('toast').textContent='Copy the current address to share this comparison';$('toast').classList.add('visible');}};
 $('download').onclick=()=>{const rows=[['study','environment','algorithm','family','setting','axis','value','mean_return','sample_sd','measured_policies']];for(const [model,ps] of Object.entries(state.axis.curves))for(const p of ps)rows.push([state.study.id,state.study.environment,state.study.algorithm,state.study.family,model,state.axis.id,p.x,p.mean,p.sd,p.n]);const csv=rows.map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\n');const u=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));const a=document.createElement('a');a.href=u;a.download=state.study.id+'-'+state.axis.id+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(u),200);};
