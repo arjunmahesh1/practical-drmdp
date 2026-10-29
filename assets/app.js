@@ -1,11 +1,11 @@
 import {baselineColor,robustColor,fmt,escape as esc,label,activeModel,nearestPoint,bounds,factorLabel,gridMean,bestModelOnAxis,axisLabel,recordingCount} from './model.mjs?v=20261023-fullmatrix1';
 import {episodeTraceSVG} from './replay-chart.mjs?v=20261023-replayaxes1';
 import {segmentWindow,segmentFrame,segmentTime,segmentSource} from './video-segment.mjs?v=20261023-fullmatrix1';
-import {environments,parameterNote} from './environments.mjs';
+import {environments,parameterNote} from './environments.mjs?v=20261029-pickcube1';
 
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
-const build='20261023-fullmatrix1';
+const build='20261029-pickcube1';
 const cache=new Map();
 const state={catalog:null,study:null,axis:null,model:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||'explore',bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
 let pendingStudy=0, pendingReplay=0, lastFrame=0, animation;
@@ -59,7 +59,7 @@ async function chooseStudy(id, initial=false) {
     state.study=cache.get(id);
     state.model=initial&&state.study.models.includes(params.get('setting'))?params.get('setting'):activeModel(state.study.models);
     state.axis=state.study.axes.find(a=>a.id===(initial?params.get('axis'):previous))||state.study.axes[0];
-    if(initial)state.selection=params.get('setting')==='best'?'best':'fixed';
+    if(initial)state.selection=params.get('setting')==='best'||(!params.has('setting')&&state.study.id==='ppo_tv_pickcube_20261028')?'best':'fixed';
     if(state.selection==='best')state.model=bestModelOnAxis(state.study,state.axis);
     const n=Number(params.get('point'));
     state.index=initial&&params.has('point')&&Number.isInteger(n)?Math.max(0,Math.min(n,points().length-1)):nearestPoint(points(),state.axis.nominal);
@@ -287,5 +287,5 @@ try{
   const r=await fetch('data/catalog.json?v='+build);if(!r.ok)throw Error('Could not load the saved result catalog');state.catalog=await r.json();
   $('catalog-summary').textContent=`${state.catalog.studies.length} saved study groups · ${state.catalog.studies.reduce((n,s)=>n+s.axisCount,0)} perturbation axes · exported ${state.catalog.updated}.`;
   $('sources').replaceChildren(...state.catalog.sources.map(source=>{const row=document.createElement('div');row.className='source-row';row.textContent=source.path;const hash=document.createElement('span');hash.textContent='SHA256 '+source.sha256;row.append(hash);return row;}));
-  renderPaper();const initial=state.catalog.studies.find(s=>s.id===params.get('study'))?.id||'ppo_tv_pickcube';await chooseStudy(initial,true);
+  renderPaper();const initial=state.catalog.studies.find(s=>s.id===params.get('study'))?.id||'ppo_tv_pickcube_20261028';await chooseStudy(initial,true);
 }catch(error){$('loading').textContent='Results could not be loaded. '+error.message;console.error(error);}

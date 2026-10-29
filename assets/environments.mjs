@@ -10,6 +10,9 @@ export const environments = {
 export function parameterNote(environment, axis) {
   const pick=environment.startsWith('PickCube');
   const notes={
+    arm_command_gain:'Scales the arm joint-delta commands before clipping to the action bounds. The gripper-opening command is unchanged. Values are command multipliers, not metres.',
+    arm_command_noise:'Independent Gaussian noise is added to the arm joint-delta commands at every step. Amplitude is a fraction of the action half-range. Gripper opening is unchanged.',
+    arm_command_replacement:'At each step, this probability replaces the arm joint-delta command vector with uniformly sampled valid commands. Gripper opening is unchanged.',
     translation_gain:'Scales the x/y/z gripper translation commands before clipping to the action bounds. The gripper-opening command is unchanged. Values are action multipliers, not metres.',
     translation_noise:'Independent Gaussian noise is added to each translation command at every step. The amplitude is a fraction of the action half-range, not a distance in metres. Gripper opening is unchanged.',
     translation_replacement:'At each step, this probability replaces the entire translation vector with a uniformly sampled valid command. Gripper opening is unchanged.',

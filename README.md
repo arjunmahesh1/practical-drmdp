@@ -13,6 +13,25 @@ Open `http://localhost:8765`. All asset URLs are relative, including study JSON 
 
 ## Data and interpretation
 
+### October 29 PickCube PPO Addition
+
+The separate `ppo_tv_pickcube_20261028` branch contains the October 28
+joint-delta PPO cohort. Standard and eight TV caps each have all thirty
+training seeds (1000-1029), all 38 conditions, and fifty episodes per
+policy-condition, validated from 270 files and 513,000 finite episodes.
+The six non-nominal grids retain their actual arm-command axis names.
+Cap 4 has the highest full-grid mean among the eight caps on every axis.
+This is ex-post descriptive selection, not held-out confirmation.
+The near-overlapping return curves show no clear improvement across the
+suite; SD overlap is not a significance or equivalence test.
+
+The new branch supports fixed caps, best-per-axis selection, all-cap SD
+overlays, CSV export, and seven downloadable PDFs in the paper archive.
+Historical study files and their recordings are unchanged. No videos are
+linked for this new cohort, and older PickCube videos are never substituted.
+
+Open `?study=ppo_tv_pickcube_20261028&setting=best#returns` for the new curves.
+
 `data/catalog.json` records source-table names and SHA256 hashes. The 19 study groups contain 328 study-specific axes. The paper archive contains 272 referenced PDF panels. Environment versions, controls, and distinct cohorts stay separate.
 
 Each curve is a mean of policy-level episode means, not a pooled-episode estimate. Bands are one sample standard deviation across policies, not confidence intervals. The standard cohort is fixed; setting controls highlight one evaluated candidate while keeping others visible. No unmeasured severity is fabricated. Failed policies have no imputed return; measured policy counts remain visible.
