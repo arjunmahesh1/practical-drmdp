@@ -93,7 +93,12 @@ test('linked recordings are exact study/model/axis/value selections, not fabrica
       assert.equal(key,r.axis+'|'+r.value);assert.equal(r.kind,'video');
       assert(r.deterministic);
       if(r.normalizationMode==='none'){
-        assert.equal(r.loader,'td3');assert.equal(r.normalizationSha256,null);
+        if(r.loader==='maniskill_ppo'){
+          assert.equal(s.id,'ppo_tv_pickcube_20261028');
+          assert.equal(r.controlMode,'pd_joint_delta_pos');
+          assert.equal(r.simBackend,'cpu');
+        }else assert.equal(r.loader,'td3');
+        assert.equal(r.normalizationSha256,null);
         assert.equal(r.observationNormalizationFrozen,false);
       }else assert(r.observationNormalizationFrozen);
       assert(r.timeline.length>1);

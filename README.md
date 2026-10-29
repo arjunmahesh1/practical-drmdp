@@ -27,12 +27,12 @@ suite; SD overlap is not a significance or equivalence test.
 
 The new branch supports fixed caps, best-per-axis selection, all-cap SD
 overlays, CSV export, and seven downloadable PDFs in the paper archive.
-Historical study files and their recordings are unchanged. No videos are
-linked for this new cohort, and older PickCube videos are never substituted.
+Historical study curves and their recordings are unchanged. The new cohort
+has 333 matching illustrative videos, with no older PickCube policy substituted.
 
 Open `?study=ppo_tv_pickcube_20261028&setting=best#returns` for the new curves.
 
-`data/catalog.json` records source-table names and SHA256 hashes. The 19 study groups contain 328 study-specific axes. The paper archive contains 272 referenced PDF panels. Environment versions, controls, and distinct cohorts stay separate.
+`data/catalog.json` records source-table names and SHA256 hashes. The 20 study groups contain 334 study-specific axes. The paper archive contains 279 referenced PDF panels. Environment versions, controls, and distinct cohorts stay separate.
 
 Each curve is a mean of policy-level episode means, not a pooled-episode estimate. Bands are one sample standard deviation across policies, not confidence intervals. The standard cohort is fixed; setting controls highlight one evaluated candidate while keeping others visible. No unmeasured severity is fabricated. Failed policies have no imputed return; measured policy counts remain visible.
 
@@ -43,6 +43,40 @@ Some historical paper panels select a robust setting and reference independently
 The website uses only previously completed local summary tables. `tools/export_results.py` can export those tables from the research checkout; it does not launch experiments or fetch cluster results. Do not run it on active experiment artifacts.
 
 ## Environment visuals
+
+### October 29 Video Update
+
+The new joint-delta PickCube PPO branch has all 333 displayed selections:
+standard and eight caps, each with 37 conditions across six axes. Each video
+uses its exact training-time-selected checkpoint from training seed 1000 and
+fixed reset seed 100000, with 50 native steps and 51 encoded frames at 20 Hz.
+The existing Linux CPU PhysX/software-rendering runtime produced these new
+illustrations. They do not reproduce the archived GPU evaluation episodes.
+Raw observations and joint-delta control match the policy interface. Friction
+changes the cube and robot links, excluding the shared table and ground as
+in the GPU suite. Stronger caps' poor behavior is retained, not filtered out.
+
+Pusher SAC-TV and TD3-TV also have all 296 selections across their eight
+completed checkpoint settings. The user personally fetched the exact private
+actors and normalization after the single renewed agent login was denied.
+All sixteen input hashes matched published provenance. These are the October
+21/22 paper policies, not newer competence baselines. Each new video uses
+training seed 1000, reset seed 100000, frozen normalization and native 100-step
+episodes. Of 296 archived individual returns, 295 match within the existing
+tolerance. SAC cap -1.5 at action replacement 0.2 differs by 0.001085408;
+the mismatch remains disclosed and no scientific return is replaced.
+
+Seventeen lossless containers host the 629 additions in GitHub Releases
+`recordings-pickcube-ppo-20261029` and `recordings-pusher-tv-20261029`.
+Every new episode has full-frame decode, finite timeline, checkpoint identity
+and video-hash checks. First, middle and last episode boundaries in every
+container match their decoded source frames. Weights remain private.
+
+Current linked coverage is 6,032 of 28,484 displayed selections. The user
+prioritized newly completed cohorts; 22,452 historical gaps remain explicitly
+unavailable. Previously published videos received metadata/asset-hash auditing,
+not a fresh full-content certification. All twenty studies' numeric curves
+are unchanged. `data/recording_delivery_20261029.json` records exact coverage.
 
 Where linked, MP4 recordings are new deterministic rollouts of the actual completed checkpoints with the archived perturbation wrapper. Normalization is frozen where used by the original evaluation; legacy CleanRL TD3 uses raw observations and is labeled accordingly. Recordings use a named, fixed training seed and episode seed; they are not recovered original videos or cohort-average episodes. Changing the setting or severity selects a different matching recording. The cumulative-return trace describes that one recording; the main curve retains the paper's saved cohort means. Archived individual returns are compared where available, and mismatches are disclosed without overwriting research data.
 

@@ -5,7 +5,7 @@ import {environments,parameterNote} from './environments.mjs?v=20261029-pickcube
 
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
-const build='20261029-pickcube1';
+const build='20261029-videos1';
 const cache=new Map();
 const state={catalog:null,study:null,axis:null,model:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||'explore',bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
 let pendingStudy=0, pendingReplay=0, lastFrame=0, animation;
@@ -217,7 +217,7 @@ async function loadReplay(){
       $('replay-canvas').hidden=true;$('task-image').hidden=true;
       $('playback-status').textContent='Recorded paper checkpoint';$('scene-tag').textContent=label(replayModel)+' · training seed '+replay.trainingSeed;
       $('scene-explanation').textContent='Episode seed '+replay.episodeSeed+' · return '+fmt(replay.returnValue)+'. '+state.axis.title+' '+factorLabel(state.axis,factor,state.study.environment)+'.';
-      $('scene-note').textContent='New deterministic replay of the selected trained checkpoint, '+(replay.normalizationMode==='none'?'with raw observations as in its original evaluation.':'with frozen normalization.')+' One fixed training/episode seed, not the cohort mean. '+(replay.referenceMatched?'Archived episode return reproduced within tolerance.':replay.referenceEpisodeAvailable?'The replay return differs from the archived episode; it does not replace the saved result.':'The original episode-level return was not available for exact comparison.')+' The main graph retains the original evaluation means.';
+      $('scene-note').textContent=(replay.loader==='maniskill_ppo'?'New CPU PhysX replay of the exact selected joint-delta checkpoint, with raw observations. Not a reproduction of the archived GPU evaluation episode.':'New deterministic replay of the selected trained checkpoint, '+(replay.normalizationMode==='none'?'with raw observations as in its original evaluation.':'with frozen normalization.'))+' One fixed training/episode seed, not the cohort mean. '+(replay.referenceMatched?'Archived episode return reproduced within tolerance.':replay.referenceEpisodeAvailable?'The replay return differs from the archived episode; it does not replace the saved result.':replay.loader==='maniskill_ppo'?'':'The original episode-level return was not available for exact comparison.')+' The main graph retains the original evaluation means.';
       $('frame').max=replay.timeline.length-1;
       let prepared=false;
       const prepare=()=>{

@@ -5,12 +5,13 @@ import {bestModelOnAxis} from '../assets/model.mjs';
 import {parameterNote} from '../assets/environments.mjs';
 
 const study=JSON.parse(await readFile(new URL('../data/ppo_tv_pickcube_20261028.json',import.meta.url),'utf8'));
-test('new joint-delta cohort retains nine complete settings without historical video substitution',()=>{
+test('new joint-delta cohort retains nine complete settings and exact new videos',()=>{
   assert.equal(study.models.length,9);
   assert.equal(study.axes.length,6);
   assert.equal(study.baseline,'vanilla');
   assert.equal(study.selection.held_out,false);
-  assert.equal(study.replays,undefined);
+  assert.equal(Object.keys(study.replays).length,9);
+  for(const model of study.models)assert.equal(Object.keys(study.replays[model]).length,37);
   for(const axis of study.axes){
     assert.equal(bestModelOnAxis(study,axis),'tv_c4');
     for(const points of Object.values(axis.curves))assert(points.every(p=>p.n===30));

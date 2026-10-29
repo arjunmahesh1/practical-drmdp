@@ -1,0 +1,135 @@
+{
+  "checked_utc": "2026-10-29T16:48:31.197591+00:00",
+  "new_recordings": 629,
+  "pickcube_ppo_new_cohort": 333,
+  "pusher_sac_td3_tv": 296,
+  "linked_recordings": 6032,
+  "displayed_selections": 28484,
+  "remaining_historical_gaps": 22452,
+  "all_20_study_curves_unchanged": true,
+  "unrelated_17_study_files_byte_identical": true,
+  "scope": "Newly completed cohort prioritized; historical matrix not fully filled.",
+  "interpretation": "Illustrative fixed-seed rollouts, not new cohort evaluation or robustness evidence.",
+  "studies": [
+    {
+      "study": "ppo_tv_walker",
+      "linked": 3267,
+      "displayed": 3267,
+      "missing": 0
+    },
+    {
+      "study": "ppo_tv_halfcheetah",
+      "linked": 225,
+      "displayed": 8265,
+      "missing": 8040
+    },
+    {
+      "study": "sac_tv_walker",
+      "linked": 720,
+      "displayed": 1788,
+      "missing": 1068
+    },
+    {
+      "study": "sac_tv_halfcheetah",
+      "linked": 45,
+      "displayed": 1653,
+      "missing": 1608
+    },
+    {
+      "study": "sac_kl_walker",
+      "linked": 90,
+      "displayed": 1788,
+      "missing": 1698
+    },
+    {
+      "study": "sac_kl_halfcheetah",
+      "linked": 30,
+      "displayed": 1102,
+      "missing": 1072
+    },
+    {
+      "study": "td3_tv_walker",
+      "linked": 165,
+      "displayed": 3278,
+      "missing": 3113
+    },
+    {
+      "study": "td3_kl_physical_walker",
+      "linked": 45,
+      "displayed": 894,
+      "missing": 849
+    },
+    {
+      "study": "td3_kl_context_walker",
+      "linked": 135,
+      "displayed": 2682,
+      "missing": 2547
+    },
+    {
+      "study": "rsc_sac_walker",
+      "linked": 45,
+      "displayed": 894,
+      "missing": 849
+    },
+    {
+      "study": "rsc_sac_halfcheetah",
+      "linked": 45,
+      "displayed": 1653,
+      "missing": 1608
+    },
+    {
+      "study": "lunar_sac_tv",
+      "linked": 84,
+      "displayed": 84,
+      "missing": 0
+    },
+    {
+      "study": "lunar_sac_kl",
+      "linked": 63,
+      "displayed": 63,
+      "missing": 0
+    },
+    {
+      "study": "ppo_tv_pickcube",
+      "linked": 111,
+      "displayed": 111,
+      "missing": 0
+    },
+    {
+      "study": "ppo_tv_pusher",
+      "linked": 111,
+      "displayed": 111,
+      "missing": 0
+    },
+    {
+      "study": "sac_tv_pusher",
+      "linked": 148,
+      "displayed": 148,
+      "missing": 0
+    },
+    {
+      "study": "td3_tv_pickcube",
+      "linked": 111,
+      "displayed": 111,
+      "missing": 0
+    },
+    {
+      "study": "td3_kl_pickcube",
+      "linked": 111,
+      "displayed": 111,
+      "missing": 0
+    },
+    {
+      "study": "td3_tv_pusher",
+      "linked": 148,
+      "displayed": 148,
+      "missing": 0
+    },
+    {
+      "study": "ppo_tv_pickcube_20261028",
+      "linked": 333,
+      "displayed": 333,
+      "missing": 0
+    }
+  ]
+}

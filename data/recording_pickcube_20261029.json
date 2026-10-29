@@ -1,0 +1,12 @@
+{
+  "study": "ppo_tv_pickcube_20261028",
+  "recordings": 333,
+  "training_seed": 1000,
+  "reset_seed": 100000,
+  "controller": "pd_joint_delta_pos",
+  "steps": 50,
+  "source": "exact training-time-selected seed-1000 checkpoints",
+  "native_gpu_evaluation_reproduction": false,
+  "simulation": "CPU PhysX",
+  "friction_scope": "cube and robot links, excluding shared table/ground as in GPU suite"
+}
