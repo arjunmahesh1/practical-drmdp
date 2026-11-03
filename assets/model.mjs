@@ -24,11 +24,12 @@ export function recordingCount(study,axis,model) {
   return (axis.curves[model]||[]).filter(p=>study.replays?.[model]?.[axis.id+'|'+p.x]).length;
 }
 export function bestModelOnAxis(study,axis) {
-  const controls=new Set([study.baseline,'a1e9','tvc1e9','tvc500','tv_noop','rsc_noop','ctxkl0','ctxkluniform','klprho0']);
+  const controls=new Set([study.baseline,...(study.controls??['a1e9','tvc1e9','tvc500','tv_noop','rsc_noop','ctxkl0','ctxkluniform','klprho0'])]);
   const candidates=study.models.filter(m=>!controls.has(m)&&axis.curves[m]?.length);
   return candidates.reduce((best,m)=>best===null||gridMean(axis.curves[m])>gridMean(axis.curves[best])?m:best,null);
 }
 export function axisLabel(axis,environment) {
+  if (axis.xLabel) return axis.xLabel;
   if (/replace|bernoulli/.test(axis.id)) return 'Replacement probability';
   if (axis.id==='gravity'&&environment.startsWith('Lunar')) return 'Gravity (m/s²)';
   if (/noise|wind|turbulence/.test(axis.id)) return 'Disturbance amplitude';
@@ -44,6 +45,7 @@ export function bounds(axis, bands = true) {
   const pad=(hi-lo||Math.abs(hi)||1)*.09;return [lo-pad,hi+pad];
 }
 export function factorLabel(axis, value, environment) {
+  if (axis.unit) return fmt(value,3)+' '+axis.unit;
   if (axis.id==='gravity' && environment.startsWith('Lunar')) return fmt(value,2)+' m/s²';
   if (/replace|bernoulli/.test(axis.id)) return fmt(value*100,2)+'%';
   if (/noise|wind|turbulence/.test(axis.id)) return fmt(value,3);

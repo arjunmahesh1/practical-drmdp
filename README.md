@@ -13,6 +13,31 @@ Open `http://localhost:8765`. All asset URLs are relative, including study JSON 
 
 ## Data and interpretation
 
+### November 3 Return Additions
+
+The four new cohorts are HalfCheetah TD3-TV, HalfCheetah physical-support
+TD3-KL, and the October 28/29 end-effector-delta PickCube SAC-TV/TD3-TV.
+They add 84 axes, 34 setting slots, 9,482 curve points, and 88 PDFs, with
+30 policies per setting. Ordinary standard stays fixed in the new paper
+panels. All 25 previous study JSON files and all videos are unchanged.
+
+New HalfCheetah gravity varies horizontal `gx=-x m/s^2`, with zero nominal,
+not downward gravity scale. KL uses a physical-support radius, not the
+new moment-bootstrap beta operator. The radius-zero ensemble and TV
+cap-1100 reference remain available as separate controls. Active cap 500
+in this HalfCheetah cohort is not the older Walker inactive cap 500.
+
+Twelve localized mass/friction axes have identical returns at every level
+for every saved policy. Their effectiveness as physical perturbations is
+unverified. The panels remain visible with a caution rather than being
+counted as independent evidence of shift tolerance.
+
+The new studies support return curves, descriptive advanced metrics,
+policy seeds, CSV export and saved figures. No new videos or statistical
+certificates are added. `data/appendix/returns-update-20261103.json` records
+the additive export and preservation checks. The October 29 export
+receipt remains dated and unchanged.
+
 ### October 29 PickCube PPO Addition
 
 The separate `ppo_tv_pickcube_20261028` branch contains the October 28

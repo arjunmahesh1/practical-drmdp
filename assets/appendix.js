@@ -2,11 +2,11 @@ import {label,escape as esc,fmt,activeModel} from './model.mjs';
 import {mean,median,summarize,conditions,severity,rawReliability} from './appendix-metrics.mjs';
 
 const $=id=>document.getElementById(id),root=$('appendix-root');
-const pages=['appendix','evidence','metrics','figures'];
+const pages=['appendix','figures'];
 const cache=new Map();
 let index,study,ticket=0,figureLimit=24;
 const query=()=>new URLSearchParams(location.search);
-const currentPage=()=>location.hash.slice(1)||'appendix';
+const currentPage=()=>location.hash.slice(1)||'returns';
 const title=s=>`${s.environment} / ${s.algorithm} / ${s.branch}`;
 const percent=x=>x===null?'Unavailable':(100*x).toFixed(1)+'%';
 const number=x=>x===null?'Unavailable':fmt(x,Math.abs(x)<1?4:2);
@@ -14,12 +14,11 @@ function href(page,values={}){const u=new URL(location.href);u.search=new URLSea
 function select(id,entries,value){$(id).innerHTML=entries.map(([v,l])=>`<option value="${esc(v)}">${esc(l)}</option>`).join('');$(id).value=value;}
 function download(name,rows){const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 async function load(meta){if(!meta.file)throw Error('This study has no validated policy-level export.');if(!cache.has(meta.id)){const r=await fetch(meta.file);if(!r.ok)throw Error('Could not load policy summaries.');cache.set(meta.id,await r.json());}return cache.get(meta.id);}
-const links=s=>`<div class="inline-links"><a href="${href('metrics',{study:s.id})}">Metrics & seeds</a><a href="${href('metrics',{study:s.id,metric:'aggregate'})}">Suite summary</a><a href="${href('returns',{study:s.id})}">Return curves</a><a href="${href('figures',{figureStudy:s.id})}">Figures</a></div>`;
+const links=s=>`<div class="inline-links"><a href="${href('returns',{study:s.id})}">Return curves</a><a href="${href('advanced',{study:s.id})}">Advanced metrics</a><a href="${href('advanced',{study:s.id,metric:'aggregate'})}">Cap comparison</a><a href="${href('seeds',{study:s.id})}">Seeds</a><a href="${href('figures',{study:s.id,figureStudy:s.id})}">Figures</a></div>`;
 
 function overview(){
-  root.innerHTML=`<h2>The evidence, from nominal learning to deployment</h2><p>Robust updates can repair particular failures without producing a universally better policy. This appendix brings the return distributions, reliability analyses, controls, and negative results together.</p>
+  root.innerHTML=`<h1>Study index</h1>
     <div class="overview-strip"><div><strong>${index.studies.length}</strong><span>separate study cohorts</span></div><div><strong>${index.studies.reduce((n,s)=>n+s.models.length,0)}</strong><span>evaluated settings, including controls</span></div><div><strong>${index.figures.length}</strong><span>indexed figure panels</span></div><div><strong>30 / 10</strong><span>intended policies per setting / context study</span></div></div>
-    <div class="paper-questions"><article><span class="scope">FIRST: A MEANINGFUL STRESS TEST</span><a href="${href('metrics',{study:'ppo_tv_walker',metric:'severity'})}">Which shifts damage standard policies?</a><p>Standard-policy retention distinguishes consequential dynamics changes from changes that barely affect performance.</p></article><article><span class="scope">THEN: POLICIES, NOT JUST AVERAGES</span><a href="${href('metrics',{study:'ppo_tv_walker',setting:'a2p95',axis:'mass',scope:'condition',value:'.5'})}">Do fewer trained policies fail?</a><p>Reliability and seed distributions expose low-return policies that an across-seed mean can hide.</p></article><article><span class="scope">FINALLY: THE SCOPE OF THE CLAIM</span><a href="#evidence">Does one setting work across the suite?</a><p>A favorable condition, a complete axis, and one fixed setting over a full environment are different kinds of evidence.</p></article></div>
     <div class="section-heading"><h2>Completed studies</h2><label>Find a study<input id="study-search" type="search" placeholder="Environment, algorithm, cohort..."></label></div><div id="study-index" class="table-scroll"></div>
     <details><summary>Coverage and boundaries</summary><p>The inventory includes the five October 28 Lunar/Pusher return comparisons and the newer joint-delta PickCube PPO cohort. Historical PickCube uses a different controller and remains separate. Isaac Lab implementation work is not a result and is excluded.</p><p>Advanced figures are indexed with their original provenance. Historical confidence intervals are not transferred to newer cohorts. Every interactive policy-summary export reproduces its current return curves; failed training seeds receive no invented return. Return-threshold competence is not a robot task-success rate.</p><a href="data/appendix/export-receipt.json" class="download-link">Export validation and preservation receipt</a></details>`;
   const render=()=>{const q=$('study-search').value.toLowerCase();const rows=index.studies.filter(s=>(title(s)+' '+s.id).toLowerCase().includes(q));$('study-index').innerHTML=`<table><thead><tr><th>Study / cohort</th><th>Coverage</th><th>Available evidence</th></tr></thead><tbody>${rows.map(s=>`<tr><td class="study-name"><strong>${esc(title(s))}</strong><small>${esc(s.id)}</small></td><td>${s.models.length} settings / ${s.axisCount} axes<br>${s.intendedPolicies} intended policies per setting</td><td><span class="status">${s.validated?'Policy-level returns verified':'Policy rows unavailable'}</span>${links(s)}</td></tr>`).join('')}</tbody></table>`;};$('study-search').oninput=render;render();
@@ -149,8 +148,8 @@ function renderRaw(c){
 }
 
 function figureLibrary(){
-  root.innerHTML=`<h2>Figures, connected to their evidence</h2><p class="page-note">Paper figures, advanced diagnostics, task outcomes, and the full return archive. Historical analyses retain their original comparator and policy count; their intervals are not transferred to newer runs.</p><div class="filters"><label class="wide">Find a figure or paper label<input type="search" id="figure-search" placeholder="Reliability, failure, cap, fig:..." value="${esc(query().get('figure')||'')}"></label><label>Study<select id="figure-study"></select></label><label>Figure family<select id="figure-category"></select></label></div><p id="figure-count" class="small-stat"></p><div id="figure-results" class="figure-grid"></div><button id="figure-more" class="command">More figures</button><details><summary>Manuscript figures not located locally</summary>${index.missingPaperFigures.length?index.missingPaperFigures.map(f=>`<p><code>${esc(f.label)}</code> / ${esc(f.filename)}: absent from the checked delivery roots. No substitute is silently assigned.</p>`).join(''):'<p>All indexed manuscript figure references have local PDFs.</p>'}</details>`;
-  select('figure-study',[['','All studies'],...index.studies.map(s=>[s.id,title(s)])],query().get('figureStudy')||'');
+  root.innerHTML=`<h1>Figures</h1><p class="page-note">Original cohorts, comparators and intervals retained.</p><div class="filters"><label class="wide">Find a figure or paper label<input type="search" id="figure-search" placeholder="Reliability, failure, cap, fig:..." value="${esc(query().get('figure')||'')}"></label><label>Study<select id="figure-study"></select></label><label>Figure family<select id="figure-category"></select></label></div><p id="figure-count" class="small-stat"></p><div id="figure-results" class="figure-grid"></div><button id="figure-more" class="command">More figures</button><details><summary>Unavailable figures</summary>${index.missingPaperFigures.length?index.missingPaperFigures.map(f=>`<p><code>${esc(f.label)}</code> / ${esc(f.filename)}: absent from the checked delivery roots. No substitute is silently assigned.</p>`).join(''):'<p>All indexed manuscript figure references have local PDFs.</p>'}</details>`;
+  select('figure-study',[['','All studies'],...index.studies.map(s=>[s.id,title(s)])],query().get('figureStudy')??query().get('study')??'');
   select('figure-category',[['','All figure families'],...new Set(index.figures.map(f=>f.section))].map(v=>Array.isArray(v)?v:[v,v]),query().get('figureFamily')||'');
   for(const id of ['figure-search','figure-study','figure-category'])$(id).addEventListener(id==='figure-search'?'input':'change',()=>{figureLimit=24;renderFigures();});
   $('figure-more').onclick=()=>{figureLimit+=24;renderFigures();};renderFigures();
@@ -169,7 +168,9 @@ async function route(){
   document.querySelector('.workspace').hidden=true;
   if(!index)return;
   ++ticket;
-  if(page==='appendix')overview();else if(page==='evidence')paperEvidence();else if(page==='figures')figureLibrary();else await metrics();
+  if(page==='appendix')overview();else if(page==='figures')figureLibrary();
 }
 window.addEventListener('hashchange',route);
-try{const response=await fetch('data/appendix/index.json?v=20261029-appendix1');if(!response.ok)throw Error('Could not load appendix index.');index=await response.json();await route();}catch(e){root.innerHTML=`<p class="blank" role="alert">${esc(e.message)}</p>`;}
+let archiveContext='';
+window.addEventListener('results-context',e=>{const key=e.detail.page+'|'+e.detail.study.id;if(!pages.includes(e.detail.page)||key===archiveContext)return;archiveContext=key;if(e.detail.page==='figures'){const u=new URL(location.href);u.searchParams.set('figureStudy',e.detail.study.id);history.replaceState(null,'',u);}route();});
+try{const response=await fetch('data/appendix/index.json?v=20261103-returns1');if(!response.ok)throw Error('Could not load appendix index.');index=await response.json();await route();}catch(e){root.innerHTML=`<p class="blank" role="alert">${esc(e.message)}</p>`;}

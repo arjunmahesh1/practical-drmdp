@@ -5,19 +5,19 @@ import {environments,parameterNote} from './environments.mjs?v=20261029-pickcube
 
 const $=id=>document.getElementById(id);
 let params=new URLSearchParams(location.search);
-const build='20261029-appendix1';
+const build='20261103-returns1';
 const cache=new Map();
-const state={catalog:null,study:null,axis:null,model:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||'appendix',bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
+const state={catalog:null,study:null,axis:null,model:null,reference:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||'returns',bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
 let pendingStudy=0, pendingReplay=0, lastFrame=0, animation;
 const group=env=>env.split('-v')[0];
-const points=()=>state.axis.curves[state.study.baseline];
+const points=()=>state.axis.curves[state.reference];
 const selectedPoint=()=>state.axis.curves[state.model][state.index];
 const modelForAxis=axis=>state.selection==='best'?bestModelOnAxis(state.study,axis):state.model;
 const chartLayout=mini=>mini?{W:400,H:280,L:76,R:22,T:16,B:66}:{W:600,H:365,L:82,R:22,T:22,B:60};
 function curveColor(model,selected,all=false){
-  if(model===state.study.baseline)return baselineColor;
+  if(model===state.reference)return baselineColor;
   if(model===selected)return robustColor;
-  const palette=['#36816c','#92569b','#ad7a20','#587bba','#b94d72','#666e4a'];
+  const palette=['#17806b','#9463a0','#ad7a20','#587bba','#b94d72','#677449','#7b4c31','#2287a0','#ab4d9c','#7074b2','#d66d24','#2f766e','#9c783c','#7d565f','#4b6986'];
   return all?palette[state.study.models.indexOf(model)%palette.length]:'#8f9c96';
 }
 
@@ -29,9 +29,8 @@ function unique(values){return [...new Set(values)];}
 function candidates(filters){return state.catalog.studies.filter(s=>Object.entries(filters).every(([k,v])=>s[k]===v));}
 function updateVariantControl(){
   const best=bestModelOnAxis(state.study,state.axis);
-  const entries=state.study.models.filter(m=>m!==state.study.baseline).map(m=>[m,label(m)+(m===best?' · best on this axis':'')]);
-  if(best)entries.unshift(['best','Best on this axis · '+label(best)]);
-  options('variant',entries,state.selection==='best'?'best':state.model);
+  const entries=state.study.models.map(m=>[m,label(m)+(m===best?' · best on this axis':'')]);
+  options('variant',entries,state.model);
 }
 function updateControls() {
   const s=state.study;
@@ -42,6 +41,7 @@ function updateControls() {
   const branches=candidates({environment:s.environment,algorithm:s.algorithm,family:s.family});
   options('branch',branches.map(v=>[v.id,v.branch]),s.id);
   $('branch-label').hidden=branches.length===1;
+  options('reference',s.models.map(m=>[m,label(m)]),state.reference);
   updateVariantControl();
   options('axis',s.axes.map(a=>[a.id,a.title]),state.axis.id);
   $('env-tabs').replaceChildren(...unique(state.catalog.studies.map(s=>group(s.environment))).map(name=>{
@@ -57,12 +57,13 @@ async function chooseStudy(id, initial=false) {
     if(ticket!==pendingStudy)return;
     const previous=state.axis?.id;
     state.study=cache.get(id);
+    state.reference=initial&&state.study.models.includes(params.get('reference'))?params.get('reference'):state.study.baseline;
     state.model=initial&&state.study.models.includes(params.get('setting'))?params.get('setting'):activeModel(state.study.models);
     state.axis=state.study.axes.find(a=>a.id===(initial?params.get('axis'):previous))||state.study.axes[0];
-    if(initial)state.selection=params.get('setting')==='best'||(!params.has('setting')&&state.study.id==='ppo_tv_pickcube_20261028')?'best':'fixed';
+    if(initial){state.selection=params.get('setting')==='best'?'best':'fixed';state.allSettings=params.get('all')==='1';}
     if(state.selection==='best')state.model=bestModelOnAxis(state.study,state.axis);
     const n=Number(params.get('point'));
-    state.index=initial&&params.has('point')&&Number.isInteger(n)?Math.max(0,Math.min(n,points().length-1)):nearestPoint(points(),state.axis.nominal);
+    state.index=initial&&params.has('point')&&Number.isInteger(n)?Math.max(0,Math.min(n,points().length-1)):nearestPoint(points(),initial&&params.has('value')&&Number.isFinite(Number(params.get('value')))?Number(params.get('value')):state.axis.nominal);
     updateControls();$('loading').hidden=true;showPage();renderAll();
   }catch(error){$('loading').textContent=error.message;console.error(error);}
 }
@@ -71,72 +72,92 @@ function chooseAxis(id) {
   $('axis').value=id;renderAll();
 }
 function chooseModel(model) {
-  if(model===state.study.baseline)return;
   state.selection=model==='best'?'best':'fixed';
   state.model=model==='best'?bestModelOnAxis(state.study,state.axis):model;renderAll();
 }
 function syncURL() {
-  if(['appendix','evidence','metrics','figures'].includes(state.page))return;
   const u=new URL(location.href);
-  u.search=new URLSearchParams({study:state.study.id,axis:state.axis.id,setting:state.selection==='best'?'best':state.model,point:state.index}).toString();u.hash=state.page;
+  for(const [k,v] of Object.entries({study:state.study.id,axis:state.axis.id,reference:state.reference,setting:state.selection==='best'?'best':state.model,point:state.index}))u.searchParams.set(k,v);
+  u.hash=state.page;
   if(state.allSettings)u.searchParams.set('all','1');
+  else u.searchParams.delete('all');
   if(state.replayPolicy==='standard')u.searchParams.set('policy','standard');
+  else u.searchParams.delete('policy');
+  if(u.searchParams.get('scope')==='condition')u.searchParams.set('value',points()[state.index].x);
   history.replaceState(null,'',u);
 }
-function showPage(){
-  if(!['explore','returns','methods','appendix','evidence','metrics','figures'].includes(state.page))state.page='appendix';
-  const appendixPage=['appendix','evidence','metrics','figures'].includes(state.page);
-  if(!appendixPage&&state.study){
+function showPage(fromURL=false){
+  if(state.page==='metrics')state.page='advanced';
+  if(state.page==='evidence')state.page='appendix';
+  if(!['explore','returns','methods','appendix','advanced','seeds','figures'].includes(state.page))state.page='returns';
+  const appendixPage=['appendix','figures'].includes(state.page);
+  if(fromURL&&!appendixPage&&state.study){
     const current=new URLSearchParams(location.search),id=current.get('study');
     const changedAxis=current.has('axis')&&state.study.axes.some(a=>a.id===current.get('axis'))&&current.get('axis')!==state.axis.id;
     const changedSetting=current.has('setting')&&(current.get('setting')==='best'||state.study.models.includes(current.get('setting')))&&current.get('setting')!==(state.selection==='best'?'best':state.model);
-    if(id&&state.catalog.studies.some(s=>s.id===id)&&(id!==state.study.id||changedAxis||changedSetting)){
+    const changedReference=current.has('reference')&&state.study.models.includes(current.get('reference'))&&current.get('reference')!==state.reference;
+    if(id&&state.catalog.studies.some(s=>s.id===id)&&(id!==state.study.id||changedAxis||changedSetting||changedReference)){
       params=current;chooseStudy(id,true);return;
     }
   }
   document.querySelector('.workspace').hidden=appendixPage;
+  $('shared-controls').hidden=['appendix','methods'].includes(state.page);
+  document.querySelector('.result-tabs').hidden=state.page==='methods';
   $('appendix-root').hidden=!appendixPage;
+  $('analysis-page').hidden=!['advanced','seeds'].includes(state.page);
   for(const p of ['explore','returns','methods'])$(p+'-page').hidden=p!==state.page||!state.study;
-  document.querySelectorAll('nav a').forEach(a=>{a.classList.toggle('active',a.dataset.page===state.page);if(a.dataset.page===state.page)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  document.querySelectorAll('[data-page]').forEach(a=>{a.classList.toggle('active',a.dataset.page===state.page);if(a.dataset.page===state.page)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   if(state.study)syncURL();
+  publishContext();
   if(state.page!=='explore')stopReplay();
   else if(state.replay?.kind==='video'&&state.playbackWanted)$('rollout-video').play().catch(()=>{});
+}
+function publishContext(){
+  if(!state.study)return;
+  const mode=state.allSettings?'all':state.selection;
+  document.querySelectorAll('[data-cap-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.capMode===mode)));
+  $('cap-note').textContent=state.allSettings?state.study.models.length+' settings · focus: '+label(state.model):state.selection==='best'?'Ex-post axis selection · full-grid mean return':label(state.model)+' · fixed setting';
+  $('cohort-summary').textContent=state.study.environment+' / '+state.study.algorithm+' / '+state.study.branch+' · '+state.study.axes.length+' axes';
+  window.dispatchEvent(new CustomEvent('results-context',{detail:{study:state.study,model:state.model,reference:state.reference,selection:state.selection,allSettings:state.allSettings,axis:state.axis.id,index:state.index,page:state.page}}));
 }
 function renderAll(){
   if(state.selection==='best')state.model=bestModelOnAxis(state.study,state.axis);
   updateVariantControl();
   options('axis',state.study.axes.map(a=>[a.id,a.title]),state.axis.id);
-  const replayModel=state.replayPolicy==='standard'?state.study.baseline:state.model;
+  const replayModel=state.replayPolicy==='standard'?state.reference:state.model;
   $('axis-playback-label').textContent='Perturbation · '+recordingCount(state.study,state.axis,replayModel)+'/'+state.axis.curves[replayModel].length+' recorded';
   renderChart();renderLegend();renderPoint();renderGallery();renderTable();
   const best=bestModelOnAxis(state.study,state.axis);
   $('select-best').textContent=best?'Select best: '+label(best):'No active setting';$('select-best').disabled=!best;$('select-best').setAttribute('aria-pressed',String(state.selection==='best'));
   $('selection-note').textContent=best?'Best on this axis: '+label(best)+' · mean over displayed grid '+fmt(gridMean(state.axis.curves[best]),2)+'. Selected ex post from active settings, not held-out evidence.':'';
   $('all-settings').checked=state.allSettings;
-  $('returns-description').textContent=state.allSettings?'All evaluated settings, with mean ±1 across-policy SD. The table below retains the selected comparison.':state.selection==='best'?'Each axis uses its own ex-post best active setting, named in the panel and table. This is not one fixed policy across all perturbations. Bands show ±1 across-policy SD where enabled.':'Mean episode return across trained policies, with ±1 SD bands where enabled. The same selected setting is held fixed across these axes.';
+  $('returns-description').textContent=(state.selection==='best'?'Best per axis (ex post)':state.allSettings?'All evaluated settings':label(state.model))+' vs '+label(state.reference)+(state.bands?' · ±1 across-policy SD':' · means only');
+  $('table-reference').textContent=label(state.reference);
+  $('bands-gallery').checked=state.bands;
   $('study-note').textContent=state.study.note;
   $('source-note').textContent=state.study.statistic+' Source: '+state.study.source;
   $('scene-title').textContent=state.study.environment;
   $('replay-policy').options[0].textContent=label(state.model);
+  $('replay-policy').options[1].textContent=label(state.reference)+' / comparator';
   $('replay-policy').value=state.replayPolicy;
   $('parameter-note').textContent=parameterNote(state.study.environment,state.axis.id);
-  syncURL();if(state.page==='explore')loadReplay();
+  syncURL();publishContext();if(state.page==='explore')loadReplay();
 }
 function svgChart(axis,mini=false,all=false){
   const {W,H,L,R,T,B}=chartLayout(mini),selected=modelForAxis(axis);
-  const grid=axis.curves[state.study.baseline],xmin=grid[0].x,xmax=grid.at(-1).x,[ymin,ymax]=bounds(axis,mini?false:all||state.bands);
+  const grid=axis.curves[state.reference],xmin=grid[0].x,xmax=grid.at(-1).x,[ymin,ymax]=bounds(axis,mini?false:state.bands);
   const x=v=>L+(v-xmin)/(xmax-xmin||1)*(W-L-R),y=v=>H-B-(v-ymin)/(ymax-ymin)*(H-B-T);
   const pos=axis.id===state.axis.id?state.index:nearestPoint(grid,axis.nominal);
-  let parts=[`<svg class="curve" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(axis.title)}: measured evaluation returns"><title>${esc(axis.title)} · blue standard, orange ${esc(label(selected))}</title>`];
+  let parts=[`<svg class="curve" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(axis.title)}: measured evaluation returns"><title>${esc(axis.title)} · blue ${esc(label(state.reference))}, orange ${esc(label(selected))}</title>`];
   const tickCount=mini?3:4;
   for(let i=0;i<tickCount;i++){const v=ymin+(ymax-ymin)*i/(tickCount-1),yy=y(v);parts.push(`<line x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}" stroke="#e7eae3"/><text x="${L-8}" y="${yy+5}" text-anchor="end" fill="#6b746d" font-size="16" font-family="Roboto,Arial">${fmt(v,ymax-ymin<3?2:0)}</text>`);}
   parts.push(`<path class="axis-spine" d="M${L},${T}V${H-B}H${W-R}" fill="none" stroke="#929d9f" stroke-width="1"/>`);
   const nominalX=x(axis.nominal);
   if(axis.nominal>=xmin&&axis.nominal<=xmax){parts.push(`<line x1="${nominalX}" x2="${nominalX}" y1="${T}" y2="${H-B}" stroke="#9caaa0" stroke-dasharray="4 4"/>`);if(!mini)parts.push(`<text x="${Math.min(nominalX+5,W-70)}" y="${T-7}" fill="#7c887f" font-size="10">nominal</text>`);}
-  const models=state.study.models.filter(m=>m!==state.study.baseline&&m!==selected).concat(state.study.baseline,selected);
+  const models=[...new Set(state.study.models.filter(m=>m!==state.reference&&m!==selected).concat(state.reference,selected))];
   for(const model of models){
-    const ps=axis.curves[model],chosen=all||model===state.study.baseline||model===selected,color=curveColor(model,selected,all);
-    if(!mini&&(all||state.bands)&&chosen){const d=ps.map(p=>[x(p.x),y(p.mean+p.sd)]).concat([...ps].reverse().map(p=>[x(p.x),y(p.mean-p.sd)])).map(p=>p.join(',')).join(' ');parts.push(`<polygon data-band="${esc(model)}" points="${d}" fill="${color}" opacity=".08"/>`);}
+    const ps=axis.curves[model],chosen=all||model===state.reference||model===selected,color=curveColor(model,selected,all);
+    if(!mini&&state.bands&&chosen){const d=ps.map(p=>[x(p.x),y(p.mean+p.sd)]).concat([...ps].reverse().map(p=>[x(p.x),y(p.mean-p.sd)])).map(p=>p.join(',')).join(' ');parts.push(`<polygon data-band="${esc(model)}" points="${d}" fill="${color}" opacity=".08"/>`);}
     parts.push(`<path data-model="${esc(model)}" d="${ps.map((p,i)=>(i?'L':'M')+x(p.x)+','+y(p.mean)).join(' ')}" fill="none" stroke="${color}" stroke-width="${chosen?(mini?2.5:3):1.3}" opacity="${chosen?1:.19}" stroke-linejoin="round"/>`);
     if(chosen&&!mini){for(const p of ps)parts.push(`<circle cx="${x(p.x)}" cy="${y(p.mean)}" r="3" fill="${color}"><title>${esc(label(model))} · ${p.x}: ${fmt(p.mean)} ± ${fmt(p.sd)} SD; n=${p.n}</title></circle>`);const p=ps[pos];parts.push(`<circle data-marker="${esc(model)}" cx="${x(p.x)}" cy="${y(p.mean)}" r="6.1" fill="${color}" stroke="white" stroke-width="2.5"/>`);}
   }
@@ -154,7 +175,7 @@ function renderChart(){
 }
 function renderLegend(){
   const best=bestModelOnAxis(state.study,state.axis);
-  $('legend').replaceChildren(...state.study.models.map(model=>{const b=document.createElement('button');b.textContent=label(model)+(model===best?' · best':'');b.title=model===best?'Highest mean return over this axis’s full displayed grid (ex post)':label(model);b.className=model===state.study.baseline?'fixed':model===state.model?'active':'';b.setAttribute('aria-pressed',String(model===state.model||model===state.study.baseline));b.onclick=()=>chooseModel(model);return b;}));
+  $('legend').replaceChildren(...state.study.models.map(model=>{const b=document.createElement('button');b.textContent=label(model)+(model===best?' · best':'');b.title=model===best?'Highest mean return over this axis’s full displayed grid (ex post)':label(model);b.className=model===state.reference?'fixed':model===state.model?'active':'';b.setAttribute('aria-pressed',String(model===state.model||model===state.reference));b.onclick=()=>chooseModel(model);return b;}));
 }
 function renderPoint(){
   const a=state.axis,b=points()[state.index],r=selectedPoint();
@@ -163,23 +184,23 @@ function renderPoint(){
   $('range-min').textContent=factorLabel(a,points()[0].x,state.study.environment);$('range-max').textContent=factorLabel(a,points().at(-1).x,state.study.environment);
   $('nominal').disabled=!points().some(p=>p.x===a.nominal);
   $('nominal').textContent=$('nominal').disabled?'Nominal not measured':'Nominal ↺';
-  $('standard-return').textContent=fmt(b.mean);$('robust-return').textContent=fmt(r.mean);$('selected-label').textContent=label(state.model);
+  $('standard-return').textContent=fmt(b.mean);$('standard-return').previousElementSibling.textContent=label(state.reference);$('robust-return').textContent=fmt(r.mean);$('selected-label').textContent=label(state.model);
   const d=r.mean-b.mean;$('difference').textContent=(d>=0?'+':'−')+fmt(Math.abs(d));
-  $('sample-note').textContent=`${b.n} standard policies · ${r.n} selected policies at this point. Bands describe policy variability.`+(Math.min(b.n,r.n)<30?' Measured finals only; failed seeds are not imputed.':'');
+  $('sample-note').textContent=`${b.n} reference policies · ${r.n} selected policies at this point. Bands describe policy variability.`+(Math.min(b.n,r.n)<30?' Measured finals only; failed seeds are not imputed.':'');
 }
 function setPoint(i){
-  state.index=Math.max(0,Math.min(Number(i),points().length-1));renderChart();renderPoint();syncURL();loadReplay();
+  state.index=Math.max(0,Math.min(Number(i),points().length-1));renderChart();renderPoint();syncURL();publishContext();if(state.page==='explore')loadReplay();
 }
 function renderGallery(){
   const available=state.study.axes.reduce((n,a)=>n+recordingCount(state.study,a,modelForAxis(a)),0),total=state.study.axes.reduce((n,a)=>n+a.curves[modelForAxis(a)].length,0);
   $('axis-count').textContent=state.study.axes.length+' axes · '+available+'/'+total+' recordings for '+(state.selection==='best'?'axis-specific best settings':label(state.model));
   $('axis-gallery').replaceChildren(...state.study.axes.map(axis=>{const b=document.createElement('button');b.className='mini-axis'+(axis.id===state.axis.id?' active':'');b.innerHTML='<h3>'+esc(axis.title)+'</h3>'+svgChart(axis,true)+'<p class="mini-setting">'+esc(label(modelForAxis(axis)))+(state.selection==='best'?' · best on this axis':'')+'</p>';b.setAttribute('aria-label','View '+axis.title);b.onclick=()=>{chooseAxis(axis.id);$('axis').focus();};return b;}));
   const query=$('search').value.toLowerCase();
-  $('returns-gallery').replaceChildren(...state.study.axes.filter(a=>(a.title+' '+a.id).toLowerCase().includes(query)).map(axis=>{const model=modelForAxis(axis),item=document.createElement('article');item.className='return-axis';const legend=state.allSettings?'<div class="return-legend">'+state.study.models.map(m=>'<span style="color:'+curveColor(m,model,true)+'">'+esc(label(m))+'</span>').join('')+'</div>':'';item.innerHTML='<h3>'+esc(axis.title)+'</h3>'+svgChart(axis,false,state.allSettings)+legend+'<p class="small">'+(state.allSettings?'All settings · mean ±1 across-policy SD':esc(label(model))+' versus standard'+(state.selection==='best'?' · best on this axis (ex post)':'')+' · '+axis.curves[model][0].n+' measured policies at the first grid point')+'</p>';return item;}));
+  $('returns-gallery').replaceChildren(...state.study.axes.filter(a=>(a.title+' '+a.id).toLowerCase().includes(query)).map(axis=>{const model=modelForAxis(axis),item=document.createElement('article');item.className='return-axis';const legend=state.allSettings?'<div class="return-legend">'+state.study.models.map(m=>'<span style="color:'+curveColor(m,model,true)+'">'+esc(label(m))+'</span>').join('')+'</div>':'<div class="return-legend"><span style="color:'+baselineColor+'">'+esc(label(state.reference))+'</span><span style="color:'+robustColor+'">'+esc(label(model))+'</span></div>';item.innerHTML='<h3>'+esc(axis.title)+'</h3>'+svgChart(axis,false,state.allSettings)+legend+'<p class="small">'+(state.selection==='best'?'Ex-post axis selection · ':'')+axis.curves[model][0].n+' measured policies at first grid point</p>'+(axis.warning?'<p class="caution">'+esc(axis.warning)+'</p>':'');return item;}));
 }
 function renderTable(){
   const query=$('search').value.toLowerCase(),fragment=document.createDocumentFragment();
-  for(const a of state.study.axes){if(!a.title.toLowerCase().includes(query)&&!a.id.toLowerCase().includes(query))continue;const model=modelForAxis(a),bs=a.curves[state.study.baseline],rs=a.curves[model];
+  for(const a of state.study.axes){if(!a.title.toLowerCase().includes(query)&&!a.id.toLowerCase().includes(query))continue;const model=modelForAxis(a),bs=a.curves[state.reference],rs=a.curves[model];
     for(let i=0;i<bs.length;i++){const b=bs[i],r=rs[i],tr=document.createElement('tr'),values=[a.title,factorLabel(a,b.x,state.study.environment),label(model),fmt(b.mean),fmt(r.mean),(r.mean-b.mean>=0?'+':'')+fmt(r.mean-b.mean),b.n+' / '+r.n];for(const value of values){const td=document.createElement('td');td.textContent=value;tr.append(td);}tr.tabIndex=0;tr.setAttribute('aria-label',a.title+' '+b.x+'; open comparison');const open=()=>{state.page='explore';chooseAxis(a.id);setPoint(i);showPage();$('severity').focus();};tr.onclick=open;tr.onkeydown=e=>{if(e.key==='Enter')open();};fragment.append(tr);}}
   $('returns-table').querySelector('tbody').replaceChildren(fragment);
 }
@@ -209,7 +230,7 @@ async function loadReplay(){
   const ticket=++pendingReplay;stopReplay();state.replay=null;state.frame=0;
   const video=$('rollout-video');video.onerror=null;video.onloadedmetadata=null;video.oncanplay=null;video.onprogress=null;video.onseeked=syncVideo;video.hidden=true;video.removeAttribute('src');video.load();$('episode-trace').hidden=true;
   const factor=points()[state.index].x,key=state.axis.id+'|'+factor;
-  const replayModel=state.replayPolicy==='standard'?state.study.baseline:state.model;
+  const replayModel=state.replayPolicy==='standard'?state.reference:state.model;
   const entry=state.study.replays?.[replayModel]?.[key];
   $('play').disabled=true;$('frame').disabled=true;$('frame').value=0;
   const media=environments[group(state.study.environment)];
@@ -281,6 +302,18 @@ $('version').onchange=e=>chooseStudy((candidates({environment:e.target.value}).f
 $('algorithm').onchange=e=>chooseStudy((candidates({environment:state.study.environment,algorithm:e.target.value}).find(s=>s.family===state.study.family)||candidates({environment:state.study.environment,algorithm:e.target.value})[0]).id);
 $('family').onchange=e=>chooseStudy(candidates({environment:state.study.environment,algorithm:state.study.algorithm,family:e.target.value})[0].id);
 $('branch').onchange=e=>chooseStudy(e.target.value);$('variant').onchange=e=>chooseModel(e.target.value);$('axis').onchange=e=>chooseAxis(e.target.value);
+$('reference').onchange=e=>{state.reference=e.target.value;renderAll();};
+document.querySelectorAll('[data-cap-mode]').forEach(b=>b.onclick=()=>{state.allSettings=b.dataset.capMode==='all';state.selection=b.dataset.capMode==='best'?'best':'fixed';renderAll();});
+$('bands-gallery').onchange=e=>{state.bands=e.target.checked;$('bands').checked=state.bands;renderAll();};
+window.addEventListener('results-request',publishContext);
+window.addEventListener('results-select',e=>{
+  const c=e.detail;
+  if(c.model&&state.study.models.includes(c.model)){state.allSettings=false;state.selection='fixed';state.model=c.model;}
+  if(c.axis&&state.study.axes.some(a=>a.id===c.axis)){state.axis=state.study.axes.find(a=>a.id===c.axis);state.index=nearestPoint(points(),state.axis.nominal);}
+  if(Number.isInteger(c.index))state.index=Math.max(0,Math.min(c.index,points().length-1));
+  if(c.page)state.page=c.page;
+  renderAll();showPage();
+});
 $('select-best').onclick=()=>chooseModel('best');$('all-settings').onchange=e=>{state.allSettings=e.target.checked;renderAll();};
 $('severity').oninput=e=>setPoint(e.target.value);$('nominal').onclick=()=>setPoint(nearestPoint(points(),state.axis.nominal));$('bands').onchange=e=>{state.bands=e.target.checked;renderChart();renderGallery();};
 $('search').oninput=()=>{renderTable();renderGallery();};$('paper-search').oninput=renderPaper;
@@ -290,8 +323,9 @@ $('replay-policy').onchange=e=>{state.replayPolicy=e.target.value;renderAll();};
 $('rollout-video').ontimeupdate=syncVideo;$('rollout-video').onseeked=syncVideo;
 $('rollout-video').onplay=()=>{state.playing=true;$('play').textContent='Ⅱ';$('play').setAttribute('aria-label','Pause recorded-policy replay');cancelAnimationFrame(animation);if(state.replay?.videoSegment)animation=requestAnimationFrame(watchVideoSegment);};
 $('rollout-video').onpause=()=>{const v=$('rollout-video'),r=state.replay;state.playing=false;cancelAnimationFrame(animation);if(!v.hidden&&r?.videoSegment&&state.playbackWanted&&state.page==='explore'){const {start,end,fps}=segmentWindow(r);if(v.currentTime>=end-.5/fps){v.currentTime=start;v.play().catch(()=>{});return;}}$('play').textContent='▶';$('play').setAttribute('aria-label','Play recorded-policy replay');};
-window.addEventListener('hashchange',()=>{state.page=location.hash.slice(1);showPage();if(state.page==='explore'&&state.study&&!state.replay)loadReplay();});
-document.querySelectorAll('[data-page]').forEach(a=>a.onclick=()=>{state.page=a.dataset.page;showPage();});
+window.addEventListener('hashchange',()=>{state.page=location.hash.slice(1);showPage(true);if(state.page==='explore'&&state.study&&!state.replay)loadReplay();});
+window.addEventListener('popstate',()=>{params=new URLSearchParams(location.search);state.page=location.hash.slice(1)||'returns';const id=params.get('study');if(state.catalog?.studies.some(s=>s.id===id))chooseStudy(id,true);});
+document.querySelectorAll('[data-page]').forEach(a=>a.onclick=e=>{e.preventDefault();if(state.page!==a.dataset.page){const u=new URL(location.href);u.hash=a.dataset.page;history.pushState(null,'',u);}state.page=a.dataset.page;showPage();});
 $('share').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);$('toast').textContent='Comparison link copied';$('toast').classList.add('visible');setTimeout(()=>$('toast').classList.remove('visible'),2000);}catch{$('toast').textContent='Copy the current address to share this comparison';$('toast').classList.add('visible');}};
 $('download').onclick=()=>{const rows=[['study','environment','algorithm','family','setting','axis','value','mean_return','sample_sd','measured_policies']];for(const [model,ps] of Object.entries(state.axis.curves))for(const p of ps)rows.push([state.study.id,state.study.environment,state.study.algorithm,state.study.family,model,state.axis.id,p.x,p.mean,p.sd,p.n]);const csv=rows.map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\n');const u=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));const a=document.createElement('a');a.href=u;a.download=state.study.id+'-'+state.axis.id+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(u),200);};
 
@@ -299,5 +333,5 @@ try{
   const r=await fetch('data/catalog.json?v='+build);if(!r.ok)throw Error('Could not load the saved result catalog');state.catalog=await r.json();
   $('catalog-summary').textContent=`${state.catalog.studies.length} saved study groups · ${state.catalog.studies.reduce((n,s)=>n+s.axisCount,0)} perturbation axes · exported ${state.catalog.updated}.`;
   $('sources').replaceChildren(...state.catalog.sources.map(source=>{const row=document.createElement('div');row.className='source-row';row.textContent=source.path;const hash=document.createElement('span');hash.textContent='SHA256 '+source.sha256;row.append(hash);return row;}));
-  renderPaper();const initial=state.catalog.studies.find(s=>s.id===params.get('study'))?.id||'ppo_tv_pickcube_20261028';await chooseStudy(initial,true);
+  renderPaper();const initial=state.catalog.studies.find(s=>s.id===params.get('study'))?.id||'ppo_tv_walker';await chooseStudy(initial,true);
 }catch(error){$('loading').textContent='Results could not be loaded. '+error.message;console.error(error);}
