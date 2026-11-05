@@ -1,4 +1,4 @@
-import {escape as esc,fmt,label,activeModel,axisLabel} from './model.mjs?v=20261104-library1';
+import {escape as esc,fmt,label,activeModel,axisLabel,bestModelOnAxis} from './model.mjs?v=20261104-library1';
 import {summarize,rawReliability} from './appendix-metrics.mjs';
 import {normalizedSurvival} from './browser-metrics.mjs';
 import {segmentWindow,segmentSource,segmentFrame,segmentTime} from './video-segment.mjs';
@@ -6,7 +6,7 @@ import {episodeTraceSVG} from './replay-chart.mjs';
 
 const root=typeof document==='undefined'?null:document.getElementById('environment-page'),$=id=>document.getElementById(id);
 const cache=new Map(),colors=['#003087','#d94b24'];
-let library,environment,cohort,data,policy,model,axis,ticket=0,mediaTicket=0,animation;
+let library,environment,cohort,data,policy,model,axis,selection='fixed',ticket=0,mediaTicket=0,animation;
 const query=()=>new URLSearchParams(location.search);
 const display=x=>x===null?'N/A':fmt(x,Math.abs(x)<1?3:1);
 export const belongsTo=(entry,text,source,scope)=>
@@ -43,6 +43,7 @@ function remember(){
   if(cohort)u.searchParams.set('cohort',cohort.id);
   if(model)u.searchParams.set('parameter',model);
   if(axis)u.searchParams.set('shift',axis.id);
+  if(selection==='best')u.searchParams.set('selection','best');
   history.replaceState(null,'',u.pathname+u.search+'#environments');
 }
 async function json(path){if(!cache.has(path)){const r=await fetch(path);if(!r.ok)throw Error('Unavailable: '+path);cache.set(path,await r.json());}return cache.get(path);}
@@ -66,7 +67,7 @@ function directory(){
   if(!entries.length){pause();++ticket;$('env-detail').innerHTML='<p class="env-unavailable">No environment matches these filters.</p>';}
 }
 async function selectEnvironment(id,initial=false){
-  pause();environment=library.entries.find(e=>e.id===id)||library.entries[0];cohort=null;axis=null;model=null;directory();
+  pause();environment=library.entries.find(e=>e.id===id)||library.entries[0];cohort=null;axis=null;model=null;selection='fixed';directory();
   const entry=environment;
   $('env-detail').innerHTML=`<header class="env-title"><div><h2>${esc(entry.name)}</h2><p>${esc(entry.framework)} <span aria-hidden="true">/</span> ${esc(entry.simulator)}</p></div><span class="env-stage">${entry.stage==='main'?'Main campaign':entry.stage==='pilot'?'Pilot':'Earlier development'}</span></header>
     <p class="env-task-id">${entry.taskIds.map(esc).join(' / ')}</p>
@@ -88,19 +89,31 @@ async function selectCohort(id,initial=false){
     data=nextData;policy=nextPolicy;
     model=initial&&data.models.includes(query().get('parameter'))?query().get('parameter'):activeModel(data.models)||data.baseline;
     axis=data.axes.find(a=>a.id===(initial?query().get('shift'):null))||data.axes[0];
+    selection=initial&&query().get('selection')==='best'?'best':'fixed';
     $('env-coverage').textContent=`${cohort.models.length} settings · ${cohort.axisCount} axes · ${cohort.intendedPolicies} intended policies / setting${cohort.gridComplete===false?' · grid incomplete':''}`;
     $('env-results').innerHTML=`<div class="env-comparison-controls"><label>Setting<select id="env-setting">${data.models.map(m=>`<option value="${esc(m)}">${esc(label(m))}</option>`).join('')}</select></label><label>Perturbation<select id="env-shift">${data.axes.map(a=>`<option value="${a.id}">${esc(a.title)}</option>`).join('')}</select></label></div>
+      <div class="env-cap-selection"><button id="env-best-cap" type="button" class="text-button" aria-pressed="false" aria-describedby="env-cap-note"></button><span id="env-cap-note"></span></div>
       <div class="env-plots"><section><div class="env-section-heading"><h3>Return curve</h3><a id="env-open-curves">All curves ↗</a></div><div id="env-curve"></div><div id="env-legend" class="env-legend"></div></section><section><div class="env-section-heading"><h3 id="env-metric-title">Return reliability</h3><a id="env-open-metrics">All metrics ↗</a></div><div id="env-reliability"></div><div id="env-metric-summary" class="env-metric-summary"></div></section></div>
       <p id="env-plot-note" class="env-evidence-note"></p>
       <section class="env-media"><div class="env-section-heading"><h3>Policy rollout</h3><a id="env-open-replay">Full rollout explorer ↗</a></div><div class="env-media-controls"><label>Recorded policy<select id="env-replay-model"></select></label><label>Recorded condition<select id="env-replay-point"></select></label></div><p id="env-media-status" role="status"></p><div id="env-media-body"><div><video id="env-video" playsinline muted controls preload="metadata" hidden aria-label="Same-cohort recorded policy"></video><label class="env-video-scrub" id="env-video-scrub" hidden>Episode<input id="env-video-frame" type="range" min="0" max="1" value="0" aria-label="Recorded episode frame"><output id="env-video-time"></output></label></div><div id="env-episode-trace"></div></div><p id="env-media-note" class="env-evidence-note"></p></section>
       <div class="env-artifacts"><a id="env-policies" download>Policy summaries CSV ↓</a><a id="env-figures">Saved PDF figures ↗</a>${cohort.archive?`<a href="${cohort.archive}" download>Overleaf package ↓</a>`:''}<a id="env-seeds">Training seeds ↗</a></div><details class="env-provenance"><summary>Cohort and interpretation</summary><p>${esc(data.note)}</p><p>Same setting across axes; sample SD, not a confidence interval. Return reliability is not physical task success. Failed runs receive no invented returns. Video coverage is cohort-specific.</p><code>${esc(data.id)}</code></details>`;
     $('env-setting').value=model;$('env-shift').value=axis.id;
-    $('env-setting').onchange=()=>{model=$('env-setting').value;renderComparison();};
+    $('env-setting').onchange=()=>{selection='fixed';model=$('env-setting').value;renderComparison();};
     $('env-shift').onchange=()=>{axis=data.axes.find(a=>a.id===$('env-shift').value);renderComparison();};
+    $('env-best-cap').onclick=()=>{selection='best';renderComparison();};
     renderComparison();
   }catch(e){if(job===ticket)$('env-results').innerHTML=`<p class="env-unavailable" role="alert">${esc(e.message)}</p>`;}
 }
 function renderComparison(){
+  const best=bestModelOnAxis(data,axis);
+  if(selection==='best'&&best)model=best;
+  if(!best)selection='fixed';
+  $('env-setting').value=model;
+  $('env-best-cap').textContent=best?'Best cap: '+label(best):'No active cap';
+  $('env-best-cap').disabled=!best;
+  $('env-best-cap').setAttribute('aria-pressed',String(selection==='best'));
+  $('env-best-cap').title='Select the active setting with the highest mean return over this perturbation grid; controls are excluded.';
+  $('env-cap-note').textContent=selection==='best'?'Best per axis · ex post mean-return selection':'Fixed setting';
   pause();remember();const models=[...new Set([data.baseline,model])];
   $('env-curve').innerHTML=previewChart(models.map(m=>({name:label(m),points:axis.curves[m].map(p=>({x:p.x,y:p.mean,sd:p.sd}))})),axisLabel(axis,data.environment),'Episode-mean return',{bands:true,nominal:axis.nominal});
   $('env-legend').innerHTML=models.map((m,i)=>`<span style="--series:${colors[i]}">${esc(label(m))}</span>`).join('');
