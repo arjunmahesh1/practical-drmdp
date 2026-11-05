@@ -1,0 +1,41 @@
+{
+  "datePacific": "2026-11-04",
+  "source": "Direct human clarification in this chat",
+  "mapping": {
+    "Dataset A": "DoublePendulum",
+    "Dataset B": "Pendulum"
+  },
+  "sourceFolders": {
+    "json": "DoublePendulum",
+    "json 2": "Pendulum"
+  },
+  "documentationCorrection": "The user confirms perturbations.md is wrong. Its environment description is not authoritative for dataset identity; original supplied files are preserved unchanged.",
+  "scope": "Environment names only; exact environment IDs/versions, simulator, algorithm and row/seed identities are not established by this clarification.",
+  "metricValuesUnchanged": true,
+  "allNumericFieldsUnchanged": true,
+  "originalMetricsSha256": "f2ce0e0c0b9f4d3081be9fb71395a7092e007d94195084e4e0642017bd2821e7",
+  "correctedMetricsSha256": "854c38b63073f2be1a736d8b3322218cfa16a4d0dbaff7c075f05861c890ae73",
+  "csvPreservation": {
+    "setting_summary.csv": {
+      "rows": 20,
+      "beforeSha256": "5fd5c6d7f273d4697dd47f4c0dc876d988245ef741142571e4b8de6d82175d9c",
+      "afterSha256": "de9a1611d0e293eb2d9a12b441571fbe7560e6551cd03ea70e3f01fc810e948b",
+      "onlyDatasetColumnChanged": true
+    },
+    "axis_summary.csv": {
+      "rows": 150,
+      "beforeSha256": "dba39924d7c3e719662ae1c7f444356521af929b89d5422ac33a6b6299197eee",
+      "afterSha256": "1a03decb715002e69257b057580cea7affb7b9b70b74666d79c9bfb4034cfa93",
+      "onlyDatasetColumnChanged": true
+    },
+    "reliability_curves.csv": {
+      "rows": 2020,
+      "beforeSha256": "c302f692b68b9084e7a2a307ec5e4549d078258ec0ed5816d99f17761acdc030",
+      "afterSha256": "58922864227082029f8397dd18ac7934e92d61e15e728660b883766295972f05",
+      "onlyDatasetColumnChanged": true
+    }
+  },
+  "staticFigureBytesUnchanged": true,
+  "rawSuppliedFilesEdited": false,
+  "newAnalysis": false
+}

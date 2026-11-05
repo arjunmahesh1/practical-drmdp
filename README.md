@@ -153,9 +153,11 @@ The published environment library includes 39 study cohorts, 552 indexed PDF
 figures, and five report bundles. Start at `#environments`, browse `#appendix`,
 or open `#reports` for return atlases, advanced metrics and Overleaf downloads.
 
-The separate `reports/return-reliability/index.html` report preserves neutral
-Dataset A/B labels. Environment mapping, algorithm and source-row identities
-remain unconfirmed. It is not counted as an independent 30-training-seed study.
+The separate `reports/return-reliability/index.html` report uses the confirmed
+mapping: DoublePendulum (Dataset A) and Pendulum (Dataset B). The original
+`perturbations.md` environment description is incorrect. Exact versions,
+simulator, algorithm and source-row identities remain unconfirmed. These
+supplied datasets are not counted as independent 30-training-seed studies.
 
 Existing study exports and recordings remain unchanged. New Isaac recordings
 are pending; no historical video is reassigned to a newer cohort. Availability

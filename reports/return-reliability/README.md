@@ -4,17 +4,26 @@ November 3, 2026. Local analysis of the two supplied return datasets.
 
 Open [the report](index.html). It needs no server or network connection.
 The first view contains all settings and their metrics.
-Figures use neutral dataset labels. No contributor name identifies a method.
+No contributor name identifies a method.
 
 ## Presentation
 
-Dataset A corresponds to the original `json` folder. Dataset B corresponds to `json 2`.
-These labels are temporary because the environment descriptions conflict.
+Confirmed by the user on November 4, 2026 Pacific:
+- **DoublePendulum** = Dataset A = original `json` folder.
+- **Pendulum** = Dataset B = original `json 2` folder.
+
+The user confirms that `perturbations.md` is wrong. Its environment description
+is superseded by this mapping; the supplied originals are preserved unchanged.
+Exact environment IDs/versions and simulator are not established by the names alone.
+Interactive selectors and CSV dataset labels now use the confirmed names.
+Existing static figures retain their Dataset A/B aliases with this explicit mapping.
+No returns, numerical metrics or figure pixels were changed or recomputed.
+See [the identity correction receipt](identity_correction.json).
 The supplied files do not establish SAC, standard SAC, or a particular SAC variant.
 TV and KL labels retain their supplied numeric values. They do not imply confirmed parameter units.
 
 The report includes 20 settings across two datasets and 150 setting-axis combinations.
-It preserves all 42,600 supplied values. The original intake and live website remain unchanged.
+It preserves all 42,600 supplied values. The original intake remains unchanged.
 The report does not combine these cohorts with earlier experiments.
 
 ## Metrics
@@ -55,7 +64,8 @@ Best-per-axis display is ex post. The report disables its synthetic suite aggreg
 ## Evidence Still Needed
 
 The [metadata request](clarifications.md) lists the questions to send with the source-folder mapping.
-The main gaps are algorithm identity, environment identity, seed identity, evaluation semantics, and intervention definitions.
+The remaining gaps are algorithm identity, exact environment IDs/versions and simulator,
+seed identity, evaluation semantics, and intervention definitions. The environment names are confirmed.
 
 Thirty supplied rows do not establish thirty independent training runs.
 Until row identities are confirmed, the report does not infer paired effects or cross-axis policy trajectories.
@@ -83,7 +93,9 @@ All 17 archived source-file hashes remain unchanged. All six PNGs were visually 
 Offline tests are not browser or responsive-layout verification.
 The previous browser access restriction was not bypassed; no real-browser QA is claimed.
 
-No new training, rollout, cluster operation, website change, upload, or deployment occurred.
+The original November 3 analysis performed no training, rollout, cluster operation,
+website change, upload or deployment. The November 4 identity correction changes
+labels and provenance only; the report is included in the published results website.
 The daily account monitor must not repeat this analysis or its tests.
 
 Sources: `sweeps/package_pendulum_metrics_20261103.py` and `sweeps/pendulum_metrics_report.html`.

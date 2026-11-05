@@ -1,11 +1,16 @@
-# Result Metadata Request
+# Confirmed Mapping And Remaining Metadata
 
-We can compute descriptive return metrics from the supplied files now.
-Please confirm these details so the final labels and seed-level analysis are correct.
+The user confirmed on November 4, 2026 Pacific:
+- Dataset A / original `json` folder is **DoublePendulum**.
+- Dataset B / original `json 2` folder is **Pendulum**.
 
-1. **Algorithm and environments:** Did standard SAC generate both folders? If not, name the exact variant.
+The user also confirms `perturbations.md` is wrong. Its environment description
+is superseded; the original supplied files remain preserved as received.
+This resolves the environment names, not the following implementation details.
+
+1. **Algorithm and exact versions:** Did standard SAC generate both folders? If not, name the exact variant.
    Please give the code revision and environment IDs/versions for `json` and `json 2`.
-   Both notes say `InvertedDoublePendulum-v5`, but the tentative folder mapping says Double Pendulum and Pendulum.
+   Please confirm the simulator/backend. The incorrect notes do not establish these details.
 2. **Rows and completeness:** Are the 30 rows independent training seeds, evaluation seeds, or episodes?
    Please provide seed IDs, row order across files/settings, and any failed or missing intended runs.
 3. **Evaluation and selection:** What does each entry aggregate, and over how many episodes?
