@@ -1,6 +1,6 @@
 import {label,escape as esc,fmt,activeModel} from './model.mjs?v=20261104-library1';
 import {mean,median,summarize,conditions,severity,rawReliability} from './appendix-metrics.mjs';
-import {visibleStudy,suppliedEnvironments} from './results-policy.mjs?v=20261105-flat1';
+import {visibleStudy,suppliedResults} from './results-policy.mjs?v=20261105-additions1';
 
 const $=id=>document.getElementById(id),root=$('appendix-root');
 const pages=['appendix','figures','reports'];
@@ -24,7 +24,7 @@ async function load(meta){if(!meta.file)throw Error('This study has no validated
 const links=s=>`<div class="inline-links"><a href="${href('returns',{study:s.id})}">Return curves</a><a href="${href('advanced',{study:s.id})}">Advanced metrics</a><a href="${href('advanced',{study:s.id,metric:'aggregate'})}">Cap comparison</a><a href="${href('seeds',{study:s.id})}">Seeds</a><a href="${href('explore',{study:s.id})}">Rollouts</a><a href="${href('figures',{study:s.id,figureStudy:s.id})}">Figures</a></div>`;
 
 function overview(){
-  const results=[...index.studies,...suppliedEnvironments.map(e=>({...e,environment:e.name,algorithm:'',family:'TV & KL',branch:''}))];
+  const results=[...index.studies,...suppliedResults.map(e=>({...e,environment:e.name,algorithm:'',family:'TV & KL'}))];
   root.innerHTML=`<div class="library-heading"><h1>Results index</h1><a href="#reports" data-open-reports>Reports & downloads ↗</a></div>
     <div class="filters library-filters"><label class="wide">Find a result<input id="study-search" type="search" placeholder="Environment or method..."></label><label>Algorithm<select id="study-algorithm"><option value="all">All algorithms</option>${[...new Set(index.studies.map(s=>s.algorithm))].map(a=>`<option>${esc(a)}</option>`).join('')}</select></label><label>Update<select id="study-family"><option value="all">TV & KL</option><option>TV</option><option>KL</option></select></label></div>
     <p id="study-match-count" class="page-note"></p><div id="study-index" class="table-scroll"></div>
@@ -41,8 +41,11 @@ function overview(){
 
 function reports(){
   const deliveries=(index.deliveries||[]).map(d=>d.id==='four-cell'?{...d,status:'Historical package · includes archived physical-support KL'}:d.id==='return-reliability'?{...d,title:'Inverted Pendulum / Inverted Double Pendulum',detail:'TV and KL return curves, reliability and lower-tail metrics.',status:'Published',url:'reports/return-reliability/index.html?v=20261105-flat1'}:d);
-  root.innerHTML=`<div class="library-heading"><div><span class="library-eyebrow">DELIVERIES</span><h1>Reports & downloads</h1><p class="library-subtitle">Return atlases, advanced metrics and manuscript-ready assets.</p></div><span class="review-status">November 4, 2026 release</span></div>
-    <div class="report-list">${deliveries.map(d=>`<section class="report-row" data-report="${esc(d.id)}"><div class="report-meta"><span>${esc(d.kind)}</span><time>${esc(d.date)}</time></div><div class="report-detail"><h2>${esc(d.title)}</h2><p>${esc(d.detail)}</p><span class="${d.status.includes('pending')?'coverage-pending':'status'}">${esc(d.status)}</span><div class="inline-links">${d.url?`<a href="${esc(d.url)}">Open report ↗</a>`:''}${d.pdf?`<a href="${esc(d.pdf)}" target="_blank" rel="noopener">PDF atlas</a>`:''}${d.archive?`<a href="${esc(d.archive)}" download>Overleaf ZIP ↓</a>`:''}${d.csv?`<a href="${esc(d.csv)}" download>Metrics CSV ↓</a>`:''}${d.clarification?`<a href="${esc(d.clarification)}">Pending metadata</a>`:''}</div>${d.studies?.length?`<details><summary>Included cohorts</summary><div class="inline-links">${[...new Set(d.studies)].map(id=>index.studies.find(s=>s.id===id)).filter(Boolean).map(s=>`<a href="${href('returns',{study:s.id})}">${esc(s.environment)} / ${esc(s.algorithm)}-${esc(s.family)}</a>`).join('')}</div></details>`:''}</div></section>`).join('')}</div>
+  deliveries.unshift({id:'pendulum-additions',kind:'Return curves & metrics',date:'2026-11-05',title:'Inverted Pendulum / Inverted Double Pendulum · additional axes',
+    detail:'16-axis Pendulum and 12-axis Double Pendulum sets. Twenty settings; separate from the earlier evaluations.',status:'Published',url:'reports/pendulum-additions/index.html?v=20261105-additions1',
+    archive:'reports/pendulum-additions/pendulum-additions.zip',csv:'reports/pendulum-additions/outputs/setting_summary.csv'});
+    root.innerHTML=`<div class="library-heading"><div><h1>Reports & downloads</h1><p class="library-subtitle">Return atlases, advanced metrics and manuscript-ready assets.</p></div></div>
+    <div class="report-list">${deliveries.map(d=>`<section class="report-row" data-report="${esc(d.id)}"><div class="report-meta"><span>${esc(d.kind)}</span><time>${esc(d.date)}</time></div><div class="report-detail"><h2>${esc(d.title)}</h2><p>${esc(d.detail)}</p><span class="${d.status.includes('pending')?'coverage-pending':'status'}">${esc(d.status)}</span><div class="inline-links">${d.url?`<a href="${esc(d.url)}">Open report ↗</a>`:''}${d.pdf?`<a href="${esc(d.pdf)}" target="_blank" rel="noopener">PDF atlas</a>`:''}${d.archive?`<a href="${esc(d.archive)}" download>${d.id==='pendulum-additions'?'Report ZIP':'Overleaf ZIP'} ↓</a>`:''}${d.csv?`<a href="${esc(d.csv)}" download>Metrics CSV ↓</a>`:''}${d.clarification?`<a href="${esc(d.clarification)}">Pending metadata</a>`:''}</div>${d.studies?.length?`<details><summary>Included cohorts</summary><div class="inline-links">${[...new Set(d.studies)].map(id=>index.studies.find(s=>s.id===id)).filter(Boolean).map(s=>`<a href="${href('returns',{study:s.id})}">${esc(s.environment)} / ${esc(s.algorithm)}-${esc(s.family)}</a>`).join('')}</div></details>`:''}</div></section>`).join('')}</div>
     `;
   for(const delivery of deliveries.filter(d=>d.urlLabel)){
     root.querySelector(`[data-report="${delivery.id}"] .inline-links a`).textContent=delivery.urlLabel+' ↗';

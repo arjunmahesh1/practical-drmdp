@@ -24,9 +24,9 @@ export function auditRows(rows,audit,mode='strongest'){
   if(r.role!=='robust')return [{...r,result:supportedLevel(r.gates,r.role)}];
   const choices=audit.comparisons[r.id];
   if(!choices){
-   const reason=r.dataset?'Policy-level inference needs independent training-policy identities for the supplied rows.':r.archived?'Archived configuration, outside the current audit.':'No eligible saved policy summary.';
+   const reason=r.evaluationReuse?'Additional evaluations of existing policies; these added axes need their own hierarchy assessment. Exact row mapping is not supplied.':r.dataset?'Policy-level inference needs independent training-policy identities for the supplied rows.':r.archived?'Archived configuration, outside the current audit.':'No eligible saved policy summary.';
    const gates=Object.fromEntries(['L1','L2','L3'].map(k=>[k,{status:'blocked',basis:'data limitation',note:reason}]));
-   return [{...r,gates,result:{code:'unassessed',label:r.dataset?'Policy identities needed':'Outside current audit'}}];
+   return [{...r,gates,result:{code:'unassessed',label:r.evaluationReuse?'New-axis audit pending':r.dataset?'Policy identities needed':'Outside current audit'}}];
   }
   const chosen=mode==='all'?choices:mode==='strongest'?[strongestComparison(choices)]:mode==='paper'?choices.filter(c=>c.reference===r.reference):
    mode==='standard'?choices.filter(c=>['vanilla','standard','non-robust'].includes(c.reference)):choices.filter(c=>c.reference===mode.replace('reference:',''));

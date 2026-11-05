@@ -1,0 +1,11 @@
+{
+  "datePacific": "2026-11-05",
+  "source": "Direct human reply in the main chat",
+  "statement": "Additional evals of earlier policies",
+  "additionalIndependentTrainingRuns": 0,
+  "reuseExistingPolicies": true,
+  "batchesRemainSeparate": true,
+  "crossBatchRowMappingEstablished": false,
+  "earlierHierarchyOutcomesTransferred": false,
+  "interpretation": "Additional deployment conditions, not 30 new training seeds per setting. Numeric row-to-policy mapping for these added files is not supplied."
+}

@@ -1,5 +1,5 @@
 import {escape as esc,fmt,label,activeModel,axisLabel,bestModelOnAxis,nearestPoint} from './model.mjs?v=20261104-library1';
-import {visibleStudy,suppliedEnvironments,resultEnvironments} from './results-policy.mjs?v=20261105-flat1';
+import {visibleStudy,suppliedEnvironments,resultEnvironments} from './results-policy.mjs?v=20261105-additions1';
 import {withRecordings,recordingOverlay,libraryRecordingCoverage} from './recording-overlay.mjs';
 import {summarize,rawReliability} from './appendix-metrics.mjs';
 import {normalizedSurvival} from './browser-metrics.mjs';
@@ -12,8 +12,8 @@ let library,environment,cohort,data,policy,model,axis,selection='fixed',conditio
 const query=()=>new URLSearchParams(location.search);
 const display=x=>x===null?'N/A':fmt(x,Math.abs(x)<1?3:1);
 export const belongsTo=(entry,text,source,scope)=>
-  (entry.name+' '+entry.framework+' '+entry.simulator+' '+entry.taskIds.join(' ')).toLowerCase().includes(text.toLowerCase())&&
-  (source==='all'||entry.simulator===source)&&(scope==='all'||entry.stage===scope);
+  (entry.name+' '+entry.framework+' '+entry.simulator+' '+(entry.availableSimulators||[]).join(' ')+' '+entry.taskIds.join(' ')).toLowerCase().includes(text.toLowerCase())&&
+  (source==='all'||entry.simulator===source||!!entry.availableSimulators?.includes(source))&&(scope==='all'||entry.stage===scope);
 
 export function previewChart(series,xlabel,ylabel,{unit=false,bands=false,nominal=null,current=null}={}){
   const points=series.flatMap(s=>s.points);
@@ -78,12 +78,8 @@ async function selectEnvironment(id,initial=false){
   const entry=environment;
   if(entry.report){
     const saved=initial?query().get('reportState'):null;
-    ++ticket;remember();
-    const report=new URL(entry.report,location.href);
-    report.searchParams.set('v','20261105-flat1');
-    if(saved){const state=new URLSearchParams(saved);if(state.get('dataset')===report.searchParams.get('dataset'))for(const key of ['view','setting','family','mode','axis','value','scope','measure','tail','threshold','bands'])if(state.has(key))report.searchParams.set(key,state.get(key));}
-    const full=new URL(report);full.searchParams.delete('embed');
-    $('env-detail').innerHTML=`<header class="env-title"><div><h2>${esc(entry.name)}</h2></div><a id="env-full-report" href="${esc(full.href)}" target="_blank" rel="noopener">Full report ↗</a></header><iframe class="env-supplied-report" title="${esc(entry.name)} return curves and advanced metrics" src="${esc(report.href)}"></iframe><details class="env-provenance"><summary>Data & source details</summary><p>The source tables contain 30 rows per condition. Algorithm, simulator version and training-seed IDs are not recorded in these files. No rollout recording is linked.</p></details>`;return;
+    const requested=initial?(query().get('batch')||new URLSearchParams(saved||'').get('dataset')):null;
+    ++ticket;remember();showSupplied(entry,requested,saved);return;
   }
   $('env-detail').innerHTML=`<header class="env-title"><div><h2>${esc(entry.name)}</h2><p>${esc(entry.framework)} <span aria-hidden="true">/</span> ${esc(entry.simulator)}</p></div></header>
     ${entry.cohorts.length?`<div class="env-cohort-control"><label>Method<select id="env-cohort">${entry.cohorts.map(s=>`<option value="${s.id}">${esc(s.algorithm+'-'+s.family+' / '+s.branch)}</option>`).join('')}</select></label><span id="env-coverage"></span></div><div id="env-results" role="status">Loading saved results...</div>`:
@@ -93,6 +89,18 @@ async function selectEnvironment(id,initial=false){
   $('env-cohort').value=entry.cohorts.some(c=>c.id===requested)?requested:entry.preferred||entry.cohorts[0].id;
   $('env-cohort').onchange=()=>selectCohort($('env-cohort').value);
   await selectCohort($('env-cohort').value,initial);
+}
+function showSupplied(entry,requested,saved=null){
+  const sets=entry.resultSets||[entry],chosen=sets.find(s=>s.dataset===requested)||sets.find(s=>s.simulator===$('env-source').value)||sets[0];
+  const report=new URL(chosen.report,location.href);
+  if(saved){const state=new URLSearchParams(saved);if(state.get('dataset')===chosen.dataset)for(const key of ['view','setting','family','mode','axis','value','scope','measure','tail','threshold','bands'])if(state.has(key))report.searchParams.set(key,state.get(key));}
+  const full=new URL(report);full.searchParams.delete('embed');
+  const u=new URL(location.href);u.searchParams.set('batch',chosen.dataset);u.searchParams.delete('reportState');if(saved&&new URLSearchParams(saved).get('dataset')===chosen.dataset)u.searchParams.set('reportState',saved);history.replaceState(null,'',u);
+  $('env-detail').innerHTML=`<header class="env-title"><div><h2>${esc(entry.name)}</h2></div><a id="env-full-report" href="${esc(full.href)}" target="_blank" rel="noopener">Full report ↗</a></header>
+    <div class="env-cohort-control"><label>Result set<select id="env-result-set">${sets.map(s=>`<option value="${esc(s.dataset)}">${esc(s.label||s.axisCount+' perturbations')}</option>`).join('')}</select></label></div>
+    <iframe class="env-supplied-report" title="${esc(entry.name)} return curves and advanced metrics" src="${esc(report.href)}"></iframe>
+    <details class="env-provenance"><summary>Data & source details</summary><p>Source: ${esc(chosen.dataset)}. Separate evaluation sets; rows are not pooled.${chosen.sourceNote?' '+esc(chosen.sourceNote)+' / MuJoCo, as identified by the supplied notes.':''} Algorithm and numeric training-seed IDs are unreported. No rollout recording is linked.</p>${chosen.sourceNote?'<p>The human confirms additional evaluations of earlier policies, not extra independent training runs. Exact row mapping for these added files is not supplied. Earlier L2/L3 decisions do not transfer to the new axes.</p>':'<p>The human confirmed independent policies and row identity within this original result set.</p>'}</details>`;
+  $('env-result-set').value=chosen.dataset;$('env-result-set').onchange=()=>showSupplied(entry,$('env-result-set').value);
 }
 async function selectCohort(id,initial=false){
   const job=++ticket;pause();cohort=environment.cohorts.find(s=>s.id===id);

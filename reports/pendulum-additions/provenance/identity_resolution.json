@@ -1,0 +1,35 @@
+{
+  "date_pacific": "2026-11-05",
+  "authority": "Direct human clarification: the earlier mapping matched the ZIP files, which were accurate. New folder mapping follows the direct human intake request.",
+  "mapping": {
+    "json": "Inverted Double Pendulum",
+    "json 2": "Inverted Pendulum",
+    "json 6": "Inverted Pendulum",
+    "json 7": "Inverted Double Pendulum"
+  },
+  "older_labels_changed": false,
+  "numeric_values_changed": false,
+  "batches_merged": false,
+  "cross_batch_policy_identity_verified": false,
+  "nominal_vector_overlap": [
+    {
+      "older_batch": "json",
+      "newer_batch": "json 6",
+      "newer_columns": "Pure-axis nominal columns",
+      "exactly_matching_settings": 9,
+      "settings_compared": 10,
+      "remaining_setting": "KL-100",
+      "remaining_maximum_absolute_difference": 0.03333333333335986
+    },
+    {
+      "older_batch": "json 2",
+      "newer_batch": "json 7",
+      "newer_columns": "damping and friction nominal columns",
+      "exactly_matching_settings": 10,
+      "settings_compared": 10,
+      "maximum_absolute_difference": 0
+    }
+  ],
+  "interpretation": "The nominal overlaps remain an unresolved source-provenance question, not a basis for changing the human's environment mapping. Do not pool rows, infer 60 independent policies, or transfer hierarchy decisions across batches.",
+  "publication": "Local intake and website handoff only; no active website checkout or live deployment modified. This clarification supersedes the pending older-label question in the earlier delivery receipt."
+}

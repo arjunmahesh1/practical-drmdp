@@ -1,0 +1,761 @@
+{
+  "version": "20261105-additions1",
+  "report": "reports/pendulum-additions/index.html",
+  "entries": [
+    {
+      "environment": "pendulum",
+      "environment_id": "InvertedPendulum-v5",
+      "batch": "json6",
+      "source_folder": "json 6",
+      "label": "Inverted Pendulum",
+      "settings": [
+        "non-robust",
+        "TV-75",
+        "TV-80",
+        "TV-85",
+        "TV-90",
+        "KL-70",
+        "KL-80",
+        "KL-90",
+        "KL-100",
+        "KL-110"
+      ],
+      "axis_count": 16,
+      "reference": 500,
+      "rows_per_condition": 30,
+      "algorithm": null,
+      "training_seed_ids_verified": false
+    },
+    {
+      "environment": "doublependulum",
+      "environment_id": "InvertedDoublePendulum-v5",
+      "batch": "json7",
+      "source_folder": "json 7",
+      "label": "Inverted Double Pendulum",
+      "settings": [
+        "non-robust",
+        "TV-70",
+        "TV-75",
+        "TV-80",
+        "TV-85",
+        "KL-70",
+        "KL-80",
+        "KL-90",
+        "KL-100",
+        "KL-110"
+      ],
+      "axis_count": 12,
+      "reference": 4679.238089825532,
+      "rows_per_condition": 30,
+      "algorithm": null,
+      "training_seed_ids_verified": false
+    }
+  ],
+  "rows": [
+    {
+      "id": "supplied-json6|non-robust",
+      "study": null,
+      "dataset": "json6",
+      "environment": "Inverted Pendulum",
+      "algorithm": "",
+      "family": "Reference",
+      "branch": "16 perturbations · json 6",
+      "model": "non-robust",
+      "settingLabel": "Standard (reference)",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "reference",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json6|TV-75",
+      "study": null,
+      "dataset": "json6",
+      "environment": "Inverted Pendulum",
+      "algorithm": "",
+      "family": "TV",
+      "branch": "16 perturbations · json 6",
+      "model": "TV-75",
+      "settingLabel": "TV 75",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json6|TV-80",
+      "study": null,
+      "dataset": "json6",
+      "environment": "Inverted Pendulum",
+      "algorithm": "",
+      "family": "TV",
+      "branch": "16 perturbations · json 6",
+      "model": "TV-80",
+      "settingLabel": "TV 80",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json6|TV-85",
+      "study": null,
+      "dataset": "json6",
+      "environment": "Inverted Pendulum",
+      "algorithm": "",
+      "family": "TV",
+      "branch": "16 perturbations · json 6",
+      "model": "TV-85",
+      "settingLabel": "TV 85",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json6|TV-90",
+      "study": null,
+      "dataset": "json6",
+      "environment": "Inverted Pendulum",
+      "algorithm": "",
+      "family": "TV",
+      "branch": "16 perturbations · json 6",
+      "model": "TV-90",
+      "settingLabel": "TV 90",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json6|KL-70",
+      "study": null,
+      "dataset": "json6",
+      "environment": "Inverted Pendulum",
+      "algorithm": "",
+      "family": "KL",
+      "branch": "16 perturbations · json 6",
+      "model": "KL-70",
+      "settingLabel": "KL 70",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json6|KL-80",
+      "study": null,
+      "dataset": "json6",
+      "environment": "Inverted Pendulum",
+      "algorithm": "",
+      "family": "KL",
+      "branch": "16 perturbations · json 6",
+      "model": "KL-80",
+      "settingLabel": "KL 80",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json6|KL-90",
+      "study": null,
+      "dataset": "json6",
+      "environment": "Inverted Pendulum",
+      "algorithm": "",
+      "family": "KL",
+      "branch": "16 perturbations · json 6",
+      "model": "KL-90",
+      "settingLabel": "KL 90",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json6|KL-100",
+      "study": null,
+      "dataset": "json6",
+      "environment": "Inverted Pendulum",
+      "algorithm": "",
+      "family": "KL",
+      "branch": "16 perturbations · json 6",
+      "model": "KL-100",
+      "settingLabel": "KL 100",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json6|KL-110",
+      "study": null,
+      "dataset": "json6",
+      "environment": "Inverted Pendulum",
+      "algorithm": "",
+      "family": "KL",
+      "branch": "16 perturbations · json 6",
+      "model": "KL-110",
+      "settingLabel": "KL 110",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json7|non-robust",
+      "study": null,
+      "dataset": "json7",
+      "environment": "Inverted Double Pendulum",
+      "algorithm": "",
+      "family": "Reference",
+      "branch": "12 perturbations · json 7",
+      "model": "non-robust",
+      "settingLabel": "Standard (reference)",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "reference",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json7|TV-70",
+      "study": null,
+      "dataset": "json7",
+      "environment": "Inverted Double Pendulum",
+      "algorithm": "",
+      "family": "TV",
+      "branch": "12 perturbations · json 7",
+      "model": "TV-70",
+      "settingLabel": "TV 70",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json7|TV-75",
+      "study": null,
+      "dataset": "json7",
+      "environment": "Inverted Double Pendulum",
+      "algorithm": "",
+      "family": "TV",
+      "branch": "12 perturbations · json 7",
+      "model": "TV-75",
+      "settingLabel": "TV 75",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json7|TV-80",
+      "study": null,
+      "dataset": "json7",
+      "environment": "Inverted Double Pendulum",
+      "algorithm": "",
+      "family": "TV",
+      "branch": "12 perturbations · json 7",
+      "model": "TV-80",
+      "settingLabel": "TV 80",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json7|TV-85",
+      "study": null,
+      "dataset": "json7",
+      "environment": "Inverted Double Pendulum",
+      "algorithm": "",
+      "family": "TV",
+      "branch": "12 perturbations · json 7",
+      "model": "TV-85",
+      "settingLabel": "TV 85",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json7|KL-70",
+      "study": null,
+      "dataset": "json7",
+      "environment": "Inverted Double Pendulum",
+      "algorithm": "",
+      "family": "KL",
+      "branch": "12 perturbations · json 7",
+      "model": "KL-70",
+      "settingLabel": "KL 70",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json7|KL-80",
+      "study": null,
+      "dataset": "json7",
+      "environment": "Inverted Double Pendulum",
+      "algorithm": "",
+      "family": "KL",
+      "branch": "12 perturbations · json 7",
+      "model": "KL-80",
+      "settingLabel": "KL 80",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json7|KL-90",
+      "study": null,
+      "dataset": "json7",
+      "environment": "Inverted Double Pendulum",
+      "algorithm": "",
+      "family": "KL",
+      "branch": "12 perturbations · json 7",
+      "model": "KL-90",
+      "settingLabel": "KL 90",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json7|KL-100",
+      "study": null,
+      "dataset": "json7",
+      "environment": "Inverted Double Pendulum",
+      "algorithm": "",
+      "family": "KL",
+      "branch": "12 perturbations · json 7",
+      "model": "KL-100",
+      "settingLabel": "KL 100",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    },
+    {
+      "id": "supplied-json7|KL-110",
+      "study": null,
+      "dataset": "json7",
+      "environment": "Inverted Double Pendulum",
+      "algorithm": "",
+      "family": "KL",
+      "branch": "12 perturbations · json 7",
+      "model": "KL-110",
+      "settingLabel": "KL 110",
+      "reference": "non-robust",
+      "referenceLabel": "Standard (reference)",
+      "role": "robust",
+      "archived": false,
+      "source": "reports/pendulum-additions/outputs/metrics.json",
+      "report": "reports/pendulum-additions/index.html",
+      "evaluationReuse": true,
+      "gates": {
+        "L1": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L2": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        },
+        "L3": {
+          "status": "blocked",
+          "basis": "additional evaluation axes",
+          "note": "Additional evaluations of existing policies. New axes need their own hierarchy assessment; earlier outcomes are not transferred."
+        }
+      }
+    }
+  ],
+  "sourceValueCount": 76200,
+  "policyRowsPooled": false,
+  "algorithmMapping": null,
+  "additionalEvaluationsOfExistingPolicies": true,
+  "identityResolution": "reports/pendulum-additions/provenance/identity_resolution.json"
+}

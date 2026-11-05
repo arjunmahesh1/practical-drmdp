@@ -1,13 +1,13 @@
 import {escape as esc,fmt} from './model.mjs';
 import {matchesSetting,settingsCSV} from './setting-hierarchy.mjs?v=20261105-audit1';
-import {auditRows} from './hierarchy-audit.mjs?v=20261105-pendulum1';
-let inventory,audit;
+import {auditRows} from './hierarchy-audit.mjs?v=20261105-additions1';
+let inventory,audit,additions;
 const levels=['L1','L2','L3'];
 const titles={pass:'Pass',fail:'Not established',borderline:'Borderline',unassessed:'No saved test',blocked:'Unavailable',inconclusive:'Inconclusive'};
 const number=x=>Number.isFinite(x)?fmt(x,x!==0&&Math.abs(x)<.01?6:3):'N/A';
 const ci=x=>x?`${number(x[0])} [${number(x[1])}, ${number(x[2])}]`:'N/A';
 function comparison(row,view='advanced',axis=null){
- if(row.dataset){const selectedAxis=axis||(row.result.code==='L2'?row.gates.L2.tests?.find(t=>t.L2&&t.eligible)?.axis:null);return 'reports/return-reliability/index.html?'+new URLSearchParams({v:'20261105-pendulum1',dataset:row.dataset,view:view==='returns'?'returns':'comparison',mode:'fixed',setting:row.model,...selectedAxis?{axis:selectedAxis}:{}});}
+ if(row.dataset){const selectedAxis=axis||(row.result.code==='L2'?row.gates.L2.tests?.find(t=>t.L2&&t.eligible)?.axis:null);return (row.report||'reports/return-reliability/index.html')+'?'+new URLSearchParams({v:'20261105-additions1',dataset:row.dataset,view:view==='returns'?'returns':'comparison',mode:'fixed',setting:row.model,...selectedAxis?{axis:selectedAxis}:{}});}
  if(!row.study)return null;
  const scope=axis||view!=='advanced'?'axis':row.result.code==='L3'?'suite':row.result.code==='L2'?'axis':'nominal';
  const selectedAxis=axis||(row.result.code==='L2'?row.gates.L2.tests?.find(t=>t.L2&&t.eligible)?.axis:null);
@@ -34,8 +34,9 @@ function evidence(row){
 export async function showSettings(root,openView,active=()=>true){
  if(!inventory){const r=await fetch('data/hierarchy/settings.json?v=20261105-flat1');if(!r.ok)throw Error('Setting inventory unavailable');inventory=await r.json();}
  if(!audit){const r=await fetch('data/hierarchy/assessments.json?v=20261105-pendulum1');if(!r.ok)throw Error('All-setting assessment unavailable');audit=await r.json();}
+ if(!additions){const r=await fetch('data/pendulum-additions.json?v=20261105-additions1');if(!r.ok)throw Error('Additional evaluation index unavailable');additions=await r.json();}
  if(!active())return;
- const q=new URLSearchParams(location.search),$=id=>root.querySelector('#'+id),sourceRows=inventory.rows.filter(r=>r.model);
+ const q=new URLSearchParams(location.search),$=id=>root.querySelector('#'+id),sourceRows=[...inventory.rows,...additions.rows].filter(r=>r.model);
  root.innerHTML=`<div class="library-heading"><h1>Results by setting</h1><a href="data/hierarchy/assessments.csv" download>All comparisons CSV ↓</a></div>
  <div class="metric-tabs" role="tablist" aria-label="Hierarchy views"><button role="tab" data-overview aria-selected="true">All settings</button><button role="tab" data-level="L1" aria-selected="false">Nominal summaries</button><button role="tab" data-level="L2" aria-selected="false">Whole-axis summaries</button><button role="tab" data-level="L3" aria-selected="false">Suite summaries</button></div>
  <p class="evidence-caution">Highest supported level under the paper’s exploratory tests. Levels are cumulative; L1 is qualitative. L2 needs a shift repair and whole-axis return guardrail; L3 needs one fixed setting across the full suite. Inconclusive does not mean failed, and unavailable rows state the missing requirement.</p>
@@ -48,7 +49,7 @@ export async function showSettings(root,openView,active=()=>true){
  <p>${Object.keys(audit.comparisons).length} active settings, ${Object.values(audit.comparisons).flat().length} fixed-reference comparisons. Every eligible shift is evaluated for each setting; the analysis is no longer limited to previously selected caps. L2/L3 use 10,000 whole-policy bootstrap resamples and a 5% mean-return margin. L1 has no numerical tolerance.</p>
  <p>Each new comparison uses its named comparator’s nominal median on each axis. The original saved paper tests used a fixed study reference and remain available as historical evidence; counts can differ. Matched policies are resampled together only for the explicitly paired historical comparisons. Other comparisons resample methods independently.</p>
  <p>Exploratory, unadjusted intervals across many settings and shifts are not independent confirmation. The strongest observed reference is chosen after seeing these results. A no-op comparison does not establish an advantage over vanilla. A weak control cannot rescue nominal incompetence. Nonpositive nominal references do not receive an invented normalized metric; unverified perturbation axes cannot certify a full suite.</p>
- <p>Pendulum rows are confirmed independently trained policies, with row identity preserved across axes and severities within each setting. Methods are resampled independently. Compound-axis zero is already shifted; its nominal anchor comes from a pure-axis unperturbed column. Suite results cover only the received conditions; some Double Pendulum physical scale factors remain unreported.</p>
+ <p>The original Pendulum sets have confirmed independently trained policies and matching row identity across axes. Methods are resampled independently. The additional 16-axis and 12-axis sets evaluate earlier policies, not extra training seeds. Those added axes need separate hierarchy assessments; earlier levels do not transfer. Compound-axis zero is already shifted. Suite results cover only the received conditions.</p>
  <a href="data/hierarchy/audit-protocol.md">Audit protocol</a> · <a href="data/hierarchy/pendulum-audit-protocol.md">Pendulum addendum</a> · <a href="data/hierarchy/assessments.json" download>All assessment data ↓</a> · <a href="data/hierarchy/settings.json" download>Original setting inventory ↓</a></details>`;
  for(const b of root.querySelectorAll('[data-level]'))b.onclick=()=>openView(b.dataset.level);
  const ids={environment:'settings-env',algorithm:'settings-algorithm',result:'settings-result'};
