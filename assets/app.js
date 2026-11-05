@@ -3,10 +3,11 @@ import {episodeTraceSVG} from './replay-chart.mjs?v=20261023-replayaxes1';
 import {segmentWindow,segmentFrame,segmentTime,segmentSource} from './video-segment.mjs?v=20261023-fullmatrix1';
 import {environments,parameterNote} from './environments.mjs?v=20261104-library1';
 import {visibleStudy,archivedStudies} from './results-policy.mjs';
+import {withRecordings} from './recording-overlay.mjs';
 
 const $=id=>document.getElementById(id);
 let params=new URLSearchParams(location.search);
-const build='20261104-flow1';
+const build='20261105-recordings1';
 const cache=new Map();
 const state={catalog:null,study:null,axis:null,model:null,reference:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||(params.has('study')?'returns':'environments'),bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
 let pendingStudy=0, pendingReplay=0, lastFrame=0, animation;
@@ -54,7 +55,7 @@ async function chooseStudy(id, initial=false) {
   const ticket=++pendingStudy;
   $('loading').hidden=false;
   try {
-    if(!cache.has(id)){const r=await fetch('data/'+id+'.json?v='+build);if(!r.ok)throw Error('Could not load '+id);cache.set(id,await r.json());}
+    if(!cache.has(id)){const r=await fetch('data/'+id+'.json?v='+build);if(!r.ok)throw Error('Could not load '+id);cache.set(id,await withRecordings(await r.json()));}
     if(ticket!==pendingStudy)return;
     const previous=state.axis?.id;
     state.study=cache.get(id);
@@ -265,6 +266,7 @@ async function loadReplay(){
       $('playback-status').textContent='Trained policy rollout';$('scene-tag').textContent=label(replayModel)+' · training seed '+replay.trainingSeed;
       $('scene-explanation').textContent='Episode seed '+replay.episodeSeed+' · return '+fmt(replay.returnValue)+'. '+state.axis.title+' '+factorLabel(state.axis,factor,state.study.environment)+'.';
       $('scene-note').textContent=(replay.loader==='maniskill_ppo'?'New CPU PhysX replay of the exact selected joint-delta checkpoint, with raw observations. Not a reproduction of the archived GPU evaluation episode.':'New deterministic replay of the selected trained checkpoint, '+(replay.normalizationMode==='none'?'with raw observations as in its original evaluation.':'with frozen normalization.'))+' One fixed training/episode seed, not the cohort mean. '+(replay.referenceMatched?'Archived episode return reproduced within tolerance.':replay.referenceEpisodeAvailable?'The replay return differs from the archived episode; it does not replace the saved result.':replay.loader==='maniskill_ppo'?'':'The original episode-level return was not available for exact comparison.')+' The main graph retains the original evaluation means.';
+      if(replay.recordingRevision)$('scene-note').textContent=replay.interpretation+' The main graph retains the original evaluation means.';
       $('frame').max=replay.timeline.length-1;
       let prepared=false;
       const prepare=()=>{

@@ -1,5 +1,6 @@
 import {escape as esc,fmt,label,activeModel,axisLabel,bestModelOnAxis,nearestPoint} from './model.mjs?v=20261104-library1';
 import {visibleStudy,suppliedEnvironments} from './results-policy.mjs';
+import {withRecordings,recordingOverlay,libraryRecordingCoverage} from './recording-overlay.mjs';
 import {summarize,rawReliability} from './appendix-metrics.mjs';
 import {normalizedSurvival} from './browser-metrics.mjs';
 import {segmentWindow,segmentSource,segmentFrame,segmentTime} from './video-segment.mjs';
@@ -91,7 +92,7 @@ async function selectCohort(id,initial=false){
   const job=++ticket;pause();cohort=environment.cohorts.find(s=>s.id===id);
   $('env-results').innerHTML='<p class="small" role="status">Loading saved results...</p>';
   try{
-    const nextData=await json('data/'+cohort.id+'.json');
+    const nextData=await withRecordings(await json('data/'+cohort.id+'.json'));
     const nextPolicy=await json('data/appendix/'+cohort.id+'.json');
     if(job!==ticket||location.hash!=='#environments')return;
     data=nextData;policy=nextPolicy;
@@ -200,7 +201,7 @@ async function route(){
   root.dataset.active=active?'1':'0';
   if(!active){pause();++ticket;return;}
   if(!location.hash){const u=new URL(location.href);u.hash='environments';history.replaceState(null,'',u);}
-  try{const original=await json('data/environments.json');library={...original,entries:[...original.entries.map(e=>({...e,cohorts:e.cohorts.filter(visibleStudy)})),...suppliedEnvironments]};evidence=await json('data/evidence-summary.json');shell();const requested=query().get('cohort')||query().get('study');await selectEnvironment(query().get('environment')||library.entries.find(e=>e.cohorts.some(c=>c.id===requested))?.id||'walker',true);}
+  try{const original=libraryRecordingCoverage(await json('data/environments.json'),await recordingOverlay());library={...original,entries:[...original.entries.map(e=>({...e,cohorts:e.cohorts.filter(visibleStudy)})),...suppliedEnvironments]};evidence=await json('data/evidence-summary.json');shell();const requested=query().get('cohort')||query().get('study');await selectEnvironment(query().get('environment')||library.entries.find(e=>e.cohorts.some(c=>c.id===requested))?.id||'walker',true);}
   catch(e){root.innerHTML=`<p role="alert">${esc(e.message)}</p>`;}
 }
 if(root){
