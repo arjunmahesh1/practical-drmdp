@@ -80,6 +80,7 @@ async function selectEnvironment(id,initial=false){
     const saved=initial?query().get('reportState'):null;
     ++ticket;remember();
     const report=new URL(entry.report,location.href);
+    report.searchParams.set('v','20261105-navigation1');
     if(saved){const state=new URLSearchParams(saved);if(state.get('dataset')===report.searchParams.get('dataset'))for(const key of ['view','setting','family','mode','axis','value','scope','measure','tail','threshold','bands'])if(state.has(key))report.searchParams.set(key,state.get(key));}
     const full=new URL(report);full.searchParams.delete('embed');
     $('env-detail').innerHTML=`<header class="env-title"><div><h2>${esc(entry.name)}</h2></div><a id="env-full-report" href="${esc(full.href)}" target="_blank" rel="noopener">Full report ↗</a></header><p class="env-evidence-note">Supplied returns; algorithm, backend and training-seed identities unconfirmed. No video available.</p><iframe class="env-supplied-report" title="${esc(entry.name)} return curves and advanced metrics" src="${esc(report.href)}"></iframe>`;return;
