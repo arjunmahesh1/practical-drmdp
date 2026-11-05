@@ -4,7 +4,7 @@ import {auditRows} from './hierarchy-audit.mjs?v=20261105-audit1';
 let inventory,audit;
 const levels=['L1','L2','L3'];
 const titles={pass:'Pass',fail:'Not established',borderline:'Borderline',unassessed:'No saved test',blocked:'Unavailable',inconclusive:'Inconclusive'};
-const number=x=>Number.isFinite(x)?fmt(x,3):'N/A';
+const number=x=>Number.isFinite(x)?fmt(x,x!==0&&Math.abs(x)<.01?6:3):'N/A';
 const ci=x=>x?`${number(x[0])} [${number(x[1])}, ${number(x[2])}]`:'N/A';
 function comparison(row,view='advanced',axis=null){
  if(row.dataset)return 'reports/return-reliability/index.html?'+new URLSearchParams({v:'20261105-flat1',dataset:row.dataset,view:'comparison',mode:'fixed',setting:row.model});
