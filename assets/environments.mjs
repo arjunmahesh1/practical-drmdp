@@ -7,7 +7,10 @@ export const environments = {
   LunarLander: {image:'https://gymnasium.farama.org/_images/lunar_lander.gif', credit:'Gymnasium nominal example', url:'https://gymnasium.farama.org/environments/box2d/lunar_lander/'}
 };
 
-export function parameterNote(environment, axis) {
+export function parameterNote(environment, axis, study=null) {
+  if(axis.startsWith('arm_command_')&&/end-effector/i.test((study?.branch||'')+' '+(study?.note||''))){
+    return parameterNote(environment,axis.replace('arm_command_','translation_'));
+  }
   const pick=environment.startsWith('PickCube');
   const notes={
     arm_command_gain:'Scales the arm joint-delta commands before clipping to the action bounds. The gripper-opening command is unchanged. Values are command multipliers, not metres.',

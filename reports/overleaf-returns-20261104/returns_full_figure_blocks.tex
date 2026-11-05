@@ -1,0 +1,424 @@
+\clearpage
+\subsection{NEW: Humanoid PPO--TV}
+Completed settings: ordinary standard and TV cap values 2, 2.5, 3, 4, 5, 6, each with 30 training seeds (1000--1029). The active setting is selected ex post for each axis by mean return over its full grid, including nominal. This is descriptive selection, not held-out evaluation. Returns and completion alone do not certify task success or robust success.
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_humanoid/action_delay.pdf}
+\caption{Action delay. Standard vs. TV cap 4.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_humanoid/action_noise.pdf}
+\caption{Gaussian action noise. Standard vs. TV cap 4.}
+\end{subfigure}
+\par\medskip
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_humanoid/action_replacement.pdf}
+\caption{Action replacement. Standard vs. TV cap 2.5.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_humanoid/contact_friction.pdf}
+\caption{Contact friction. Standard vs. TV cap 2.5.}
+\end{subfigure}
+\caption{Humanoid PPO--TV, axes 1--4. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-ppo-tv-humanoid-20261104-1}
+\end{figure}
+\clearpage
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_humanoid/motor_strength.pdf}
+\caption{Motor strength. Standard vs. TV cap 2.5.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_humanoid/payload_fraction.pdf}
+\caption{Added payload. Standard vs. TV cap 2.5.}
+\end{subfigure}
+\caption{Humanoid PPO--TV, axes 5--6. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-ppo-tv-humanoid-20261104-5}
+\end{figure}
+\clearpage
+
+\clearpage
+\subsection{NEW: ANYmal PPO--TV}
+Completed settings: ordinary standard and TV cap values 0, 1, 1.5, 2, 2.5, 3, 4, each with 30 training seeds (1000--1029). The active setting is selected ex post for each axis by mean return over its full grid, including nominal. This is descriptive selection, not held-out evaluation. Returns and completion alone do not certify task success or robust success.
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_anymal/action_delay.pdf}
+\caption{Action delay. Standard vs. TV cap 0.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_anymal/action_noise.pdf}
+\caption{Gaussian action noise. Standard vs. TV cap 1.5.}
+\end{subfigure}
+\par\medskip
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_anymal/action_replacement.pdf}
+\caption{Action replacement. Standard vs. TV cap 1.5.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_anymal/contact_friction.pdf}
+\caption{Contact friction. Standard vs. TV cap 2.5.}
+\end{subfigure}
+\caption{ANYmal PPO--TV, axes 1--4. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-ppo-tv-anymal-20261104-1}
+\end{figure}
+\clearpage
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_anymal/motor_strength.pdf}
+\caption{Motor strength. Standard vs. TV cap 0.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_anymal/payload_fraction.pdf}
+\caption{Added payload. Standard vs. TV cap 1.}
+\end{subfigure}
+\caption{ANYmal PPO--TV, axes 5--6. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-ppo-tv-anymal-20261104-5}
+\end{figure}
+\clearpage
+
+\clearpage
+\subsection{NEW: Ant TD3--TV}
+Completed settings: ordinary standard and TV cap values 10, 15, 25, 35, 50, 75, each with 30 training seeds (1000--1029). The active setting is selected ex post for each axis by mean return over its full grid, including nominal. This is descriptive selection, not held-out evaluation. Returns and completion alone do not certify task success or robust success.
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/td3_tv_ant/action_delay.pdf}
+\caption{Action delay. Standard vs. TV cap 35.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/td3_tv_ant/action_noise.pdf}
+\caption{Gaussian action noise. Standard vs. TV cap 25.}
+\end{subfigure}
+\par\medskip
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/td3_tv_ant/action_replacement.pdf}
+\caption{Action replacement. Standard vs. TV cap 25.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/td3_tv_ant/contact_friction.pdf}
+\caption{Contact friction. Standard vs. TV cap 25.}
+\end{subfigure}
+\caption{Ant TD3--TV, axes 1--4. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-td3-tv-ant-20261104-1}
+\end{figure}
+\clearpage
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/td3_tv_ant/motor_strength.pdf}
+\caption{Motor strength. Standard vs. TV cap 25.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/td3_tv_ant/payload_fraction.pdf}
+\caption{Added payload. Standard vs. TV cap 35.}
+\end{subfigure}
+\caption{Ant TD3--TV, axes 5--6. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-td3-tv-ant-20261104-5}
+\end{figure}
+\clearpage
+
+\clearpage
+\subsection{NEW: Drawer PPO--TV}
+Completed settings: ordinary standard and TV cap values 6, 8, 10, 12, 16, 24, each with 30 training seeds (1000--1029). The active setting is selected ex post for each axis by mean return over its full grid, including nominal. This is descriptive selection, not held-out evaluation. Returns and completion alone do not certify task success or robust success.
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_drawer/action_noise.pdf}
+\caption{Gaussian action noise. Standard vs. TV cap 12.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_drawer/action_replacement.pdf}
+\caption{Action replacement. Standard vs. TV cap 12.}
+\end{subfigure}
+\par\medskip
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_drawer/arm_strength.pdf}
+\caption{Arm strength. Standard vs. TV cap 12.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_drawer/drawer_damping.pdf}
+\caption{Drawer damping. Standard vs. TV cap 12.}
+\end{subfigure}
+\caption{Drawer PPO--TV, axes 1--4. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-ppo-tv-drawer-20261104-1}
+\end{figure}
+\clearpage
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_drawer/gripper_friction.pdf}
+\caption{Gripper friction. Standard vs. TV cap 12.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_drawer/object_friction.pdf}
+\caption{Object friction. Standard vs. TV cap 12.}
+\end{subfigure}
+\par\medskip
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_drawer/object_mass.pdf}
+\caption{Object mass. Standard vs. TV cap 12.}
+\end{subfigure}
+\caption{Drawer PPO--TV, axes 5--7. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-ppo-tv-drawer-20261104-5}
+\end{figure}
+\clearpage
+
+\clearpage
+\subsection{NEW: PickCube SAC--KL}
+Completed settings: ordinary standard and beta values 1, 3, 10, 30, each with 30 training seeds (1000--1029). The matching end-effector-delta, 1M-transition SAC reference is fixed. The KL-off control also has 30 seeds, is shown as a separate reference curve and retained in the data, but is not an active candidate or a certified native-parity result. Beta 0.1 and 0.3 each have 28 completed and two failed seeds; neither incomplete setting is plotted. All four failures remain in seed accounting. The active setting is selected ex post for each axis by mean return over its full grid, including nominal. This is descriptive selection, not held-out evaluation. Returns and completion alone do not certify task success or robust success.
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_kl_pickcube_20261028/arm_command_gain.pdf}
+\caption{Arm-command gain. Standard vs. $\beta=10$.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_kl_pickcube_20261028/arm_command_noise.pdf}
+\caption{Arm-command noise. Standard vs. $\beta=3$.}
+\end{subfigure}
+\par\medskip
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_kl_pickcube_20261028/arm_command_replacement.pdf}
+\caption{Arm-command replacement. Standard vs. $\beta=30$.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_kl_pickcube_20261028/contact_friction.pdf}
+\caption{Contact friction. Standard vs. $\beta=10$.}
+\end{subfigure}
+\caption{PickCube SAC--KL, axes 1--4. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals. The KL-off control is shown separately as a reference, not an active candidate.}
+\label{fig:returns-sac-kl-pickcube-20261028-20261104-1}
+\end{figure}
+\clearpage
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_kl_pickcube_20261028/cube_mass.pdf}
+\caption{Cube mass. Standard vs. $\beta=10$.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_kl_pickcube_20261028/goal_height.pdf}
+\caption{Goal height. Standard vs. $\beta=3$.}
+\end{subfigure}
+\caption{PickCube SAC--KL, axes 5--6. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals. The KL-off control is shown separately as a reference, not an active candidate.}
+\label{fig:returns-sac-kl-pickcube-20261028-20261104-5}
+\end{figure}
+\clearpage
+
+\clearpage
+\subsection{NEW: Ant SAC--TV}
+Completed settings: ordinary standard and TV cap values 50, 75, 100, 150, 200, 300, each with 30 training seeds (1000--1029). The active setting is selected ex post for each axis by mean return over its full grid, including nominal. This is descriptive selection, not held-out evaluation. Returns and completion alone do not certify task success or robust success.
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_tv_ant/action_delay.pdf}
+\caption{Action delay. Standard vs. TV cap 150.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_tv_ant/action_noise.pdf}
+\caption{Gaussian action noise. Standard vs. TV cap 300.}
+\end{subfigure}
+\par\medskip
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_tv_ant/action_replacement.pdf}
+\caption{Action replacement. Standard vs. TV cap 150.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_tv_ant/contact_friction.pdf}
+\caption{Contact friction. Standard vs. TV cap 150.}
+\end{subfigure}
+\caption{Ant SAC--TV, axes 1--4. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-sac-tv-ant-20261104-1}
+\end{figure}
+\clearpage
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_tv_ant/motor_strength.pdf}
+\caption{Motor strength. Standard vs. TV cap 300.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_tv_ant/payload_fraction.pdf}
+\caption{Added payload. Standard vs. TV cap 150.}
+\end{subfigure}
+\caption{Ant SAC--TV, axes 5--6. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-sac-tv-ant-20261104-5}
+\end{figure}
+\clearpage
+
+\clearpage
+\subsection{NEW: Pusher PPO--TV}
+Completed settings: ordinary standard and TV cap values -4, -3.5, -3, -2.8, -2.6, -2.4, -2.2, -2, each with 30 training seeds (1000--1029). Contact-friction levels have identical saved per-policy returns; the effectiveness of that intervention is unverified. The active setting is selected ex post for each axis by mean return over its full grid, including nominal. This is descriptive selection, not held-out evaluation. Returns and completion alone do not certify task success or robust success.
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_pusher/action_replacement.pdf}
+\caption{Action replacement. Standard vs. TV cap -2.6.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_pusher/actuator_strength.pdf}
+\caption{Actuator strength. Standard vs. TV cap -3.5.}
+\end{subfigure}
+\par\medskip
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_pusher/friction.pdf}
+\caption{Contact friction. Standard vs. TV cap -2.4. Intervention effect unverified.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_pusher/gaussian_action_noise.pdf}
+\caption{Gaussian action noise. Standard vs. TV cap -2.2.}
+\end{subfigure}
+\caption{Pusher PPO--TV, axes 1--4. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals. Friction-intervention effectiveness remains unverified.}
+\label{fig:returns-ppo-tv-pusher-20261104-1}
+\end{figure}
+\clearpage
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_pusher/goal_distance.pdf}
+\caption{Goal distance. Standard vs. TV cap -2.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_pusher/object_mass.pdf}
+\caption{Object mass. Standard vs. TV cap -3.5.}
+\end{subfigure}
+\caption{Pusher PPO--TV, axes 5--6. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-ppo-tv-pusher-20261104-5}
+\end{figure}
+\clearpage
+
+\clearpage
+\subsection{NEW: Pusher SAC--TV}
+Completed settings: ordinary standard and TV cap values -25, -23, -21, -20, -19, -18.5, -18, -17.5, each with 30 training seeds (1000--1029). Contact-friction levels have identical saved per-policy returns; the effectiveness of that intervention is unverified. The active setting is selected ex post for each axis by mean return over its full grid, including nominal. This is descriptive selection, not held-out evaluation. Returns and completion alone do not certify task success or robust success.
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_tv_pusher/action_replacement.pdf}
+\caption{Action replacement. Standard vs. TV cap -20.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_tv_pusher/actuator_strength.pdf}
+\caption{Actuator strength. Standard vs. TV cap -20.}
+\end{subfigure}
+\par\medskip
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_tv_pusher/friction.pdf}
+\caption{Contact friction. Standard vs. TV cap -18.5. Intervention effect unverified.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_tv_pusher/gaussian_action_noise.pdf}
+\caption{Gaussian action noise. Standard vs. TV cap -20.}
+\end{subfigure}
+\caption{Pusher SAC--TV, axes 1--4. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals. Friction-intervention effectiveness remains unverified.}
+\label{fig:returns-sac-tv-pusher-20261104-1}
+\end{figure}
+\clearpage
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_tv_pusher/goal_distance.pdf}
+\caption{Goal distance. Standard vs. TV cap -17.5.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/sac_tv_pusher/object_mass.pdf}
+\caption{Object mass. Standard vs. TV cap -17.5.}
+\end{subfigure}
+\caption{Pusher SAC--TV, axes 5--6. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-sac-tv-pusher-20261104-5}
+\end{figure}
+\clearpage
+
+\clearpage
+\subsection{NEW: Pusher TD3--TV}
+Completed settings: ordinary standard and TV cap values -28, -26, -24, -22, -20, -19, -18, -17, each with 30 training seeds (1000--1029). Contact-friction levels have identical saved per-policy returns; the effectiveness of that intervention is unverified. The active setting is selected ex post for each axis by mean return over its full grid, including nominal. This is descriptive selection, not held-out evaluation. Returns and completion alone do not certify task success or robust success.
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/td3_tv_pusher/action_replacement.pdf}
+\caption{Action replacement. Standard vs. TV cap -22.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/td3_tv_pusher/actuator_strength.pdf}
+\caption{Actuator strength. Standard vs. TV cap -22.}
+\end{subfigure}
+\par\medskip
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/td3_tv_pusher/friction.pdf}
+\caption{Contact friction. Standard vs. TV cap -17. Intervention effect unverified.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/td3_tv_pusher/gaussian_action_noise.pdf}
+\caption{Gaussian action noise. Standard vs. TV cap -24.}
+\end{subfigure}
+\caption{Pusher TD3--TV, axes 1--4. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals. Friction-intervention effectiveness remains unverified.}
+\label{fig:returns-td3-tv-pusher-20261104-1}
+\end{figure}
+\clearpage
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/td3_tv_pusher/goal_distance.pdf}
+\caption{Goal distance. Standard vs. TV cap -20.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/td3_tv_pusher/object_mass.pdf}
+\caption{Object mass. Standard vs. TV cap -17.}
+\end{subfigure}
+\caption{Pusher TD3--TV, axes 5--6. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-td3-tv-pusher-20261104-5}
+\end{figure}
+\clearpage
+
+\clearpage
+\subsection{NEW: Ant PPO--TV (cap 2 only)}
+Completed settings: ordinary standard and TV cap values 2, each with 30 training seeds (1000--1029). Only cap 2 is complete: this is not completion of the six-cap grid. The active setting is selected ex post for each axis by mean return over its full grid, including nominal. This is descriptive selection, not held-out evaluation. Returns and completion alone do not certify task success or robust success.
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_ant/action_delay.pdf}
+\caption{Action delay. Standard vs. TV cap 2.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_ant/action_noise.pdf}
+\caption{Gaussian action noise. Standard vs. TV cap 2.}
+\end{subfigure}
+\par\medskip
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_ant/action_replacement.pdf}
+\caption{Action replacement. Standard vs. TV cap 2.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_ant/contact_friction.pdf}
+\caption{Contact friction. Standard vs. TV cap 2.}
+\end{subfigure}
+\caption{Ant PPO--TV (cap 2 only), axes 1--4. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-ppo-tv-ant-20261104-1}
+\end{figure}
+\clearpage
+\begin{figure}[!htbp]\centering
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_ant/motor_strength.pdf}
+\caption{Motor strength. Standard vs. TV cap 2.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{\ReturnFigureRoot/ppo_tv_ant/payload_fraction.pdf}
+\caption{Added payload. Standard vs. TV cap 2.}
+\end{subfigure}
+\caption{Ant PPO--TV (cap 2 only), axes 5--6. Ordinary standard is fixed; the active parameter is selected ex post separately per axis. Lines show means and bands show $\pm 1$ sample standard deviation across thirty policy-level episode means, not confidence intervals.}
+\label{fig:returns-ppo-tv-ant-20261104-5}
+\end{figure}
+\clearpage

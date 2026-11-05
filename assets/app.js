@@ -1,15 +1,15 @@
-import {baselineColor,robustColor,fmt,escape as esc,label,activeModel,nearestPoint,bounds,factorLabel,gridMean,bestModelOnAxis,axisLabel,recordingCount} from './model.mjs?v=20261023-fullmatrix1';
+import {baselineColor,robustColor,fmt,escape as esc,label,activeModel,nearestPoint,bounds,factorLabel,gridMean,bestModelOnAxis,axisLabel,recordingCount} from './model.mjs?v=20261104-library1';
 import {episodeTraceSVG} from './replay-chart.mjs?v=20261023-replayaxes1';
 import {segmentWindow,segmentFrame,segmentTime,segmentSource} from './video-segment.mjs?v=20261023-fullmatrix1';
-import {environments,parameterNote} from './environments.mjs?v=20261029-pickcube1';
+import {environments,parameterNote} from './environments.mjs?v=20261104-library1';
 
 const $=id=>document.getElementById(id);
 let params=new URLSearchParams(location.search);
-const build='20261103-returns1';
+const build='20261104-library1';
 const cache=new Map();
-const state={catalog:null,study:null,axis:null,model:null,reference:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||'returns',bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
+const state={catalog:null,study:null,axis:null,model:null,reference:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||(params.has('study')?'returns':'environments'),bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
 let pendingStudy=0, pendingReplay=0, lastFrame=0, animation;
-const group=env=>env.split('-v')[0];
+const group=env=>env.includes('Anymal')?'ANYmal':env.includes('Humanoid')?'Humanoid':env.includes('Ant-Direct')?'Ant':env.includes('Open-Drawer')?'Drawer':env.split('-v')[0];
 const points=()=>state.axis.curves[state.reference];
 const selectedPoint=()=>state.axis.curves[state.model][state.index];
 const modelForAxis=axis=>state.selection==='best'?bestModelOnAxis(state.study,axis):state.model;
@@ -76,6 +76,7 @@ function chooseModel(model) {
   state.model=model==='best'?bestModelOnAxis(state.study,state.axis):model;renderAll();
 }
 function syncURL() {
+  if(state.page==='environments')return;
   const u=new URL(location.href);
   for(const [k,v] of Object.entries({study:state.study.id,axis:state.axis.id,reference:state.reference,setting:state.selection==='best'?'best':state.model,point:state.index}))u.searchParams.set(k,v);
   u.hash=state.page;
@@ -89,8 +90,8 @@ function syncURL() {
 function showPage(fromURL=false){
   if(state.page==='metrics')state.page='advanced';
   if(state.page==='evidence')state.page='appendix';
-  if(!['explore','returns','methods','appendix','advanced','seeds','figures'].includes(state.page))state.page='returns';
-  const appendixPage=['appendix','figures'].includes(state.page);
+  if(!['explore','returns','methods','appendix','advanced','seeds','figures','reports','environments'].includes(state.page))state.page='returns';
+  const appendixPage=['appendix','figures','reports'].includes(state.page);
   if(fromURL&&!appendixPage&&state.study){
     const current=new URLSearchParams(location.search),id=current.get('study');
     const changedAxis=current.has('axis')&&state.study.axes.some(a=>a.id===current.get('axis'))&&current.get('axis')!==state.axis.id;
@@ -100,9 +101,10 @@ function showPage(fromURL=false){
       params=current;chooseStudy(id,true);return;
     }
   }
-  document.querySelector('.workspace').hidden=appendixPage;
-  $('shared-controls').hidden=['appendix','methods'].includes(state.page);
-  document.querySelector('.result-tabs').hidden=state.page==='methods';
+  document.querySelector('.workspace').hidden=appendixPage||state.page==='environments';
+  $('shared-controls').hidden=['appendix','methods','reports','environments'].includes(state.page);
+  document.querySelector('.result-tabs').hidden=['methods','environments'].includes(state.page);
+  $('environment-page').hidden=state.page!=='environments';
   $('appendix-root').hidden=!appendixPage;
   $('analysis-page').hidden=!['advanced','seeds'].includes(state.page);
   for(const p of ['explore','returns','methods'])$(p+'-page').hidden=p!==state.page||!state.study;
@@ -140,7 +142,7 @@ function renderAll(){
   $('replay-policy').options[0].textContent=label(state.model);
   $('replay-policy').options[1].textContent=label(state.reference)+' / comparator';
   $('replay-policy').value=state.replayPolicy;
-  $('parameter-note').textContent=parameterNote(state.study.environment,state.axis.id);
+  $('parameter-note').textContent=parameterNote(state.study.environment,state.axis.id,state.study);
   syncURL();publishContext();if(state.page==='explore')loadReplay();
 }
 function svgChart(axis,mini=false,all=false){
@@ -239,13 +241,22 @@ async function loadReplay(){
   $('task-credit').hidden=Boolean(entry)||!media;
   if(media){if($('task-image').getAttribute('src')!==media.image)$('task-image').src=media.image;$('task-image').alt=state.study.environment+' task reference from official documentation, not our evaluated policy';$('task-credit').textContent=media.credit+' ↗';$('task-credit').href=media.url;}
   if(!entry){
+    if(!media){
+      $('replay-canvas').hidden=true;
+      $('playback-status').textContent='No linked rollout';
+      $('scene-tag').textContent=state.study.environment;
+      $('scene-explanation').textContent='No recorded rollout is linked to this cohort.';
+      $('scene-note').textContent='The return curves use saved evaluation summaries. No new rollout was recorded.';
+      $('frame-label').textContent='No linked trajectory';return;
+    }
     $('playback-status').textContent='Task reference · no linked rollout';$('scene-tag').textContent=state.study.environment+' · '+state.axis.title;
     $('scene-explanation').textContent='Reference image only. Not our policy and not a preview of the selected perturbation.';
     $('scene-note').textContent='Return markers use the saved evaluation data. Matching episode trajectories or videos have not been linked; the task reference does not change with severity.';
     $('frame-label').textContent='No linked trajectory';drawScene();return;
   }
   $('playback-status').textContent='Loading checkpoint replay…';
-  try{const r=await fetch(entry);if(!r.ok)throw Error('Replay unavailable');const replay=await r.json();if(ticket!==pendingReplay)return;state.replay=replay;
+  const replayEntry=state.catalog.localPreview&&entry.startsWith('assets/replays/')?'https://arjunmahesh1.github.io/practical-drmdp/'+entry:entry;
+  try{const r=await fetch(replayEntry);if(!r.ok)throw Error('Replay unavailable');const replay=await r.json();if(ticket!==pendingReplay)return;state.replay=replay;
     if(replay.kind==='video'){
       $('replay-canvas').hidden=true;$('task-image').hidden=true;
       $('playback-status').textContent='Trained policy rollout';$('scene-tag').textContent=label(replayModel)+' · training seed '+replay.trainingSeed;
@@ -265,7 +276,8 @@ async function loadReplay(){
       };
       video.onloadedmetadata=()=>{video.loop=!replay.videoSegment;prepare();};video.oncanplay=prepare;video.onprogress=prepare;video.onseeked=()=>{prepare();if(prepared)syncVideo();};
       video.onerror=()=>{if(ticket!==pendingReplay)return;stopReplay();$('play').disabled=true;$('frame').disabled=true;$('playback-status').textContent='Recording could not load';$('scene-note').textContent='The matching video could not be loaded. No other policy or severity has been substituted.';};
-      video.src=segmentSource(replay);video.load();return;
+      const videoSource=segmentSource(replay);
+      video.src=state.catalog.localPreview&&videoSource.startsWith('assets/replays/')?'https://arjunmahesh1.github.io/practical-drmdp/'+videoSource:videoSource;video.load();return;
     }
     $('playback-status').textContent='Saved-policy replay';$('scene-tag').textContent=label(state.model)+' · training seed '+replay.trainingSeed;
     $('scene-explanation').textContent='Episode '+replay.episodeSeed+' · return '+fmt(replay.return)+'. A checkpoint illustration; the plot uses the original evaluation cohort.';

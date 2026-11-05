@@ -3,9 +3,10 @@ export const robustColor = '#d94b24';
 export const fmt = (n, digits = 1) => Number(n).toLocaleString('en-US', { maximumFractionDigits: digits });
 export const escape = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function label(model) {
-  const fixed = {vanilla:'Standard',a1e9:'Inactive cap 1e9',tvc1e9:'Inactive cap 1e9',tvc500:'Inactive cap 500',tv_noop:'Inactive TV cap',rsc_noop:'RSC · augmentation off',ctxkl0:'Context KL · radius 0',ctxkluniform:'Uniform context',klprho0:'Risk-neutral ensemble',rsc_active:'RSC · ratio 0.5',rsc:'RSC · ratio 0.5'};
+  const fixed = {standard:'Standard',kl_bypass:'Native KL bypass',vanilla:'Standard',a1e9:'Inactive cap 1e9',tvc1e9:'Inactive cap 1e9',tvc500:'Inactive cap 500',tv_noop:'Inactive TV cap',rsc_noop:'RSC · augmentation off',ctxkl0:'Context KL · radius 0',ctxkluniform:'Uniform context',klprho0:'Risk-neutral ensemble',rsc_active:'RSC · ratio 0.5',rsc:'RSC · ratio 0.5'};
   if (fixed[model]) return fixed[model];
   if (model.startsWith('kl_beta')) return 'β = '+model.slice(7);
+  if (model.startsWith('kl_b')) return 'β = '+model.slice(4);
   if (model.startsWith('klb')) return 'β = '+model.slice(3).replace('p','.');
   if (model.startsWith('klprho')) return 'ρ = '+model.slice(6).replace('p','.');
   if (model.startsWith('ctxkl')) return 'Context ρ = '+model.slice(5).replace('p','.');
@@ -15,7 +16,7 @@ export function label(model) {
   return model.replaceAll('_',' ');
 }
 export function activeModel(models) {
-  return models.find(m => m !== 'vanilla' && !['a1e9','tvc1e9','tvc500','tv_noop','rsc_noop','ctxkl0','ctxkluniform','klprho0'].includes(m)) || models.find(m=>m!=='vanilla');
+  return models.find(m => !['vanilla','standard','kl_bypass','a1e9','tvc1e9','tvc500','tv_noop','rsc_noop','ctxkl0','ctxkluniform','klprho0'].includes(m)) || models.find(m=>!['vanilla','standard'].includes(m));
 }
 export function gridMean(points) {
   return points.reduce((sum,p)=>sum+p.mean,0)/points.length;

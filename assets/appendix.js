@@ -1,8 +1,8 @@
-import {label,escape as esc,fmt,activeModel} from './model.mjs';
+import {label,escape as esc,fmt,activeModel} from './model.mjs?v=20261104-library1';
 import {mean,median,summarize,conditions,severity,rawReliability} from './appendix-metrics.mjs';
 
 const $=id=>document.getElementById(id),root=$('appendix-root');
-const pages=['appendix','figures'];
+const pages=['appendix','figures','reports'];
 const cache=new Map();
 let index,study,ticket=0,figureLimit=24;
 const query=()=>new URLSearchParams(location.search);
@@ -14,14 +14,35 @@ function href(page,values={}){const u=new URL(location.href);u.search=new URLSea
 function select(id,entries,value){$(id).innerHTML=entries.map(([v,l])=>`<option value="${esc(v)}">${esc(l)}</option>`).join('');$(id).value=value;}
 function download(name,rows){const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 async function load(meta){if(!meta.file)throw Error('This study has no validated policy-level export.');if(!cache.has(meta.id)){const r=await fetch(meta.file);if(!r.ok)throw Error('Could not load policy summaries.');cache.set(meta.id,await r.json());}return cache.get(meta.id);}
-const links=s=>`<div class="inline-links"><a href="${href('returns',{study:s.id})}">Return curves</a><a href="${href('advanced',{study:s.id})}">Advanced metrics</a><a href="${href('advanced',{study:s.id,metric:'aggregate'})}">Cap comparison</a><a href="${href('seeds',{study:s.id})}">Seeds</a><a href="${href('figures',{study:s.id,figureStudy:s.id})}">Figures</a></div>`;
+const links=s=>`<div class="inline-links"><a href="${href('returns',{study:s.id})}">Return curves</a><a href="${href('advanced',{study:s.id})}">Advanced metrics</a><a href="${href('advanced',{study:s.id,metric:'aggregate'})}">Cap comparison</a><a href="${href('seeds',{study:s.id})}">Seeds</a><a href="${href('explore',{study:s.id})}">Rollouts</a><a href="${href('figures',{study:s.id,figureStudy:s.id})}">Figures</a></div>`;
 
 function overview(){
-  root.innerHTML=`<h1>Study index</h1>
-    <div class="overview-strip"><div><strong>${index.studies.length}</strong><span>separate study cohorts</span></div><div><strong>${index.studies.reduce((n,s)=>n+s.models.length,0)}</strong><span>evaluated settings, including controls</span></div><div><strong>${index.figures.length}</strong><span>indexed figure panels</span></div><div><strong>30 / 10</strong><span>intended policies per setting / context study</span></div></div>
-    <div class="section-heading"><h2>Completed studies</h2><label>Find a study<input id="study-search" type="search" placeholder="Environment, algorithm, cohort..."></label></div><div id="study-index" class="table-scroll"></div>
-    <details><summary>Coverage and boundaries</summary><p>The inventory includes the five October 28 Lunar/Pusher return comparisons and the newer joint-delta PickCube PPO cohort. Historical PickCube uses a different controller and remains separate. Isaac Lab implementation work is not a result and is excluded.</p><p>Advanced figures are indexed with their original provenance. Historical confidence intervals are not transferred to newer cohorts. Every interactive policy-summary export reproduces its current return curves; failed training seeds receive no invented return. Return-threshold competence is not a robot task-success rate.</p><a href="data/appendix/export-receipt.json" class="download-link">Export validation and preservation receipt</a></details>`;
-  const render=()=>{const q=$('study-search').value.toLowerCase();const rows=index.studies.filter(s=>(title(s)+' '+s.id).toLowerCase().includes(q));$('study-index').innerHTML=`<table><thead><tr><th>Study / cohort</th><th>Coverage</th><th>Available evidence</th></tr></thead><tbody>${rows.map(s=>`<tr><td class="study-name"><strong>${esc(title(s))}</strong><small>${esc(s.id)}</small></td><td>${s.models.length} settings / ${s.axisCount} axes<br>${s.intendedPolicies} intended policies per setting</td><td><span class="status">${s.validated?'Policy-level returns verified':'Policy rows unavailable'}</span>${links(s)}</td></tr>`).join('')}</tbody></table>`;};$('study-search').oninput=render;render();
+  const local=index.studies.filter(s=>s.newInRelease).length;
+  root.innerHTML=`<div class="library-heading"><div><span class="library-eyebrow">RESULTS LIBRARY</span><h1>Study index</h1><p class="library-subtitle">Historical cohorts, completed returns and their original controls.</p></div><span class="review-status">November 4, 2026 release</span></div>
+    <div class="overview-strip"><div><strong>${index.studies.length}</strong><span>study cohorts</span></div><div><strong>${local}</strong><span>added November 4</span></div><div><strong>${index.figures.length}</strong><span>indexed PDF figures</span></div><div><strong>${index.deliveries?.length||0}</strong><span>reports & manuscript bundles</span></div></div>
+    <div class="library-notice"><span class="status-dot"></span><span><strong>November 4 additions</strong> · Pusher TV, PickCube SAC-KL, Humanoid, Ant, ANYmal and Drawer.</span><a href="#reports" data-open-reports>Reports & downloads ↗</a></div>
+    <div class="filters library-filters"><label class="wide">Find a study<input id="study-search" type="search" placeholder="Environment, algorithm, cohort..."></label><label>Availability<select id="study-stage"><option value="all">All cohorts</option><option value="new">Added November 4</option><option value="previous">Earlier cohorts</option></select></label><label>Algorithm<select id="study-algorithm"><option value="all">All algorithms</option>${[...new Set(index.studies.map(s=>s.algorithm))].map(a=>`<option>${esc(a)}</option>`).join('')}</select></label><label>Update<select id="study-family"><option value="all">TV & KL</option><option>TV</option><option>KL</option></select></label></div>
+    <p id="study-match-count" class="page-note"></p><div id="study-index" class="table-scroll"></div>
+    <section class="library-pending"><h2>Separate reports</h2><div class="report-short"><div><strong>Return reliability · Dataset A / Dataset B</strong><p>20 settings · environment, algorithm and seed identity confirmation pending. Not counted as independent 30-seed studies.</p></div><a href="reports/return-reliability/index.html">Open metrics ↗</a></div></section>
+    <details><summary>Coverage and provenance</summary><p>Published study files are unchanged. New Isaac curves use completed native policy summaries, not newly generated episodes. Partial parameter grids stay explicit; failed seeds are not imputed. Historical and newer controllers, cohorts and comparators remain separate.</p><p>Training completion, numerical gate clearance, task success and robustness are different claims. Sample SD is not a confidence interval. Best-per-axis selection is descriptive and ex post.</p><a href="data/delivery-status.json" class="download-link">Download current delivery status</a></details>`;
+  const render=()=>{
+    const q=$('study-search').value.toLowerCase(),stage=$('study-stage').value,algorithm=$('study-algorithm').value,family=$('study-family').value;
+    const rows=index.studies.filter(s=>(title(s)+' '+s.id).toLowerCase().includes(q)&&(stage==='all'||(stage==='new'?s.newInRelease:!s.newInRelease))&&(algorithm==='all'||s.algorithm===algorithm)&&(family==='all'||s.family===family)).sort((a,b)=>Number(b.newInRelease)-Number(a.newInRelease)||title(a).localeCompare(title(b)));
+    $('study-match-count').textContent=`${rows.length} matching cohorts / ${index.studies.length} total`;
+    $('study-index').innerHTML=`<table class="library-table"><thead><tr><th>Environment / algorithm / cohort</th><th>Coverage</th><th>Availability</th><th>Results</th></tr></thead><tbody>${rows.map(s=>`<tr data-study="${esc(s.id)}"><td class="study-name"><strong>${esc(s.environment)} · ${esc(s.algorithm)}-${esc(s.family)}</strong><small>${esc(s.branch)}</small><details><summary>Study ID</summary><code>${esc(s.id)}</code></details></td><td>${s.models.length} settings · ${s.axisCount} axes<small>${s.intendedPolicies} intended policies / setting</small>${s.gridComplete===false?'<span class="coverage-pending">Parameter grid incomplete</span>':''}</td><td><span class="availability ${s.newInRelease?'local':'published'}">${s.newInRelease?'Published · November 4':'Published'}</span><small>${s.validated?'Policy summaries verified':'Policy rows unavailable'}</small></td><td>${links(s)}</td></tr>`).join('')||'<tr><td colspan="4">No matching study.</td></tr>'}</tbody></table>`;
+  };
+  for(const id of ['study-search','study-stage','study-algorithm','study-family'])$(id).addEventListener(id==='study-search'?'input':'change',render);
+  $('study-stage').value=['local_preview','new'].includes(query().get('availability'))?'new':'all';render();
+}
+
+function reports(){
+  const deliveries=index.deliveries||[];
+  root.innerHTML=`<div class="library-heading"><div><span class="library-eyebrow">DELIVERIES</span><h1>Reports & downloads</h1><p class="library-subtitle">Return atlases, advanced metrics and manuscript-ready assets.</p></div><span class="review-status">November 4, 2026 release</span></div>
+    <div class="report-list">${deliveries.map(d=>`<section class="report-row" data-report="${esc(d.id)}"><div class="report-meta"><span>${esc(d.kind)}</span><time>${esc(d.date)}</time></div><div class="report-detail"><h2>${esc(d.title)}</h2><p>${esc(d.detail)}</p><span class="${d.status.includes('pending')?'coverage-pending':'status'}">${esc(d.status)}</span><div class="inline-links">${d.url?`<a href="${esc(d.url)}">Open report ↗</a>`:''}${d.pdf?`<a href="${esc(d.pdf)}" target="_blank" rel="noopener">PDF atlas</a>`:''}${d.archive?`<a href="${esc(d.archive)}" download>Overleaf ZIP ↓</a>`:''}${d.csv?`<a href="${esc(d.csv)}" download>Metrics CSV ↓</a>`:''}${d.clarification?`<a href="${esc(d.clarification)}">Pending metadata</a>`:''}</div>${d.studies?.length?`<details><summary>Included cohorts</summary><div class="inline-links">${[...new Set(d.studies)].map(id=>index.studies.find(s=>s.id===id)).filter(Boolean).map(s=>`<a href="${href('returns',{study:s.id})}">${esc(s.environment)} / ${esc(s.algorithm)}-${esc(s.family)}</a>`).join('')}</div></details>`:''}</div></section>`).join('')}</div>
+    <section class="library-pending"><h2>Not promoted to completed results</h2><div class="report-short"><strong>PPO-KL</strong><p>Numerical/parity gates remain separate from the return archive. Short diagnostic runs do not clear a study.</p></div><div class="report-short"><strong>Remaining off-policy KL</strong><p>No new validated full-30 PickCube TD3-KL or Pusher SAC/TD3-KL comparison is added here.</p></div><div class="report-short"><strong>Lift</strong><p>The three-seed pilot is not a 30-seed result.</p></div></section>`;
+  for(const delivery of deliveries.filter(d=>d.urlLabel)){
+    root.querySelector(`[data-report="${delivery.id}"] .inline-links a`).textContent=delivery.urlLabel+' ↗';
+  }
 }
 
 const evidence=[
@@ -168,9 +189,9 @@ async function route(){
   document.querySelector('.workspace').hidden=true;
   if(!index)return;
   ++ticket;
-  if(page==='appendix')overview();else if(page==='figures')figureLibrary();
+  if(page==='appendix')overview();else if(page==='figures')figureLibrary();else if(page==='reports')reports();
 }
 window.addEventListener('hashchange',route);
 let archiveContext='';
 window.addEventListener('results-context',e=>{const key=e.detail.page+'|'+e.detail.study.id;if(!pages.includes(e.detail.page)||key===archiveContext)return;archiveContext=key;if(e.detail.page==='figures'){const u=new URL(location.href);u.searchParams.set('figureStudy',e.detail.study.id);history.replaceState(null,'',u);}route();});
-try{const response=await fetch('data/appendix/index.json?v=20261103-returns1');if(!response.ok)throw Error('Could not load appendix index.');index=await response.json();await route();}catch(e){root.innerHTML=`<p class="blank" role="alert">${esc(e.message)}</p>`;}
+try{const response=await fetch('data/appendix/index.json?v=20261104-library1');if(!response.ok)throw Error('Could not load appendix index.');index=await response.json();await route();}catch(e){root.innerHTML=`<p class="blank" role="alert">${esc(e.message)}</p>`;}

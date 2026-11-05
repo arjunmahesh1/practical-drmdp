@@ -25,8 +25,8 @@ test('negative references do not manufacture retained-performance metrics',()=>{
 });
 test('seed summaries retain equal-axis weights',()=>{const s=summarize(fixture,'cap','vanilla');assert.equal(s.seeds.find(s=>s.seed===1).raw,2.5);assert.equal(s.seeds.find(s=>s.seed===2).raw,7.5);});
 test('native-return reliability preserves thresholds and equal-axis weighting',()=>{const s=rawReliability(fixture,'cap','vanilla','suite');assert.equal(s.survival(5),.5);assert.equal(s.survival(5.01),.25);assert.equal(s.survival(16),0);assert.equal(s.survival(-1),1);});
-test('historical 25 and four added cohorts retain validated policy summaries',async()=>{
-  assert.equal(index.studies.length,29);const receipt=await json('data/appendix/export-receipt.json');assert.equal(receipt.comparedCurvePoints,28800);assert.deepEqual(receipt.gaps,[]);
+test('historical 29 and ten consolidated cohorts retain validated policy summaries',async()=>{
+  assert.equal(index.studies.length,39);assert.equal(index.studies.filter(s=>s.newInRelease).length,10);const receipt=await json('data/appendix/export-receipt.json');assert.equal(receipt.comparedCurvePoints,28800);assert.deepEqual(receipt.gaps,[]);
   for(const meta of index.studies){assert(meta.validated);const a=await json(meta.file),s=await json('data/'+meta.id+'.json');for(const axis of a.axes)for(const model of a.models){for(const point of axis.values[model]){const published=s.axes.find(x=>x.id===axis.id).curves[model].find(p=>p.x===point.x);assert.equal(new Set(point.seeds.map(r=>r[0])).size,point.seeds.length);assert.equal(point.seeds.length,published.n);assert(Math.abs(mean(point.seeds.map(r=>r[1]))-published.mean)<1e-7);const sd=Math.sqrt(point.seeds.reduce((n,r)=>n+(r[1]-published.mean)**2,0)/(point.seeds.length-1));assert(Math.abs(sd-published.sd)<1e-7);}}}
 });
 test('all original 20 study files remain byte-identical',async()=>{const r=await json('data/appendix/export-receipt.json');assert.equal(Object.keys(r.preservedStudies).length,20);for(const [file,sha] of Object.entries(r.preservedStudies)){assert.equal(createHash('sha256').update(await readFile(new URL('../data/'+file,import.meta.url))).digest('hex'),sha);}});

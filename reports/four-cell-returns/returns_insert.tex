@@ -1,0 +1,546 @@
+\clearpage
+\subsection{HalfCheetah-v4 TD3--TV, new cohort}
+October 30 HalfCheetah cohort, 1M training steps, 30 seeds (1-30), 20 episodes per condition. Gravity varies horizontal gx=-x m/s\textasciicircum{}2, nominal x=0, not downward gravity scale. Twelve localized mass/friction axes have identical per-policy returns at every level; perturbation effectiveness is unverified. Retained for completeness, not treated as evidence of shift tolerance. KL is the physical-support radius operator, not the newer moment-bootstrap beta operator. Ordinary standard is fixed. Best-per-axis is descriptive ex-post full-grid selection, not held-out inference or physical-success evidence. No new rollout videos.
+Lines show means and bands show $\pm1$ sample standard deviation across thirty policy-level episode means. The standard curve is ordinary TD3, fixed on every axis.
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/gear.pdf}
+\caption{Global actuator gear. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/mass.pdf}
+\caption{Global mass. TV cap 900.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/friction.pdf}
+\caption{Global friction. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/damping.pdf}
+\caption{Global joint damping. TV cap 900.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--TV return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-tv-halfcheetah-1}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/gravity.pdf}
+\caption{Horizontal gravity. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/mass_damping.pdf}
+\caption{Mass and damping. TV cap 900.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/friction_mass.pdf}
+\caption{Friction and mass. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/friction_damping.pdf}
+\caption{Friction and damping. TV cap 900.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--TV return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-tv-halfcheetah-2}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/friction_mass_damping.pdf}
+\caption{Friction, mass, and damping. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/action_noise.pdf}
+\caption{Gaussian action noise. TV cap 900.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/action_noise_bernoulli.pdf}
+\caption{Bernoulli action noise. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/state_noise.pdf}
+\caption{State-observation noise. TV cap 900.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--TV return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-tv-halfcheetah-3}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/bfoot_actuator_gain.pdf}
+\caption{Back foot actuator strength. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/bfoot_damping.pdf}
+\caption{Back foot joint damping. TV cap 900.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/bfoot_friction.pdf}
+\caption{Back foot friction. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/bfoot_mass.pdf}
+\caption{Back foot mass. TV cap 900.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--TV return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-tv-halfcheetah-4}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/bshin_actuator_gain.pdf}
+\caption{Back shin actuator strength. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/bshin_damping.pdf}
+\caption{Back shin joint damping. TV cap 900.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/bshin_friction.pdf}
+\caption{Back shin friction. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/bshin_mass.pdf}
+\caption{Back shin mass. TV cap 900.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--TV return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-tv-halfcheetah-5}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/bthigh_actuator_gain.pdf}
+\caption{Back thigh actuator strength. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/bthigh_damping.pdf}
+\caption{Back thigh joint damping. TV cap 900.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/bthigh_friction.pdf}
+\caption{Back thigh friction. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/bthigh_mass.pdf}
+\caption{Back thigh mass. TV cap 900.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--TV return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-tv-halfcheetah-6}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/ffoot_actuator_gain.pdf}
+\caption{Front foot actuator strength. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/ffoot_damping.pdf}
+\caption{Front foot joint damping. TV cap 900.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/ffoot_friction.pdf}
+\caption{Front foot friction. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/ffoot_mass.pdf}
+\caption{Front foot mass. TV cap 900.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--TV return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-tv-halfcheetah-7}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/fshin_actuator_gain.pdf}
+\caption{Front shin actuator strength. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/fshin_damping.pdf}
+\caption{Front shin joint damping. TV cap 900.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/fshin_friction.pdf}
+\caption{Front shin friction. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/fshin_mass.pdf}
+\caption{Front shin mass. TV cap 900.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--TV return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-tv-halfcheetah-8}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/fthigh_actuator_gain.pdf}
+\caption{Front thigh actuator strength. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/fthigh_damping.pdf}
+\caption{Front thigh joint damping. TV cap 900.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/fthigh_friction.pdf}
+\caption{Front thigh friction. TV cap 900.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_halfcheetah/fthigh_mass.pdf}
+\caption{Front thigh mass. TV cap 900.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--TV return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-tv-halfcheetah-9}
+\end{figure}
+\clearpage
+\subsection{HalfCheetah-v4 TD3--KL, new cohort}
+October 30 HalfCheetah cohort, 1M training steps, 30 seeds (1-30), 20 episodes per condition. Gravity varies horizontal gx=-x m/s\textasciicircum{}2, nominal x=0, not downward gravity scale. Twelve localized mass/friction axes have identical per-policy returns at every level; perturbation effectiveness is unverified. Retained for completeness, not treated as evidence of shift tolerance. KL is the physical-support radius operator, not the newer moment-bootstrap beta operator. Ordinary standard is fixed. Best-per-axis is descriptive ex-post full-grid selection, not held-out inference or physical-success evidence. No new rollout videos.
+Lines show means and bands show $\pm1$ sample standard deviation across thirty policy-level episode means. The standard curve is ordinary TD3, fixed on every axis.
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/gear.pdf}
+\caption{Global actuator gear. KL radius 0.5.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/mass.pdf}
+\caption{Global mass. KL radius 0.5.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/friction.pdf}
+\caption{Global friction. KL radius 0.01.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/damping.pdf}
+\caption{Global joint damping. KL radius 0.1.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--KL return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-kl-physical-halfcheetah-1}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/gravity.pdf}
+\caption{Horizontal gravity. KL radius 0.01.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/mass_damping.pdf}
+\caption{Mass and damping. KL radius 0.01.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/friction_mass.pdf}
+\caption{Friction and mass. KL radius 0.01.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/friction_damping.pdf}
+\caption{Friction and damping. KL radius 0.01.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--KL return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-kl-physical-halfcheetah-2}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/friction_mass_damping.pdf}
+\caption{Friction, mass, and damping. KL radius 0.01.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/action_noise.pdf}
+\caption{Gaussian action noise. KL radius 0.05.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/action_noise_bernoulli.pdf}
+\caption{Bernoulli action noise. KL radius 0.01.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/state_noise.pdf}
+\caption{State-observation noise. KL radius 0.01.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--KL return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-kl-physical-halfcheetah-3}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/bfoot_actuator_gain.pdf}
+\caption{Back foot actuator strength. KL radius 0.05.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/bfoot_damping.pdf}
+\caption{Back foot joint damping. KL radius 0.01.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/bfoot_friction.pdf}
+\caption{Back foot friction. KL radius 0.01.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/bfoot_mass.pdf}
+\caption{Back foot mass. KL radius 0.01.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--KL return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-kl-physical-halfcheetah-4}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/bshin_actuator_gain.pdf}
+\caption{Back shin actuator strength. KL radius 0.1.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/bshin_damping.pdf}
+\caption{Back shin joint damping. KL radius 0.1.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/bshin_friction.pdf}
+\caption{Back shin friction. KL radius 0.01.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/bshin_mass.pdf}
+\caption{Back shin mass. KL radius 0.01.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--KL return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-kl-physical-halfcheetah-5}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/bthigh_actuator_gain.pdf}
+\caption{Back thigh actuator strength. KL radius 0.05.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/bthigh_damping.pdf}
+\caption{Back thigh joint damping. KL radius 0.05.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/bthigh_friction.pdf}
+\caption{Back thigh friction. KL radius 0.01.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/bthigh_mass.pdf}
+\caption{Back thigh mass. KL radius 0.01.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--KL return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-kl-physical-halfcheetah-6}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/ffoot_actuator_gain.pdf}
+\caption{Front foot actuator strength. KL radius 0.05.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/ffoot_damping.pdf}
+\caption{Front foot joint damping. KL radius 0.01.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/ffoot_friction.pdf}
+\caption{Front foot friction. KL radius 0.01.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/ffoot_mass.pdf}
+\caption{Front foot mass. KL radius 0.01.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--KL return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-kl-physical-halfcheetah-7}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/fshin_actuator_gain.pdf}
+\caption{Front shin actuator strength. KL radius 0.01.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/fshin_damping.pdf}
+\caption{Front shin joint damping. KL radius 0.05.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/fshin_friction.pdf}
+\caption{Front shin friction. KL radius 0.01.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/fshin_mass.pdf}
+\caption{Front shin mass. KL radius 0.01.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--KL return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-kl-physical-halfcheetah-8}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/fthigh_actuator_gain.pdf}
+\caption{Front thigh actuator strength. KL radius 0.1.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/fthigh_damping.pdf}
+\caption{Front thigh joint damping. KL radius 0.1.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/fthigh_friction.pdf}
+\caption{Front thigh friction. KL radius 0.01.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_kl_physical_halfcheetah/fthigh_mass.pdf}
+\caption{Front thigh mass. KL radius 0.01.}
+\end{subfigure}\par\medskip
+\caption{HalfCheetah-v4 TD3--KL return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-kl-physical-halfcheetah-9}
+\end{figure}
+\clearpage
+\subsection{PickCube-v1 SAC--TV, new cohort}
+October 28/29 PickCube off-policy cohort, end-effector-delta controller, 1M training steps, 30 seeds (1000-1029), 50 native steps, 50 episodes per condition. Separate from joint-delta PPO and historical PickCube. Ordinary standard is fixed. Best-per-axis is descriptive ex-post full-grid selection, not held-out inference or physical-success evidence. No new rollout videos.
+Lines show means and bands show $\pm1$ sample standard deviation across thirty policy-level episode means. The standard curve is ordinary SAC, fixed on every axis.
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/sac_tv_pickcube_20261028/arm_command_gain.pdf}
+\caption{Arm-command gain. TV cap 4.5.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/sac_tv_pickcube_20261028/arm_command_noise.pdf}
+\caption{Arm-command noise. TV cap 4.5.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/sac_tv_pickcube_20261028/arm_command_replacement.pdf}
+\caption{Arm-command replacement. TV cap 4.5.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/sac_tv_pickcube_20261028/contact_friction.pdf}
+\caption{Contact friction. TV cap 4.5.}
+\end{subfigure}\par\medskip
+\caption{PickCube-v1 SAC--TV return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:sac-tv-pickcube-20261028-1}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/sac_tv_pickcube_20261028/cube_mass.pdf}
+\caption{Cube mass. TV cap 4.5.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/sac_tv_pickcube_20261028/goal_height.pdf}
+\caption{Goal height. TV cap 4.5.}
+\end{subfigure}\par\medskip
+\caption{PickCube-v1 SAC--TV return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:sac-tv-pickcube-20261028-2}
+\end{figure}
+\clearpage
+\subsection{PickCube-v1 TD3--TV, new cohort}
+October 28/29 PickCube off-policy cohort, end-effector-delta controller, 1M training steps, 30 seeds (1000-1029), 50 native steps, 50 episodes per condition. Separate from joint-delta PPO and historical PickCube. Ordinary standard is fixed. Best-per-axis is descriptive ex-post full-grid selection, not held-out inference or physical-success evidence. No new rollout videos.
+Lines show means and bands show $\pm1$ sample standard deviation across thirty policy-level episode means. The standard curve is ordinary TD3, fixed on every axis.
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_pickcube_20261029/arm_command_gain.pdf}
+\caption{Arm-command gain. TV cap 3.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_pickcube_20261029/arm_command_noise.pdf}
+\caption{Arm-command noise. TV cap 3.}
+\end{subfigure}\par\medskip
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_pickcube_20261029/arm_command_replacement.pdf}
+\caption{Arm-command replacement. TV cap 3.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_pickcube_20261029/contact_friction.pdf}
+\caption{Contact friction. TV cap 3.}
+\end{subfigure}\par\medskip
+\caption{PickCube-v1 TD3--TV return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-tv-pickcube-20261029-1}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_pickcube_20261029/cube_mass.pdf}
+\caption{Cube mass. TV cap 3.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{Results/ReturnAtlas/td3_tv_pickcube_20261029/goal_height.pdf}
+\caption{Goal height. TV cap 3.}
+\end{subfigure}\par\medskip
+\caption{PickCube-v1 TD3--TV return curves. Best active setting selected separately per complete axis grid on these displayed data. Bands are across-policy sample SD, not confidence intervals. Ordinary standard is fixed.}
+\label{fig:td3-tv-pickcube-20261029-2}
+\end{figure}

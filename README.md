@@ -146,3 +146,18 @@ The dormant state-replay adapter accepts a study `replays[setting][axis + '|' + 
 ## Publish
 
 GitHub Pages: deploy the `main` branch, `/ (root)`. `.nojekyll` keeps static assets untouched. The public site contains summaries and paper figures, not checkpoints, credentials, or raw private files. A custom `.site` domain is optional and must be acquired separately; the default `github.io` URL is free.
+
+## November 4 Results Library
+
+The published environment library includes 39 study cohorts, 552 indexed PDF
+figures, and five report bundles. Start at `#environments`, browse `#appendix`,
+or open `#reports` for return atlases, advanced metrics and Overleaf downloads.
+
+The separate `reports/return-reliability/index.html` report preserves neutral
+Dataset A/B labels. Environment mapping, algorithm and source-row identities
+remain unconfirmed. It is not counted as an independent 30-training-seed study.
+
+Existing study exports and recordings remain unchanged. New Isaac recordings
+are pending; no historical video is reassigned to a newer cohort. Availability
+is recorded in the catalog and index. Individual study files retain their
+original export-stage provenance, which is not a current publication status.

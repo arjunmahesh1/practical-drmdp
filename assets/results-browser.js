@@ -1,4 +1,4 @@
-import {label,escape as esc,fmt,bestModelOnAxis} from './model.mjs';
+import {label,escape as esc,fmt,bestModelOnAxis} from './model.mjs?v=20261104-library1';
 import {summarize,severity,rawReliability} from './appendix-metrics.mjs';
 import {normalizedSurvival,returnDistribution,capSummaries,bestFixedSetting,recordedOutcomes} from './browser-metrics.mjs';
 
