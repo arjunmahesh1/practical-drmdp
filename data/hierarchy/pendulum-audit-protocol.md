@@ -1,0 +1,15 @@
+# Pendulum Policy-Level Hierarchy Addendum
+
+Declared before computing these tests, November 5, 2026 Pacific.
+
+The human confirms both datasets have 30 independently trained policies and that a row identifies the same policy across severities and axes within each setting. Dataset A (`json`) is Inverted Double Pendulum; Dataset B (`json 2`) is Inverted Pendulum. This does not establish matched robust-versus-standard training pairs, algorithm identity, simulator version, physical success or numeric training seed labels.
+
+Apply the existing all-setting audit's L2/L3 tests: 10,000 independent-method whole-policy percentile resamples (seed 0), pointwise 95% intervals, positive reliability-AUC lower bound and 5% reference mean-return noninferiority margin. Preserve all severities and axes of each sampled policy. Standard (`non-robust`) is the only supplied comparator. No reference selection is needed here. All comparisons are exploratory and unadjusted.
+
+Pure axes exclude their documented nominal column. Compound axes include EVERY received level, including action-probability zero, because the background physical perturbation is active. Treat a compound axis as one shift. Use its documented pure-axis unperturbed nominal vector as the anchor, not the already-shifted zero column. Pure-axis nominal vectors must match across axes within a setting; verify this directly. Use the standard nominal median, shared between methods and fixed across severities. This matches the existing report's normalization because its pure-axis nominal vectors agree.
+
+L2 pairs each side/compound shift's reliability improvement with the complete nonnominal-axis return guardrail. L3 averages severities within each received axis and then axes equally; freeze one setting and standard comparator across that received suite. No extrapolation to unreceived interventions, unidentified physical magnitudes or task-success measurements. In Double Pendulum the motor-gear and mass factors are unspecified; report those limitations beside suite evidence rather than invent their values.
+
+L1 stays qualitative, with no numerical parity tolerance. Review unperturbed mean and low-return policy count at half the standard nominal median. Double Pendulum KL70 and KL90 have lower nominal means and new low-return policies and do not meet L1. Pendulum TV85 is borderline: similar nominal mean but one additional low-return policy. Other settings have comparable nominal performance and no additional low-return policies. These are return-based nominal judgments, not measured physical-success rates. Keep component test results visible even when the cumulative L1 prerequisite does not pass.
+
+Add the 18 comparisons to the website audit without altering any previous comparison, source return, original report metric, curve, recording or manuscript. Update stale identity warnings in presentation through an explicit human-confirmation overlay; preserve original intake provenance. No simulator, training, cluster or recording work.

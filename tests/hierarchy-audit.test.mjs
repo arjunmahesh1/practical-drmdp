@@ -19,8 +19,8 @@ test('largest observed AUC cannot override failed prerequisites',()=>{
  assert.equal(strongestComparison([weak,valid]).reference,'valid');
 });
 test('complete all-setting coverage includes every named comparator without replacing originals',()=>{
- assert.equal(Object.keys(audit.comparisons).length,159);
- assert.equal(Object.values(audit.comparisons).flat().length,217);
+ assert.equal(Object.keys(audit.comparisons).length,177);
+ assert.equal(Object.values(audit.comparisons).flat().length,235);
  assert.equal(audit.cachedValidation.saved_tests_reproduced,428);
  assert(audit.cachedValidation.max_absolute_interval_error<1e-8);
  const before=JSON.stringify(metadata),rows=auditRows(metadata.rows,audit,'all');
@@ -31,7 +31,7 @@ test('new L3 candidates are fixed ANYmal caps and the exact Walker cap400/contro
  const rows=auditRows(metadata.rows.filter(r=>!r.archived&&r.model),audit);
  assert.deepEqual(rows.filter(r=>r.result.code==='L3').map(r=>[r.id,r.reference]),[
   ['td3_tv_walker|tvc400','tvc500'],['anymal_ppo_tv30|tv_c1.5','vanilla'],['anymal_ppo_tv30|tv_c2','vanilla']]);
- assert.equal(rows.filter(r=>r.result.code==='L2').length,12);
+ assert.equal(rows.filter(r=>r.result.code==='L2').length,16);
 });
 test('negative-return references, missing policies and unverified axes retain concrete limitations',()=>{
  assert.equal(audit.comparisons['pusher_ppo_tv30|tv_c-2'][0].gates.L2.status,'blocked');
@@ -47,10 +47,19 @@ test('vanilla, original-paper and all-reference modes keep their comparator expl
  const fixed=auditRows(metadata.rows,audit,'reference:tvc500');
  assert(fixed.length>1);assert(fixed.every(r=>r.study==='td3_tv_walker'));
 });
-test('supplied rows do not acquire policy identities from environment-name confirmation',()=>{
+test('explicit human policy confirmation enables inference without inventing cross-method pairing',()=>{
+ const results=[];
  for(const r of auditRows(metadata.rows.filter(r=>r.dataset&&r.role==='robust'),audit)){
-  assert.equal(r.result.label,'Policy identities needed');assert.equal(r.gates.L3.status,'blocked');
+  assert(r.audit);assert.equal(r.resampling,'Independent whole policies');assert.notEqual(r.gates.L3.status,'blocked');
+  if(r.result.code==='L2')results.push(r.id);
  }
+ assert.deepEqual(results,['supplied-json|KL-80','supplied-json|KL-100','supplied-json|KL-110','supplied-json 2|KL-110']);
+ assert.equal(audit.pendulumAddendum.sourceScalarsVerified,42600);
+ const standard=auditRows(metadata.rows.filter(r=>r.dataset&&r.role==='robust'),audit,'standard');
+ assert.equal(standard.length,18);assert(standard.every(r=>r.reference==='non-robust'));
+ const failed=auditRows(metadata.rows.filter(r=>r.id==='supplied-json|KL-90'),audit)[0];
+ assert.equal(failed.result.code,'none');assert.equal(failed.gates.L2.status,'pass');
+ assert.equal(auditRows(metadata.rows.filter(r=>r.id==='supplied-json 2|TV-85'),audit)[0].result.code,'borderline');
 });
 test('new data retain strict interval decisions without a hidden multiple-testing certificate',()=>{
  for(const c of Object.values(audit.comparisons).flat()){

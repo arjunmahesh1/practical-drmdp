@@ -1,5 +1,7 @@
 # All-Setting Hierarchy Audit
 
+November 5 follow-up: the human has now confirmed independent training policies and within-setting row identity for both pendulum datasets. The earlier supplied-row eligibility restriction below is superseded by [the pendulum addendum](pendulum-audit-protocol.md). Earlier comparisons and their original protocol remain unchanged.
+
 Fixed before computing the new all-setting results, November 5, 2026.
 
 ## Scope

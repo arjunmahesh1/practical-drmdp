@@ -29,7 +29,7 @@ export function auditRows(rows,audit,mode='strongest'){
    return [{...r,gates,result:{code:'unassessed',label:r.dataset?'Policy identities needed':'Outside current audit'}}];
   }
   const chosen=mode==='all'?choices:mode==='strongest'?[strongestComparison(choices)]:mode==='paper'?choices.filter(c=>c.reference===r.reference):
-   mode==='standard'?choices.filter(c=>['vanilla','standard'].includes(c.reference)):choices.filter(c=>c.reference===mode.replace('reference:',''));
+   mode==='standard'?choices.filter(c=>['vanilla','standard','non-robust'].includes(c.reference)):choices.filter(c=>c.reference===mode.replace('reference:',''));
   return chosen.map(c=>({...r,reference:c.reference,referenceLabel:audit.labels[c.reference]||c.reference,gates:c.gates,
    l1Nominal:c.gates.L1.originalReference===c.reference?c.nominal:r.nominal,nominal:c.nominal,
    l1ReferenceLabel:audit.labels[c.gates.L1.originalReference]||c.gates.L1.originalReference,

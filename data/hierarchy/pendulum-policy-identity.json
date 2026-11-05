@@ -1,0 +1,12 @@
+{
+  "confirmedBy": "Direct human reply in this chat",
+  "datePacific": "2026-11-05",
+  "independentTrainingPoliciesPerSetting": 30,
+  "withinSettingRowIdentityAcrossAxesAndSeverities": true,
+  "crossMethodMatchedPairingEstablished": false,
+  "numericTrainingSeedLabelsEstablished": false,
+  "originalReturnArraysUnchanged": true,
+  "scope": "Dataset A=json=Inverted Double Pendulum; Dataset B=json 2=Inverted Pendulum",
+  "assessmentData": "assessments.json",
+  "protocol": "pendulum-audit-protocol.md"
+}
