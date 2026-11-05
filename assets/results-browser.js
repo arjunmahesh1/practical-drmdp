@@ -94,11 +94,9 @@ function render(){
   $('analysis-search-label').hidden=!gallery;
   $('conditional-label').hidden=metric!=='reliability';
   for(const o of $('analysis-scope').options)o.disabled=context.selection==='best'&&o.value==='suite';
-  setQuery({metric:seeds?q().get('metric'):metric,scope,conditional:conditional?'1':null,value:scope==='condition'?value:null});
+  setQuery({metric:seeds?q().get('metric'):metric,scope,conditional:conditional?'1':null,value});
   const stamp=context.selection==='best'?'Best per axis · ex-post full-grid return selection':context.allSettings?'All settings':label(context.model);
-  $('analysis-caption').textContent=`${stamp} · reference: ${label(context.reference)} · ${study.intendedPolicies} intended policies / setting · ${special?'aggregate comparison':scope==='condition'?'one measured severity':scope==='nominal'?'nominal':scope==='suite'?'aggregate across axes and shifted severities':'aggregate across shifted severities'} · descriptive`;
-  const back=new URL(location.href);back.search=new URLSearchParams({cohort:study.id,parameter:context.model,shift:axis,value});back.hash='environments';
-  $('analysis-caption').insertAdjacentHTML('beforeend',` <a class="analysis-back" href="${esc(back.pathname+back.search+back.hash)}">Back to environment & video ↗</a>`);
+  $('analysis-caption').textContent=`${stamp} vs ${label(context.reference)} · ${special?'full-suite aggregate':scope==='condition'?'single severity: '+value:scope==='nominal'?'nominal':scope==='suite'?'full-suite aggregate':'perturbation aggregate'} · descriptive`;
   if(metric==='aggregate'){renderCaps();return;}
   if(metric==='severity'){renderSeverity();return;}
   const axes=gallery?study.axes.filter(a=>(a.title+' '+a.id).toLowerCase().includes($('analysis-search').value.toLowerCase())):[study.axes.find(a=>a.id===axis)];

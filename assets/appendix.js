@@ -11,7 +11,13 @@ const currentPage=()=>location.hash.slice(1)||'returns';
 const title=s=>`${s.environment} / ${s.algorithm} / ${s.branch}`;
 const percent=x=>x===null?'Unavailable':(100*x).toFixed(1)+'%';
 const number=x=>x===null?'Unavailable':fmt(x,Math.abs(x)<1?4:2);
-function href(page,values={}){const u=new URL(location.href);u.search=new URLSearchParams(values);u.hash=page;return u.pathname+u.search+u.hash;}
+function href(page,values={}){
+  const u=new URL(location.href),context={};
+  if(!values.study||values.study===u.searchParams.get('study'))for(const key of ['study','setting','reference','axis','value','scope','metric']){
+    if(u.searchParams.has(key))context[key]=u.searchParams.get(key);
+  }
+  u.search=new URLSearchParams({...context,...values});u.hash=page;return u.pathname+u.search+u.hash;
+}
 function select(id,entries,value){$(id).innerHTML=entries.map(([v,l])=>`<option value="${esc(v)}">${esc(l)}</option>`).join('');$(id).value=value;}
 function download(name,rows){const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 async function load(meta){if(!meta.file)throw Error('This study has no validated policy-level export.');if(!cache.has(meta.id)){const r=await fetch(meta.file);if(!r.ok)throw Error('Could not load policy summaries.');cache.set(meta.id,await r.json());}return cache.get(meta.id);}
@@ -173,14 +179,17 @@ function figureLibrary(){
   root.innerHTML=`<h1>Figures</h1><p class="page-note">Original cohorts, comparators and intervals retained.</p><div class="filters"><label class="wide">Find a figure or paper label<input type="search" id="figure-search" placeholder="Reliability, failure, cap, fig:..." value="${esc(query().get('figure')||'')}"></label><label>Study<select id="figure-study"></select></label><label>Figure family<select id="figure-category"></select></label></div><p id="figure-count" class="small-stat"></p><div id="figure-results" class="figure-grid"></div><button id="figure-more" class="command">More figures</button><details><summary>Unavailable figures</summary>${index.missingPaperFigures.length?index.missingPaperFigures.map(f=>`<p><code>${esc(f.label)}</code> / ${esc(f.filename)}: absent from the checked delivery roots. No substitute is silently assigned.</p>`).join(''):'<p>All indexed manuscript figure references have local PDFs.</p>'}</details>`;
   select('figure-study',[['','All studies'],...index.studies.map(s=>[s.id,title(s)])],query().get('figureStudy')??query().get('study')??'');
   select('figure-category',[['','All figure families'],...new Set(index.figures.map(f=>f.section))].map(v=>Array.isArray(v)?v:[v,v]),query().get('figureFamily')||'');
-  for(const id of ['figure-search','figure-study','figure-category'])$(id).addEventListener(id==='figure-search'?'input':'change',()=>{figureLimit=24;renderFigures();});
+  for(const id of ['figure-search','figure-study','figure-category'])$(id).addEventListener(id==='figure-search'?'input':'change',()=>{
+    figureLimit=24;renderFigures();
+    if(id==='figure-study'&&$('figure-study').value)window.dispatchEvent(new CustomEvent('results-select',{detail:{study:$('figure-study').value}}));
+  });
   $('figure-more').onclick=()=>{figureLimit+=24;renderFigures();};renderFigures();
 }
 function renderFigures(){
   const q=$('figure-search').value.toLowerCase(),id=$('figure-study').value,category=$('figure-category').value;
   const figures=index.figures.filter(f=>(!id||f.studies.includes(id))&&(!category||f.section===category)&&(!q||(f.title+' '+f.section+' '+f.source+' '+(f.paperLabel||'')).toLowerCase().includes(q))).sort((a,b)=>Number(!!b.paperLabel)-Number(!!a.paperLabel));
   $('figure-count').textContent=`${figures.length} matching panels / ${index.figures.length} indexed`;
-  $('figure-results').innerHTML=figures.slice(0,figureLimit).map(f=>`<article class="figure-item">${f.preview?`<a href="${f.pdf}" target="_blank" rel="noopener" aria-label="Open ${esc(f.title)} PDF"><img loading="lazy" src="${f.preview}" alt="${esc(f.title)}"></a>`:''}<div class="figure-text"><p class="figure-category">${esc(f.section)}</p><h3>${esc(f.title)}</h3>${f.paperLabel?`<p><code>${esc(f.paperLabel)}</code></p>`:''}<p>${esc(f.status)}</p><details><summary>Source</summary><p class="source-path">${esc(f.source)}</p>${f.sha256?`<p class="source-path">SHA256 ${esc(f.sha256)}</p>`:''}</details><div class="inline-links"><a href="${f.pdf}" target="_blank" rel="noopener">PDF</a>${f.studies.filter(id=>index.studies.some(s=>s.id===id)).map(id=>`<a href="${href('metrics',{study:id})}">Study metrics</a>`).join('')}</div></div></article>`).join('')||'<p class="blank">No indexed figure matches these filters.</p>';
+  $('figure-results').innerHTML=figures.slice(0,figureLimit).map(f=>`<article class="figure-item">${f.preview?`<a href="${f.pdf}" target="_blank" rel="noopener" aria-label="Open ${esc(f.title)} PDF"><img loading="lazy" src="${f.preview}" alt="${esc(f.title)}"></a>`:''}<div class="figure-text"><p class="figure-category">${esc(f.section)}</p><h3>${esc(f.title)}</h3>${f.paperLabel?`<p><code>${esc(f.paperLabel)}</code></p>`:''}<p>${esc(f.status)}</p><details><summary>Source</summary><p class="source-path">${esc(f.source)}</p>${f.sha256?`<p class="source-path">SHA256 ${esc(f.sha256)}</p>`:''}</details><div class="inline-links"><a href="${f.pdf}" target="_blank" rel="noopener">PDF</a>${f.studies.filter(id=>index.studies.some(s=>s.id===id)).map(id=>`<a href="${href('advanced',{study:id,scope:'condition'})}">Metrics</a>`).join('')}</div></div></article>`).join('')||'<p class="blank">No indexed figure matches these filters.</p>';
   $('figure-more').hidden=figures.length<=figureLimit;
   const u=new URL(location.href);for(const key of ['figure','figureStudy','figureFamily'])u.searchParams.delete(key);if(q)u.searchParams.set('figure',q);if(id)u.searchParams.set('figureStudy',id);if(category)u.searchParams.set('figureFamily',category);history.replaceState(null,'',u);
 }

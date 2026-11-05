@@ -55,18 +55,20 @@ async function json(path){if(!cache.has(path)){const r=await fetch(path);if(!r.o
 function pause(){++mediaTicket;cancelAnimationFrame(animation);const v=$('env-video');if(v){v.pause();v.removeAttribute('src');v.load();}}
 
 function shell(){
-  root.innerHTML=`<div class="library-heading"><div><span class="library-eyebrow">PRACTICAL DR-MDP</span><h1>Environments</h1><p class="library-subtitle">Simulation sources, return curves and recorded policies.</p></div><span class="review-status">November 4, 2026 release</span></div>
-    <div class="env-counts"><span><strong>${library.entries.filter(e=>e.cohorts.length||e.report).length}</strong> with curves & metrics</span><span><strong>${library.entries.filter(e=>e.videoSelections).length}</strong> with linked recordings</span><span><strong>${library.entries.flatMap(e=>e.cohorts).length}</strong> policy-study cohorts</span></div>
-    <div class="env-filters"><label>Find an environment<input id="env-search" type="search" placeholder="Task or simulator..."></label><label>Simulator<select id="env-source"><option value="all">All simulators</option>${[...new Set(library.entries.map(e=>e.simulator))].map(s=>`<option>${esc(s)}</option>`).join('')}</select></label><label>Study scope<select id="env-scope"><option value="all">All studies</option><option value="main">Main campaign</option><option value="supplied">Supplied Pendulum results</option><option value="pilot">Pilot</option><option value="development">Earlier development</option></select></label></div>
-    <div class="env-layout"><aside class="env-directory" aria-label="Environment directory"><p id="env-matches" class="small"></p><div id="env-list"></div></aside><div id="env-detail" aria-live="polite"></div></div>
-    <section class="env-incoming"><h2>Separate supplied results</h2><div><strong>DoublePendulum / Pendulum</strong><p>DoublePendulum (Dataset A) and Pendulum (Dataset B), confirmed by the user. Exact versions, algorithm, simulator and row identities pending; not counted as independent 30-seed cohorts.</p><a href="reports/return-reliability/index.html?v=20261104-names1">Return curves & advanced metrics ↗</a></div></section>`;
+  root.innerHTML=`<div class="library-heading"><h1>Environments</h1></div>
+    <div class="env-counts"><span><strong>${library.entries.filter(e=>e.cohorts.length||e.report).length}</strong> with results</span><span><strong>${library.entries.filter(e=>e.videoSelections).length}</strong> with videos</span><span><strong>${library.entries.flatMap(e=>e.cohorts).length}</strong> study cohorts</span></div>
+    <div class="env-filters"><label>Find an environment<input id="env-search" type="search" placeholder="Task or simulator..."></label><label>Simulator<select id="env-source"><option value="all">All simulators</option>${[...new Set(library.entries.map(e=>e.simulator))].map(s=>`<option>${esc(s)}</option>`).join('')}</select></label><label>Studies<select id="env-scope"><option value="all">All studies</option><option value="main">Main campaign</option><option value="supplied">Pendulum / DoublePendulum</option><option value="pilot">Pilot</option><option value="development">Earlier development</option></select></label></div>
+    <div class="env-layout"><aside class="env-directory" aria-label="Environment directory"><label class="env-jump">Environment<select id="env-jump"></select></label><p id="env-matches" class="small"></p><div id="env-list"></div></aside><div id="env-detail" aria-live="polite"></div></div>`;
   $('env-search').oninput=directory;$('env-source').onchange=directory;$('env-scope').onchange=directory;
+  $('env-jump').onchange=()=>selectEnvironment($('env-jump').value);
   directory();
 }
 function directory(){
   const entries=library.entries.filter(e=>belongsTo(e,$('env-search').value,$('env-source').value,$('env-scope').value));
   $('env-matches').textContent=entries.length+' environment entries';
-  $('env-list').innerHTML=entries.map(e=>{const gains=e.cohorts.reduce((n,c)=>n+(evidence?.summary[c.id]?.suiteGains||0),0);return `<button class="env-entry" data-env="${e.id}" aria-pressed="${e===environment}"><strong>${esc(e.name)}</strong><span>${esc(e.simulator)}</span><small>${e.cohorts.length?e.cohorts.length+' cohorts':e.stage==='supplied'?'Supplied returns':e.stage==='pilot'?'Pilot only':'Development only'} · ${e.videoSelections?'Recordings linked':e.recordingPending?'Recording pending':'No linked recordings'}</small>${gains?`<small class="env-gain">${gains} full-suite descriptive gain${gains===1?'':'s'}</small>`:''}</button>`;}).join('')||'<p class="env-unavailable">No matching environment.</p>';
+  $('env-jump').innerHTML=entries.map(e=>`<option value="${e.id}">${esc(e.name)}</option>`).join('');
+  if(environment)$('env-jump').value=environment.id;
+  $('env-list').innerHTML=entries.map(e=>{const gains=e.cohorts.reduce((n,c)=>n+(evidence?.summary[c.id]?.suiteGains||0),0);return `<button class="env-entry" data-env="${e.id}" aria-pressed="${e===environment}"><strong>${esc(e.name)}</strong><span>${esc(e.simulator)}</span><small>${e.cohorts.length?e.cohorts.length+' cohorts':e.stage==='supplied'?'Supplied data':e.stage==='pilot'?'Pilot':'Development'}${e.videoSelections?' · Videos':''}</small>${gains?`<small class="env-gain" title="${gains} fixed settings have higher full-suite mean return and reliability AUC than their comparator; descriptive, not statistically certified.">${gains} suite gain${gains===1?'':'s'} · descriptive</small>`:''}</button>`;}).join('')||'<p class="env-unavailable">No matching environment.</p>';
   $('env-list').querySelectorAll('[data-env]').forEach(b=>b.onclick=()=>selectEnvironment(b.dataset.env));
   if(environment&&entries.length&&!entries.includes(environment))selectEnvironment(entries[0].id);
   if(!entries.length){pause();++ticket;$('env-detail').innerHTML='<p class="env-unavailable">No environment matches these filters.</p>';}
@@ -75,12 +77,15 @@ async function selectEnvironment(id,initial=false){
   pause();environment=library.entries.find(e=>e.id===id)||library.entries[0];cohort=null;axis=null;model=null;selection='fixed';directory();
   const entry=environment;
   if(entry.report){
+    const saved=initial?query().get('reportState'):null;
     ++ticket;remember();
-    $('env-detail').innerHTML=`<header class="env-title"><div><h2>${esc(entry.name)}</h2><p>Supplied results · environment name confirmed</p></div><a href="${entry.report.replace('&embed=1','')}" target="_blank" rel="noopener">Full report ↗</a></header><p class="env-evidence-note">Algorithm, exact version and source-row identities remain unconfirmed. No rollout recording supplied.</p><iframe class="env-supplied-report" title="${esc(entry.name)} return curves and advanced metrics" src="${entry.report}"></iframe>`;return;
+    const report=new URL(entry.report,location.href);
+    if(saved){const state=new URLSearchParams(saved);if(state.get('dataset')===report.searchParams.get('dataset'))for(const key of ['view','setting','family','mode','axis','value','scope','measure','tail','threshold','bands'])if(state.has(key))report.searchParams.set(key,state.get(key));}
+    const full=new URL(report);full.searchParams.delete('embed');
+    $('env-detail').innerHTML=`<header class="env-title"><div><h2>${esc(entry.name)}</h2></div><a id="env-full-report" href="${esc(full.href)}" target="_blank" rel="noopener">Full report ↗</a></header><p class="env-evidence-note">Supplied returns; algorithm, backend and training-seed identities unconfirmed. No video available.</p><iframe class="env-supplied-report" title="${esc(entry.name)} return curves and advanced metrics" src="${esc(report.href)}"></iframe>`;return;
   }
   $('env-detail').innerHTML=`<header class="env-title"><div><h2>${esc(entry.name)}</h2><p>${esc(entry.framework)} <span aria-hidden="true">/</span> ${esc(entry.simulator)}</p></div><span class="env-stage">${entry.stage==='main'?'Main campaign':entry.stage==='pilot'?'Pilot':'Earlier development'}</span></header>
-    <p class="env-task-id">${entry.taskIds.map(esc).join(' / ')}</p>
-    ${entry.cohorts.length?`<div class="env-cohort-control"><label>Cohort<select id="env-cohort">${entry.cohorts.map(s=>`<option value="${s.id}">${esc(s.algorithm+'-'+s.family+' / '+s.environment+' / '+s.branch)}</option>`).join('')}</select></label><span id="env-coverage"></span></div><div id="env-results" role="status">Loading saved results...</div>`:
+    ${entry.cohorts.length?`<div class="env-cohort-control"><label>Method / cohort<select id="env-cohort">${entry.cohorts.map(s=>`<option value="${s.id}">${esc(s.algorithm+'-'+s.family+' / '+s.branch)}</option>`).join('')}</select></label><span id="env-coverage"></span></div><div id="env-results" role="status">Loading saved results...</div>`:
       `<div class="env-empty"><h3>${entry.stage==='pilot'?'Pilot, not a full-30 result':'No completed return export'}</h3><p>${esc(entry.note)}</p><dl><div><dt>Return curves</dt><dd>Not available in the validated library</dd></div><div><dt>Advanced metrics</dt><dd>No eligible policy-level export</dd></div><div><dt>Policy video</dt><dd>${entry.recordingPending?'Recording pending':'No linked recording'}</dd></div></dl></div>`}`;
   if(!entry.cohorts.length){++ticket;remember();return;}
   const requested=initial?(query().get('cohort')||query().get('study')):null;
@@ -101,17 +106,18 @@ async function selectCohort(id,initial=false){
     axis=data.axes.find(a=>a.id===(initial?(query().get('shift')||query().get('axis')):null))||data.axes[0];
     conditionIndex=nearestPoint(axis.curves[data.baseline],initial&&query().has('value')?Number(query().get('value')):axis.nominal);
     selection=initial&&(query().get('selection')==='best'||requested==='best')?'best':'fixed';
-    $('env-coverage').textContent=`${cohort.models.length} settings · ${cohort.axisCount} axes · ${cohort.intendedPolicies} intended policies / setting${cohort.gridComplete===false?' · grid incomplete':''}`;
+    $('env-coverage').textContent=`${cohort.models.length} settings · ${cohort.axisCount} perturbations · ${cohort.intendedPolicies} intended policies per setting${cohort.gridComplete===false?' · grid incomplete':''}`;
     const gains=evidence.summary[cohort.id]?.suiteGains||0;
-    $('env-coverage').insertAdjacentHTML('beforeend',` · <a href="?study=${cohort.id}&level=L3${gains?'&result=gain':''}#robustness">${gains?gains+' full-suite mean / reliability gains':'Inspect measured comparisons'} ↗</a>`);
+    $('env-coverage').insertAdjacentHTML('beforeend',` · <a href="?study=${cohort.id}&level=L3${gains?'&result=gain':''}#robustness">${gains?gains+' suite gains':'Compare robustness'} ↗</a>`);
     $('env-results').innerHTML=`<div class="env-comparison-controls"><label>Setting<select id="env-setting">${data.models.map(m=>`<option value="${esc(m)}">${esc(label(m))}</option>`).join('')}</select></label><label>Perturbation<select id="env-shift">${data.axes.map(a=>`<option value="${a.id}">${esc(a.title)}</option>`).join('')}</select></label></div>
       <div class="env-cap-selection"><button id="env-best-cap" type="button" class="text-button" aria-pressed="false" aria-describedby="env-cap-note"></button><span id="env-cap-note"></span></div>
-      <div class="env-severity-controls"><label>Severity<select id="env-level"></select></label><label class="env-severity-slider">Measured perturbation level<input id="env-severity" type="range" min="0" step="1" aria-label="Perturbation severity"><output id="env-severity-value"></output></label><button id="env-nominal" type="button" class="text-button">Nominal ↺</button></div>
-      <div class="env-plots"><section><div class="env-section-heading"><h3>Return curve</h3><a id="env-open-curves">All curves ↗</a></div><div id="env-curve"></div><div id="env-legend" class="env-legend"></div></section><section><div class="env-section-heading"><h3 id="env-metric-title">Return reliability</h3><a id="env-open-metrics">All metrics ↗</a></div><div id="env-reliability"></div><div id="env-metric-summary" class="env-metric-summary"></div></section></div>
-      <div class="env-analysis-links"><a id="env-axis-metrics">Axis aggregate ↗</a><a id="env-suite-metrics">Full-suite aggregate ↗</a><a id="env-cap-metrics">Compare all caps ↗</a><a id="env-evidence">Robustness hierarchy ↗</a></div>
+      <div class="env-severity-controls"><label>Severity<select id="env-level"></select></label><label class="env-severity-slider">${esc(axis.title)}<input id="env-severity" type="range" min="0" step="1" aria-label="Perturbation severity"><output id="env-severity-value"></output></label><button id="env-nominal" type="button" class="text-button">Nominal ↺</button></div>
+      <nav class="env-view-links" aria-label="Analyze this selection"><a id="env-open-curves">Return curves</a><a id="env-open-metrics">Advanced metrics</a><a id="env-cap-metrics">Compare caps</a><a id="env-figures">Figures</a><a id="env-seeds">Seeds</a></nav>
+      <div class="env-plots"><section><div class="env-section-heading"><h3>Return curve</h3></div><div id="env-curve"></div><div id="env-legend" class="env-legend"></div></section><section><div class="env-section-heading"><h3 id="env-metric-title">Return reliability</h3></div><div id="env-reliability"></div><div id="env-metric-summary" class="env-metric-summary"></div></section></div>
+      <div class="env-analysis-links"><a id="env-axis-metrics">Aggregate: this perturbation ↗</a><a id="env-suite-metrics">Aggregate: full suite ↗</a><a id="env-evidence">Robustness hierarchy ↗</a></div>
       <p id="env-plot-note" class="env-evidence-note"></p>
-      <section class="env-media"><div class="env-section-heading"><h3>Policy rollout</h3><a id="env-open-replay">Full rollout explorer ↗</a></div><div class="env-media-controls"><label>Recorded policy<select id="env-replay-model"></select></label><label>Recorded condition<select id="env-replay-point"></select></label></div><p id="env-media-status" role="status"></p><div id="env-media-body"><div><video id="env-video" playsinline muted controls preload="metadata" hidden aria-label="Same-cohort recorded policy"></video><label class="env-video-scrub" id="env-video-scrub" hidden>Episode<input id="env-video-frame" type="range" min="0" max="1" value="0" aria-label="Recorded episode frame"><output id="env-video-time"></output></label></div><div id="env-episode-trace"></div></div><p id="env-media-note" class="env-evidence-note"></p></section>
-      <div class="env-artifacts"><a id="env-policies" download>Policy summaries CSV ↓</a><a id="env-figures">Saved PDF figures ↗</a>${cohort.archive?`<a href="${cohort.archive}" download>Overleaf package ↓</a>`:''}<a id="env-seeds">Training seeds ↗</a></div><details class="env-provenance"><summary>Cohort and interpretation</summary><p>${esc(data.note)}</p><p>Same setting across axes; sample SD, not a confidence interval. Return reliability is not physical task success. Failed runs receive no invented returns. Video coverage is cohort-specific.</p><code>${esc(data.id)}</code></details>`;
+      <section class="env-media"><div class="env-section-heading"><h3>Policy video</h3><a id="env-open-replay">Rollout explorer ↗</a></div><p id="env-media-status" role="status"></p><div id="env-media-body"><div><div class="env-video-surface"><video id="env-video" playsinline muted controls preload="metadata" hidden aria-label="Same-cohort recorded policy"></video></div><label class="env-video-scrub" id="env-video-scrub" hidden>Episode<input id="env-video-frame" type="range" min="0" max="1" value="0" aria-label="Recorded episode frame"><output id="env-video-time"></output></label></div><div id="env-episode-trace"></div></div><p id="env-media-note" class="env-evidence-note"></p><details id="env-recording-details" hidden><summary>Recording details</summary><p id="env-recording-provenance" class="env-evidence-note"></p></details></section>
+      <div class="env-artifacts"><a id="env-policies" download>Policy summaries CSV ↓</a>${cohort.archive?`<a href="${cohort.archive}" download>Overleaf package ↓</a>`:''}</div><details class="env-provenance"><summary>Data & interpretation</summary><p>${esc(data.note)}</p><p>Same setting across axes; sample SD, not a confidence interval. Return reliability is not physical task success. Failed runs receive no invented returns. Video coverage is cohort-specific.</p><p>${environment.taskIds.map(esc).join(' / ')}</p><code>${esc(data.id)}</code></details>`;
     $('env-setting').value=model;$('env-shift').value=axis.id;
     $('env-setting').onchange=()=>{selection='fixed';model=$('env-setting').value;renderComparison();};
     $('env-results').insertBefore($('env-results').querySelector('.env-media'),$('env-results').querySelector('.env-plots'));
@@ -132,9 +138,10 @@ function renderComparison(){
   $('env-best-cap').disabled=!best;
   $('env-best-cap').setAttribute('aria-pressed',String(selection==='best'));
   $('env-best-cap').title='Select the active setting with the highest mean return over this perturbation grid; controls are excluded.';
-  $('env-cap-note').textContent=selection==='best'?'Best per axis · ex post mean-return selection':'Fixed setting';
+  $('env-cap-note').textContent=selection==='best'?'Highest axis mean · ex post':'Best uses the full-axis mean · ex post';
   const levels=axis.curves[data.baseline],value=levels[conditionIndex].x;
   $('env-level').innerHTML=levels.map((p,i)=>`<option value="${i}">${p.x}${p.x===axis.nominal?' · nominal':''}</option>`).join('');$('env-level').value=conditionIndex;
+  $('env-severity').parentElement.firstChild.textContent=axis.title;
   $('env-severity').max=levels.length-1;$('env-severity').value=conditionIndex;$('env-severity-value').textContent=axis.title+' = '+value;
   pause();remember();const models=[...new Set([data.baseline,model])];
   $('env-curve').innerHTML=previewChart(models.map(m=>({name:label(m),points:axis.curves[m].map(p=>({x:p.x,y:p.mean,sd:p.sd}))})),axisLabel(axis,data.environment),'Episode-mean return',{bands:true,nominal:axis.nominal,current:value});
@@ -147,29 +154,23 @@ function renderComparison(){
   $('env-metric-title').title='One measured severity only. Each observation is a trained policy’s episode-mean return, not a severity average.';
   $('env-metric-summary').innerHTML=summaries.map((s,i)=>`<div><span>${esc(label(models[i]))}</span><strong>${normalized?display(s.auc):display(s.raw)}</strong><small>${normalized?'<dfn title="Mean clip(R / R₀, 0, 1) across trained policies at this severity. R₀ is the fixed standard nominal median; not a confidence interval.">Reliability AUC</dfn>':'Mean condition return'}</small></div>`).join('');
   const counts=models.flatMap(m=>axis.curves[m].map(p=>p.n));
-  $('env-plot-note').textContent=(axis.warning?axis.warning+' ':'')+`${axis.title} = ${value}. Reliability uses only this measured severity (${summaries.map(s=>s.minN).join(' / ')} policies; ${cohort.intendedPolicies} intended per setting). Return bands show sample SD, not a confidence interval.`+(normalized?' Shared standard nominal reference.':' Nonpositive nominal reference: native-return survival, no artificial offset.');
+  $('env-plot-note').textContent=(axis.warning?axis.warning+' ':'')+`Reliability at ${axis.title} = ${value} only · ${summaries.map(s=>s.minN).join(' / ')} of ${cohort.intendedPolicies} policies. Bands: sample SD, not CI.`+(normalized?' Reference: standard nominal median.':' Nonpositive reference: native-return thresholds.');
   $('env-open-curves').href=href('returns');$('env-open-metrics').href=href('advanced',{scope:'condition',metric:normalized?'reliability':'raw'});
   $('env-axis-metrics').href=href('advanced',{scope:'axis',metric:normalized?'reliability':'raw'});$('env-suite-metrics').href=href('advanced',{scope:'suite',metric:normalized?'reliability':'raw'});$('env-cap-metrics').href=href('advanced',{metric:'aggregate'});
   $('env-evidence').href='?study='+data.id+'#robustness';
   $('env-policies').href='data/appendix/'+data.id+'.csv';$('env-figures').href=href('figures',{figureStudy:data.id});$('env-seeds').href=href('seeds',{scope:'condition'});
-  const recordedModels=data.models;
-  $('env-replay-model').innerHTML=recordedModels.map(m=>`<option value="${esc(m)}">${esc(label(m))}${data.replays?.[m]?'':' · recording pending'}</option>`).join('');
-  $('env-replay-model').value=model;
-  $('env-replay-model').onchange=()=>{model=$('env-replay-model').value;selection='fixed';renderComparison();};
   recordings();
 }
 function recordings(){
-  pause();const chosen=$('env-replay-model').value,points=axis.curves[chosen],value=axis.curves[data.baseline][conditionIndex].x;
+  pause();const chosen=model,value=axis.curves[data.baseline][conditionIndex].x;
   $('env-open-replay').href=href('explore',{policy:chosen===data.baseline?'standard':'selected'});
-  const chooser=$('env-replay-point');chooser.disabled=!points.length;
-  chooser.innerHTML=points.map(p=>`<option value="${p.x}">${p.x}${p.x===axis.nominal?' / nominal':''}${data.replays?.[chosen]?.[axis.id+'|'+p.x]?'':' · no recording'}</option>`).join('');chooser.value=String(value);
-  chooser.onchange=()=>{conditionIndex=nearestPoint(axis.curves[data.baseline],Number(chooser.value));renderComparison();};
+  $('env-recording-details').hidden=true;
   const available=!!data.replays?.[chosen]?.[axis.id+'|'+value];$('env-media-body').hidden=!available;
-  if(!available){$('env-media-status').textContent='No matching recording for '+label(chosen)+' · '+axis.title+' = '+value+'.';$('env-media-note').textContent='Recording pending for this exact selection. The measured curves remain available; no different policy or severity is substituted.';return;}
+  if(!available){$('env-media-status').textContent='No video for '+label(chosen)+' · '+axis.title+' = '+value+'.';$('env-media-note').textContent='Curves and metrics are available below.';return;}
   loadVideo();
 }
 async function loadVideo(){
-  pause();const job=mediaTicket,chosen=$('env-replay-model').value,value=Number($('env-replay-point').value);
+  pause();const job=mediaTicket,chosen=model,value=axis.curves[data.baseline][conditionIndex].x;
   const relative=data.replays[chosen][axis.id+'|'+value];
   $('env-media-status').textContent='Loading matched recording...';$('env-media-note').textContent='';
   const video=$('env-video');video.hidden=true;$('env-video-scrub').hidden=true;$('env-video-frame').disabled=true;$('env-episode-trace').innerHTML='';
@@ -180,7 +181,9 @@ async function loadVideo(){
     if(replay.kind!=='video')throw Error('No video file is linked to this saved trajectory.');
     const {start,end}=segmentWindow(replay);
     const caption=`${label(chosen)} · training seed ${replay.trainingSeed} · episode seed ${replay.episodeSeed} · return ${display(replay.returnValue)}`;
-    $('env-media-note').textContent=(replay.interpretation||'Illustrative saved-policy recording, not a cohort mean.')+' Exact cohort, policy and condition retained. Physical success is not inferred from playback.';
+    $('env-media-note').textContent='One saved-policy episode; not a cohort mean or task-success estimate.';
+    $('env-recording-provenance').textContent=(replay.interpretation||'Illustrative saved-policy recording, not a cohort mean.')+' Exact cohort, policy and condition retained. Physical success is not inferred from playback.';
+    $('env-recording-details').hidden=false;
     const source=segmentSource(replay);video.src=source.startsWith('assets/replays/')?'https://arjunmahesh1.github.io/practical-drmdp/'+source:source;
     let ready=false;
     const prepare=()=>{if(job!==mediaTicket||ready||video.readyState<1)return;ready=true;video.currentTime=start;};
@@ -205,6 +208,13 @@ async function route(){
   catch(e){root.innerHTML=`<p role="alert">${esc(e.message)}</p>`;}
 }
 if(root){
+  window.addEventListener('message',e=>{
+    const frame=root.querySelector('.env-supplied-report');
+    if(root.hidden||!frame||e.origin!==location.origin||e.source!==frame.contentWindow||e.data?.type!=='pendulum-context'||typeof e.data.search!=='string')return;
+    const saved=new URLSearchParams(e.data.search);saved.delete('embed');
+    const u=new URL(location.href);u.searchParams.set('reportState',saved.toString());history.replaceState(null,'',u);
+    const report=new URL(frame.src);report.search=saved.toString();$('env-full-report').href=report.href;
+  });
   window.addEventListener('hashchange',route);window.addEventListener('popstate',route);
   window.addEventListener('results-context',e=>{
     if(e.detail.page==='environments'&&root.dataset.active!=='1')route();

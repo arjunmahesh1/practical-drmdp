@@ -4,10 +4,11 @@ import {segmentWindow,segmentFrame,segmentTime,segmentSource} from './video-segm
 import {environments,parameterNote} from './environments.mjs?v=20261104-library1';
 import {visibleStudy,archivedStudies} from './results-policy.mjs';
 import {withRecordings} from './recording-overlay.mjs';
+import {comparisonParams,environmentLink} from './results-context.mjs';
 
 const $=id=>document.getElementById(id);
-let params=new URLSearchParams(location.search);
-const build='20261105-recordings1';
+let params=comparisonParams(location.search);
+const build='20261105-navigation1';
 const cache=new Map();
 const state={catalog:null,study:null,axis:null,model:null,reference:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||(params.has('study')?'returns':'environments'),bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
 let pendingStudy=0, pendingReplay=0, lastFrame=0, animation;
@@ -78,15 +79,16 @@ function chooseModel(model) {
   state.model=model==='best'?bestModelOnAxis(state.study,state.axis):model;renderAll();
 }
 function syncURL() {
-  if(['environments','robustness'].includes(state.page))return;
+  if(['environments','robustness','reports','appendix','methods'].includes(state.page))return;
   const u=new URL(location.href);
+  for(const key of ['environment','cohort','parameter','shift','selection'])u.searchParams.delete(key);
   for(const [k,v] of Object.entries({study:state.study.id,axis:state.axis.id,reference:state.reference,setting:state.selection==='best'?'best':state.model,point:state.index}))u.searchParams.set(k,v);
   u.hash=state.page;
   if(state.allSettings)u.searchParams.set('all','1');
   else u.searchParams.delete('all');
   if(state.replayPolicy==='standard')u.searchParams.set('policy','standard');
   else u.searchParams.delete('policy');
-  if(u.searchParams.get('scope')==='condition')u.searchParams.set('value',points()[state.index].x);
+  u.searchParams.set('value',points()[state.index].x);
   history.replaceState(null,'',u);
 }
 function showPage(fromURL=false){
@@ -94,8 +96,8 @@ function showPage(fromURL=false){
   if(state.page==='evidence')state.page='appendix';
   if(!['explore','returns','methods','appendix','advanced','seeds','figures','reports','environments','robustness'].includes(state.page))state.page='returns';
   const appendixPage=['appendix','figures','reports'].includes(state.page);
-  if(fromURL&&!appendixPage&&state.study){
-    const current=new URLSearchParams(location.search),id=current.get('study');
+  if(fromURL&&state.study){
+    const current=comparisonParams(location.search),id=current.get('study');
     const changedAxis=current.has('axis')&&state.study.axes.some(a=>a.id===current.get('axis'))&&current.get('axis')!==state.axis.id;
     const changedSetting=current.has('setting')&&(current.get('setting')==='best'||state.study.models.includes(current.get('setting')))&&current.get('setting')!==(state.selection==='best'?'best':state.model);
     const changedReference=current.has('reference')&&state.study.models.includes(current.get('reference'))&&current.get('reference')!==state.reference;
@@ -106,7 +108,7 @@ function showPage(fromURL=false){
   }
   document.querySelector('.workspace').hidden=appendixPage||['environments','robustness'].includes(state.page);
   $('shared-controls').hidden=['appendix','methods','reports','environments','robustness'].includes(state.page);
-  document.querySelector('.result-tabs').hidden=['methods','environments','robustness'].includes(state.page);
+  document.querySelector('.result-tabs').hidden=['methods','environments','robustness','reports','appendix'].includes(state.page);
   $('evidence-page').hidden=state.page!=='robustness';
   $('environment-page').hidden=state.page!=='environments';
   $('appendix-root').hidden=!appendixPage;
@@ -120,6 +122,11 @@ function showPage(fromURL=false){
 }
 function publishContext(){
   if(!state.study)return;
+  const contextBar=$('comparison-context');
+  contextBar.hidden=!['returns','advanced','seeds','explore','figures'].includes(state.page);
+  $('comparison-environment').href=environmentLink(location.pathname,{study:state.study.id,model:state.model,axis:state.axis.id,value:points()[state.index].x});
+  $('comparison-title').textContent=group(state.study.environment)+' / '+state.study.algorithm+'-'+state.study.family;
+  $('comparison-selection').textContent=label(state.model)+' · '+state.axis.title+' = '+points()[state.index].x;
   const mode=state.allSettings?'all':state.selection;
   document.querySelectorAll('[data-cap-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.capMode===mode)));
   $('cap-note').textContent=state.allSettings?state.study.models.length+' settings · focus: '+label(state.model):state.selection==='best'?'Ex-post axis selection · full-grid mean return':label(state.model)+' · fixed setting';
@@ -325,6 +332,7 @@ $('bands-gallery').onchange=e=>{state.bands=e.target.checked;$('bands').checked=
 window.addEventListener('results-request',publishContext);
 window.addEventListener('results-select',e=>{
   const c=e.detail;
+  if(c.study&&state.catalog.studies.some(s=>s.id===c.study)){chooseStudy(c.study);return;}
   if(c.model&&state.study.models.includes(c.model)){state.allSettings=false;state.selection='fixed';state.model=c.model;}
   if(c.axis&&state.study.axes.some(a=>a.id===c.axis)){state.axis=state.study.axes.find(a=>a.id===c.axis);state.index=nearestPoint(points(),state.axis.nominal);}
   if(Number.isInteger(c.index))state.index=Math.max(0,Math.min(c.index,points().length-1));
@@ -341,8 +349,8 @@ $('rollout-video').ontimeupdate=syncVideo;$('rollout-video').onseeked=syncVideo;
 $('rollout-video').onplay=()=>{state.playing=true;$('play').textContent='Ⅱ';$('play').setAttribute('aria-label','Pause recorded-policy replay');cancelAnimationFrame(animation);if(state.replay?.videoSegment)animation=requestAnimationFrame(watchVideoSegment);};
 $('rollout-video').onpause=()=>{const v=$('rollout-video'),r=state.replay;state.playing=false;cancelAnimationFrame(animation);if(!v.hidden&&r?.videoSegment&&state.playbackWanted&&state.page==='explore'){const {start,end,fps}=segmentWindow(r);if(v.currentTime>=end-.5/fps){v.currentTime=start;v.play().catch(()=>{});return;}}$('play').textContent='▶';$('play').setAttribute('aria-label','Play recorded-policy replay');};
 window.addEventListener('hashchange',()=>{state.page=location.hash.slice(1);showPage(true);if(state.page==='explore'&&state.study&&!state.replay)loadReplay();});
-window.addEventListener('popstate',()=>{params=new URLSearchParams(location.search);state.page=location.hash.slice(1)||'returns';const id=params.get('study');if(state.catalog?.studies.some(s=>s.id===id))chooseStudy(id,true);});
-document.querySelectorAll('[data-page]').forEach(a=>a.onclick=e=>{e.preventDefault();if(state.page!==a.dataset.page){const u=new URL(location.href);u.hash=a.dataset.page;history.pushState(null,'',u);}state.page=a.dataset.page;showPage();});
+window.addEventListener('popstate',()=>{params=comparisonParams(location.search);state.page=location.hash.slice(1)||'environments';showPage(true);});
+document.querySelectorAll('[data-page]').forEach(a=>a.onclick=e=>{e.preventDefault();if(state.page!==a.dataset.page){const u=new URL(location.href);u.hash=a.dataset.page;history.pushState(null,'',u);}state.page=a.dataset.page;showPage(true);});
 $('share').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);$('toast').textContent='Comparison link copied';$('toast').classList.add('visible');setTimeout(()=>$('toast').classList.remove('visible'),2000);}catch{$('toast').textContent='Copy the current address to share this comparison';$('toast').classList.add('visible');}};
 $('download').onclick=()=>{const rows=[['study','environment','algorithm','family','setting','axis','value','mean_return','sample_sd','measured_policies']];for(const [model,ps] of Object.entries(state.axis.curves))for(const p of ps)rows.push([state.study.id,state.study.environment,state.study.algorithm,state.study.family,model,state.axis.id,p.x,p.mean,p.sd,p.n]);const csv=rows.map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\n');const u=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));const a=document.createElement('a');a.href=u;a.download=state.study.id+'-'+state.axis.id+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(u),200);};
 
