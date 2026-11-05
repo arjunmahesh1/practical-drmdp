@@ -9,7 +9,9 @@ const ci=x=>x?`${number(x[0])} [${number(x[1])}, ${number(x[2])}]`:'N/A';
 function comparison(row,view='advanced',axis=null){
  if(row.dataset)return 'reports/return-reliability/index.html?'+new URLSearchParams({v:'20261105-flat1',dataset:row.dataset,view:'comparison',mode:'fixed',setting:row.model});
  if(!row.study)return null;
- return '?'+new URLSearchParams({study:row.study,setting:row.model,reference:row.reference,scope:'axis',...row.archived?{archive:'1'}:{},...axis?{axis}:{}})+'#'+view;
+ const scope=axis||view!=='advanced'?'axis':row.result.code==='L3'?'suite':row.result.code==='L2'?'axis':'nominal';
+ const selectedAxis=axis||(row.result.code==='L2'?row.gates.L2.tests?.find(t=>t.L2&&t.eligible)?.axis:null);
+ return '?'+new URLSearchParams({study:row.study,setting:row.model,reference:row.reference,scope,...row.archived?{archive:'1'}:{},...selectedAxis?{axis:selectedAxis}:{}})+'#'+view;
 }
 function gateCell(row,level){
  if(row.role==='reference'||row.role==='control')return '<span class="setting-muted">—</span>';
