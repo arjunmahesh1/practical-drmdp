@@ -27,9 +27,10 @@ export function matchesSetting(row,{environment='all',algorithm='all',result='al
 }
 
 export function settingsCSV(rows){
-  const fields=['environment','algorithm','family','branch','model','settingLabel','referenceLabel','result','L1','L2','L3','tested_shifts','passed_shifts','declared_shifts','nominal_mean','reference_nominal_mean','nominal_failures','reference_nominal_failures','policies','reference_policies','L1_basis','L3_basis','archived','evidence_note'];
+  const fields=['environment','algorithm','family','branch','model','settingLabel','referenceLabel','result','L1','L2','L3','tested_shifts','passed_shifts','declared_shifts','nominal_mean','reference_nominal_mean','nominal_failures','reference_nominal_failures','policies','reference_policies','L1_basis','L3_basis','archived','evidence_note','comparison_mode','resampling','L1_reference','suite_auc_delta','suite_auc_lower','suite_auc_upper','suite_mean_delta','suite_mean_lower','suite_mean_upper','suite_return_margin'];
   const values=rows.map(r=>[r.environment,r.algorithm,r.family,r.branch,r.model,r.settingLabel,r.referenceLabel,r.result.label,
     r.gates.L1.status,r.gates.L2.status,r.gates.L3.status,r.gates.L2.tested??'',r.gates.L2.passed??'',r.gates.L2.declared??'',r.nominal?.mean,r.nominal?.referenceMean,r.nominal?.failures,r.nominal?.referenceFailures,r.nominal?.policies,r.nominal?.referencePolicies,r.gates.L1.basis,r.gates.L3.basis,r.archived,
-    [r.gates.L1.note,r.gates.L2.note,r.gates.L3.note].filter(Boolean).join(' ')]);
+    [r.gates.L1.note,r.gates.L2.note,r.gates.L3.note].filter(Boolean).join(' '),r.comparisonMode,r.resampling,r.l1ReferenceLabel,
+    ...(r.gates.L3.d_auc||['','','']),...(r.gates.L3.d_mean||['','','']),r.gates.L3.margin]);
   return [fields,...values].map(row=>row.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
 }
