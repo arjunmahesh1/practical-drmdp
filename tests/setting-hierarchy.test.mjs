@@ -59,6 +59,6 @@ test('qualitative L1 preserves borderlines, missing policies and unknown supplie
   assert.equal(ppo.result.code,'borderline');assert.equal(ppo.gates.L2.passed,2);
   const short=inventory.rows.find(r=>r.id==='sac_kl_walker|klb50');
   assert.equal(short.nominal.policies,29);assert.equal(short.gates.L1.status,'unassessed');
-  for(const r of inventory.rows.filter(r=>r.dataset)){assert.equal(r.algorithm,'Unconfirmed');assert.equal(r.gates.L1.status,'unassessed');}
+  for(const r of inventory.rows.filter(r=>r.dataset)){assert.equal(r.algorithm,'');assert.equal(r.gates.L1.status,'unassessed');assert(r.environment.startsWith('Inverted '));}
   for(const r of inventory.rows.filter(r=>r.result.code==='none'))assert.equal(r.gates.L1.status,'fail');
 });

@@ -1,5 +1,5 @@
 import {escape as esc,fmt,label,activeModel,axisLabel,bestModelOnAxis,nearestPoint} from './model.mjs?v=20261104-library1';
-import {visibleStudy,suppliedEnvironments} from './results-policy.mjs';
+import {visibleStudy,suppliedEnvironments,resultEnvironments} from './results-policy.mjs?v=20261105-flat1';
 import {withRecordings,recordingOverlay,libraryRecordingCoverage} from './recording-overlay.mjs';
 import {summarize,rawReliability} from './appendix-metrics.mjs';
 import {normalizedSurvival} from './browser-metrics.mjs';
@@ -56,19 +56,19 @@ function pause(){++mediaTicket;cancelAnimationFrame(animation);const v=$('env-vi
 
 function shell(){
   root.innerHTML=`<div class="library-heading"><h1>Environments</h1></div>
-    <div class="env-counts"><span><strong>${library.entries.filter(e=>e.cohorts.length||e.report).length}</strong> with results</span><span><strong>${library.entries.filter(e=>e.videoSelections).length}</strong> with videos</span><span><strong>${library.entries.flatMap(e=>e.cohorts).length}</strong> study cohorts</span></div>
-    <div class="env-filters"><label>Find an environment<input id="env-search" type="search" placeholder="Task or simulator..."></label><label>Simulator<select id="env-source"><option value="all">All simulators</option>${[...new Set(library.entries.map(e=>e.simulator))].map(s=>`<option>${esc(s)}</option>`).join('')}</select></label><label>Studies<select id="env-scope"><option value="all">All studies</option><option value="main">Main campaign</option><option value="supplied">Pendulum / DoublePendulum</option><option value="pilot">Pilot</option><option value="development">Earlier development</option></select></label></div>
+    <div class="env-counts"><span><strong>${library.entries.length}</strong> environments</span><span><strong>${library.entries.filter(e=>e.videoSelections).length}</strong> with videos</span></div>
+    <div class="env-filters"><label>Find an environment<input id="env-search" type="search" placeholder="Environment or simulator..."></label><label>Simulator<select id="env-source"><option value="all">All simulators</option>${[...new Set(library.entries.map(e=>e.simulator).filter(Boolean))].map(s=>`<option>${esc(s)}</option>`).join('')}</select></label></div>
     <div class="env-layout"><aside class="env-directory" aria-label="Environment directory"><label class="env-jump">Environment<select id="env-jump"></select></label><p id="env-matches" class="small"></p><div id="env-list"></div></aside><div id="env-detail" aria-live="polite"></div></div>`;
-  $('env-search').oninput=directory;$('env-source').onchange=directory;$('env-scope').onchange=directory;
+  $('env-search').oninput=directory;$('env-source').onchange=directory;
   $('env-jump').onchange=()=>selectEnvironment($('env-jump').value);
   directory();
 }
 function directory(){
-  const entries=library.entries.filter(e=>belongsTo(e,$('env-search').value,$('env-source').value,$('env-scope').value));
-  $('env-matches').textContent=entries.length+' environment entries';
+  const entries=library.entries.filter(e=>belongsTo(e,$('env-search').value,$('env-source').value,'all'));
+  $('env-matches').textContent=entries.length+' environments';
   $('env-jump').innerHTML=entries.map(e=>`<option value="${e.id}">${esc(e.name)}</option>`).join('');
   if(environment)$('env-jump').value=environment.id;
-  $('env-list').innerHTML=entries.map(e=>{const gains=e.cohorts.reduce((n,c)=>n+(evidence?.summary[c.id]?.suiteGains||0),0);return `<button class="env-entry" data-env="${e.id}" aria-pressed="${e===environment}"><strong>${esc(e.name)}</strong><span>${esc(e.simulator)}</span><small>${e.cohorts.length?e.cohorts.length+' cohorts':e.stage==='supplied'?'Supplied data':e.stage==='pilot'?'Pilot':'Development'}${e.videoSelections?' · Videos':''}</small>${gains?`<small class="env-gain" title="${gains} fixed settings have higher full-suite mean return and reliability AUC than their comparator; descriptive, not statistically certified.">${gains} suite gain${gains===1?'':'s'} · descriptive</small>`:''}</button>`;}).join('')||'<p class="env-unavailable">No matching environment.</p>';
+  $('env-list').innerHTML=entries.map(e=>{const gains=e.cohorts.reduce((n,c)=>n+(evidence?.summary[c.id]?.suiteGains||0),0);return `<button class="env-entry" data-env="${e.id}" aria-pressed="${e===environment}"><strong>${esc(e.name)}</strong>${e.simulator?`<span>${esc(e.simulator)}</span>`:''}${e.videoSelections?'<small>Videos</small>':''}${gains?`<small class="env-gain" title="${gains} fixed settings have higher full-suite mean return and reliability AUC than their comparator; descriptive, not statistically certified.">${gains} suite gain${gains===1?'':'s'} · descriptive</small>`:''}</button>`;}).join('')||'<p class="env-unavailable">No matching environment.</p>';
   $('env-list').querySelectorAll('[data-env]').forEach(b=>b.onclick=()=>selectEnvironment(b.dataset.env));
   if(environment&&entries.length&&!entries.includes(environment))selectEnvironment(entries[0].id);
   if(!entries.length){pause();++ticket;$('env-detail').innerHTML='<p class="env-unavailable">No environment matches these filters.</p>';}
@@ -80,13 +80,13 @@ async function selectEnvironment(id,initial=false){
     const saved=initial?query().get('reportState'):null;
     ++ticket;remember();
     const report=new URL(entry.report,location.href);
-    report.searchParams.set('v','20261105-navigation1');
+    report.searchParams.set('v','20261105-flat1');
     if(saved){const state=new URLSearchParams(saved);if(state.get('dataset')===report.searchParams.get('dataset'))for(const key of ['view','setting','family','mode','axis','value','scope','measure','tail','threshold','bands'])if(state.has(key))report.searchParams.set(key,state.get(key));}
     const full=new URL(report);full.searchParams.delete('embed');
-    $('env-detail').innerHTML=`<header class="env-title"><div><h2>${esc(entry.name)}</h2></div><a id="env-full-report" href="${esc(full.href)}" target="_blank" rel="noopener">Full report ↗</a></header><p class="env-evidence-note">Supplied returns; algorithm, backend and training-seed identities unconfirmed. No video available.</p><iframe class="env-supplied-report" title="${esc(entry.name)} return curves and advanced metrics" src="${esc(report.href)}"></iframe>`;return;
+    $('env-detail').innerHTML=`<header class="env-title"><div><h2>${esc(entry.name)}</h2></div><a id="env-full-report" href="${esc(full.href)}" target="_blank" rel="noopener">Full report ↗</a></header><iframe class="env-supplied-report" title="${esc(entry.name)} return curves and advanced metrics" src="${esc(report.href)}"></iframe><details class="env-provenance"><summary>Data & source details</summary><p>The source tables contain 30 rows per condition. Algorithm, simulator version and training-seed IDs are not recorded in these files. No rollout recording is linked.</p></details>`;return;
   }
-  $('env-detail').innerHTML=`<header class="env-title"><div><h2>${esc(entry.name)}</h2><p>${esc(entry.framework)} <span aria-hidden="true">/</span> ${esc(entry.simulator)}</p></div><span class="env-stage">${entry.stage==='main'?'Main campaign':entry.stage==='pilot'?'Pilot':'Earlier development'}</span></header>
-    ${entry.cohorts.length?`<div class="env-cohort-control"><label>Method / cohort<select id="env-cohort">${entry.cohorts.map(s=>`<option value="${s.id}">${esc(s.algorithm+'-'+s.family+' / '+s.branch)}</option>`).join('')}</select></label><span id="env-coverage"></span></div><div id="env-results" role="status">Loading saved results...</div>`:
+  $('env-detail').innerHTML=`<header class="env-title"><div><h2>${esc(entry.name)}</h2><p>${esc(entry.framework)} <span aria-hidden="true">/</span> ${esc(entry.simulator)}</p></div></header>
+    ${entry.cohorts.length?`<div class="env-cohort-control"><label>Method<select id="env-cohort">${entry.cohorts.map(s=>`<option value="${s.id}">${esc(s.algorithm+'-'+s.family+' / '+s.branch)}</option>`).join('')}</select></label><span id="env-coverage"></span></div><div id="env-results" role="status">Loading saved results...</div>`:
       `<div class="env-empty"><h3>${entry.stage==='pilot'?'Pilot, not a full-30 result':'No completed return export'}</h3><p>${esc(entry.note)}</p><dl><div><dt>Return curves</dt><dd>Not available in the validated library</dd></div><div><dt>Advanced metrics</dt><dd>No eligible policy-level export</dd></div><div><dt>Policy video</dt><dd>${entry.recordingPending?'Recording pending':'No linked recording'}</dd></div></dl></div>`}`;
   if(!entry.cohorts.length){++ticket;remember();return;}
   const requested=initial?(query().get('cohort')||query().get('study')):null;
@@ -205,7 +205,7 @@ async function route(){
   root.dataset.active=active?'1':'0';
   if(!active){pause();++ticket;return;}
   if(!location.hash){const u=new URL(location.href);u.hash='environments';history.replaceState(null,'',u);}
-  try{const original=libraryRecordingCoverage(await json('data/environments.json'),await recordingOverlay());library={...original,entries:[...original.entries.map(e=>({...e,cohorts:e.cohorts.filter(visibleStudy)})),...suppliedEnvironments]};evidence=await json('data/evidence-summary.json');shell();const requested=query().get('cohort')||query().get('study');await selectEnvironment(query().get('environment')||library.entries.find(e=>e.cohorts.some(c=>c.id===requested))?.id||'walker',true);}
+  try{const original=libraryRecordingCoverage(await json('data/environments.json'),await recordingOverlay());library={...original,entries:resultEnvironments([...original.entries.map(e=>({...e,cohorts:e.cohorts.filter(visibleStudy)})),...suppliedEnvironments])};evidence=await json('data/evidence-summary.json');shell();const requested=query().get('cohort')||query().get('study');await selectEnvironment(query().get('environment')||library.entries.find(e=>e.cohorts.some(c=>c.id===requested))?.id||'walker',true);}
   catch(e){root.innerHTML=`<p role="alert">${esc(e.message)}</p>`;}
 }
 if(root){
