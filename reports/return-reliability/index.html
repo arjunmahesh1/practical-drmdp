@@ -74,17 +74,27 @@ function loadCohort(){
 }
 function refreshSetting(){const old=$('setting').value,ms=candidates();$('setting').innerHTML=ms.map(m=>`<option value="${esc(m)}">${esc(label(m))}</option>`).join('');$('setting').value=ms.includes(old)?old:ms[0];render();}
 function render(){
+ const condition=$('scope').value==='condition',selectedAxis=cohort.axes.find(a=>a.id===$('axis').value);
+ $('report-level-label').hidden=!condition||!['returns','reliability','tail'].includes(view);
+ $('report-severity').max=selectedAxis.levels.length-1;$('report-severity').value=$('report-level').value;
+ const url=new URL(location.href);url.searchParams.set('dataset',cohort.id);url.searchParams.set('view',view);history.replaceState(null,'',url);
  const gallery=$('scope').value==='gallery',t=Number($('threshold').value),best=$('mode').value==='best';
  if(best)$('scope').value='gallery';$('scope').querySelector('[value=suite]').disabled=best;
  $('reliability-kind').querySelector('[value=level]').disabled=$('scope').value==='suite';
  if($('scope').value==='suite'&&$('reliability-kind').value==='level')$('reliability-kind').value='survival';
  $('title').textContent={returns:'Return curves',reliability:'Return reliability',tail:'Lower-tail returns',comparison:'Metrics & settings',rows:'Within-axis row profiles'}[view];
  $('search-label').hidden=['comparison','rows'].includes(view)||(view==='reliability'&&$('scope').value==='suite');
- $('bands-label').hidden=view!=='returns';$('scope-label').hidden=view!=='reliability';$('tail-kind-label').hidden=view!=='tail';$('axis-label').hidden=view!=='rows';
+ $('bands-label').hidden=view!=='returns';$('scope-label').hidden=!['returns','reliability','tail'].includes(view);$('tail-kind-label').hidden=view!=='tail';$('axis-label').hidden=view!=='rows'&&!condition;
  $('reliability-kind-label').hidden=view!=='reliability';$('threshold-label').hidden=view!=='reliability'||$('reliability-kind').value==='native';$('threshold-output').value=num(t*100,0)+'%';
  const stamp=$('mode').value==='all'?'All settings':best?'Best per axis · highest shifted mean, ex post':label($('setting').value)+' · fixed setting';
  $('caption').textContent=stamp+' · reference: Standard · 30 supplied rows · pure nominal excluded / compound level 0 included'+(view==='returns'&&$('bands').checked?' · SD: reference + focused setting':'');
  if(view==='comparison'){comparison();return;}if(view==='rows'){rows();return;}
+ if(condition){
+  const a=selectedAxis,i=Number($('report-level').value),value=a.levels[i],ms=models(a),normalized=$('reliability-kind').value!=='native',selected=model(a),values=a.settings[selected].values.map(row=>row[i]);
+  const series=ms.map(m=>({model:m,points:view==='returns'?a.levels.map((x,j)=>[x,a.settings[m].levels.mean[j],a.settings[m].levels.sd[j]]):view==='tail'?a.levels.map((x,j)=>[x,a.settings[m].levels[$('tail-kind').value][j]]):survivalPoints([a.settings[m].values.map(row=>[row[i]])],normalized)}));
+  const auc=mean(values.map(v=>Math.max(0,Math.min(1,v/cohort.reference)))),retained=mean(values.map(v=>Number(v/cohort.reference>=.5)));
+  $('content').innerHTML=`<div class="single"><h2>${esc(a.title)} = ${value}</h2><p class="note">${esc(cohort.label)} · one measured condition · 30 supplied rows, not authenticated training-policy IDs</p>${plot(series,view==='reliability'?(normalized?'Retained-return threshold':'Native-return threshold'):a.unit,view==='reliability'?'Fraction of supplied rows':view==='tail'?'Lower-tail return':'Mean reported return',{bands:view==='returns'&&$('bands').checked,xr:view==='reliability'&&normalized?[0,1]:null,yr:view==='reliability'?[0,1]:null,threshold:view==='reliability'&&normalized?.5:view==='returns'?value:null})}${legend(ms)}<div class="stats"><span>Condition mean<strong>${num(mean(values))}</strong></span><span>Condition AUC<strong>${num(auc,3)}</strong></span><span>Reliability at 50%<strong>${num(100*retained)}%</strong></span><span>Measured level<strong>${value}</strong></span></div></div>`;return;
+ }
  if(view==='reliability'&&$('scope').value==='suite'){const ms=[cohort.baseline,...($('mode').value==='all'?candidates():[$('setting').value])],normalized=$('reliability-kind').value!=='native';const series=ms.map(m=>({model:m,points:survivalPoints(cohort.axes.map(a=>shiftedRows(a,m)),normalized)}));$('content').innerHTML='<div class="single">'+plot(series,normalized?'Retained-return threshold':'Native-return threshold','Fraction of supplied rows',{xr:normalized?[0,1]:null,yr:[0,1],threshold:normalized?t:null})+legend(ms)+'</div>';return;}
  const axes=cohort.axes.filter(a=>(a.title+' '+a.id).toLowerCase().includes($('search').value.toLowerCase()));
  $('content').innerHTML='<div class="gallery">'+axes.map(a=>{
@@ -107,10 +117,20 @@ function rows(){
  $('content').innerHTML=`<h2 style="font-size:16px">${esc(a.title)} · ${esc(label(m))}</h2><p class="note">${esc(a.background)} · row numbers are source order, not authenticated seed IDs</p><div class="table-scroll row-grid"><table><thead><tr><th>Source row</th>${a.levels.map(x=>`<th>${num(x,3)}</th>`).join('')}</tr></thead><tbody>${data.values.map((row,i)=>`<tr><td>${i+1}</td>${row.map(v=>`<td style="background:rgba(27,128,108,${.04+.32*Math.max(0,Math.min(1,v/cohort.reference))})" title="Source row ${i+1}: ${v}">${num(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></div><p class="note">All shifted levels retain at least 50% of R₀: ${num(data.all_levels_retained_50*100)}% of supplied rows within this axis. No cross-file matching inferred.</p>`;
 }
 function syncTabs(){document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.view===view)));}
-$('cohort').innerHTML=D.cohorts.map(c=>`<option value="${esc(c.id)}">${esc(c.label)}</option>`).join('');$('cohort').onchange=loadCohort;
+$('cohort').innerHTML=D.cohorts.map(c=>`<option value="${esc(c.id)}">${esc(c.label)}</option>`).join('');
+const parameters=new URLSearchParams(location.search);
+if(D.cohorts.some(c=>c.id===parameters.get('dataset')))$('cohort').value=parameters.get('dataset');
+if(['returns','reliability','tail','comparison','rows'].includes(parameters.get('view')))view=parameters.get('view');
+$('scope').insertAdjacentHTML('afterbegin','<option value="condition">One measured condition</option>');$('scope').value='condition';
+document.querySelector('.tools').insertAdjacentHTML('beforeend','<label id="report-level-label">Measured level<select id="report-level"></select><input id="report-severity" type="range" min="0" step="1" aria-label="Measured perturbation severity"></label>');
+function levels(){const axis=cohort.axes.find(a=>a.id===$('axis').value);$('report-level').innerHTML=axis.levels.map((x,i)=>`<option value="${i}">${x}</option>`).join('');}
+const originalLoad=loadCohort;
+$('cohort').onchange=()=>{cohort=D.cohorts.find(c=>c.id===$('cohort').value);$('axis').innerHTML=cohort.axes.map(a=>`<option value="${a.id}">${esc(a.title)}</option>`).join('');levels();originalLoad();};
 $('family').onchange=refreshSetting;$('setting').onchange=()=>{if($('mode').value==='best')$('mode').value='fixed';render();};
-for(const id of ['mode','scope','bands','tail-kind','reliability-kind','axis'])$(id).onchange=render;
+for(const id of ['mode','scope','bands','tail-kind','reliability-kind','report-level'])$(id).onchange=render;
+$('axis').onchange=()=>{levels();render();};$('report-severity').oninput=e=>{$('report-level').value=e.target.value;render();};
 $('threshold').oninput=render;$('search').oninput=render;
 const tabs=[...document.querySelectorAll('[data-view]')];tabs.forEach((b,i)=>{b.onclick=()=>{view=b.dataset.view;syncTabs();render();};b.onkeydown=e=>{if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();const n=(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length;tabs[n].focus();tabs[n].click();}};});
-loadCohort();
+cohort=D.cohorts.find(c=>c.id===$('cohort').value);$('axis').innerHTML=cohort.axes.map(a=>`<option value="${a.id}">${esc(a.title)}</option>`).join('');levels();syncTabs();loadCohort();
+if(parameters.get('embed')==='1'){$('cohort').disabled=true;document.querySelector('header').hidden=true;document.querySelector('footer').hidden=true;const first=document.body.firstElementChild;if(first.tagName==='DIV'&&first.querySelector('a[href*="#reports"]'))first.hidden=true;}
 </script></body></html>

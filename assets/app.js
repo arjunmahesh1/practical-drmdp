@@ -2,10 +2,11 @@ import {baselineColor,robustColor,fmt,escape as esc,label,activeModel,nearestPoi
 import {episodeTraceSVG} from './replay-chart.mjs?v=20261023-replayaxes1';
 import {segmentWindow,segmentFrame,segmentTime,segmentSource} from './video-segment.mjs?v=20261023-fullmatrix1';
 import {environments,parameterNote} from './environments.mjs?v=20261104-library1';
+import {visibleStudy,archivedStudies} from './results-policy.mjs';
 
 const $=id=>document.getElementById(id);
 let params=new URLSearchParams(location.search);
-const build='20261104-library1';
+const build='20261104-flow1';
 const cache=new Map();
 const state={catalog:null,study:null,axis:null,model:null,reference:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||(params.has('study')?'returns':'environments'),bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
 let pendingStudy=0, pendingReplay=0, lastFrame=0, animation;
@@ -76,7 +77,7 @@ function chooseModel(model) {
   state.model=model==='best'?bestModelOnAxis(state.study,state.axis):model;renderAll();
 }
 function syncURL() {
-  if(state.page==='environments')return;
+  if(['environments','robustness'].includes(state.page))return;
   const u=new URL(location.href);
   for(const [k,v] of Object.entries({study:state.study.id,axis:state.axis.id,reference:state.reference,setting:state.selection==='best'?'best':state.model,point:state.index}))u.searchParams.set(k,v);
   u.hash=state.page;
@@ -90,20 +91,22 @@ function syncURL() {
 function showPage(fromURL=false){
   if(state.page==='metrics')state.page='advanced';
   if(state.page==='evidence')state.page='appendix';
-  if(!['explore','returns','methods','appendix','advanced','seeds','figures','reports','environments'].includes(state.page))state.page='returns';
+  if(!['explore','returns','methods','appendix','advanced','seeds','figures','reports','environments','robustness'].includes(state.page))state.page='returns';
   const appendixPage=['appendix','figures','reports'].includes(state.page);
   if(fromURL&&!appendixPage&&state.study){
     const current=new URLSearchParams(location.search),id=current.get('study');
     const changedAxis=current.has('axis')&&state.study.axes.some(a=>a.id===current.get('axis'))&&current.get('axis')!==state.axis.id;
     const changedSetting=current.has('setting')&&(current.get('setting')==='best'||state.study.models.includes(current.get('setting')))&&current.get('setting')!==(state.selection==='best'?'best':state.model);
     const changedReference=current.has('reference')&&state.study.models.includes(current.get('reference'))&&current.get('reference')!==state.reference;
-    if(id&&state.catalog.studies.some(s=>s.id===id)&&(id!==state.study.id||changedAxis||changedSetting||changedReference)){
+    const changedValue=current.has('value')&&Number(current.get('value'))!==points()[state.index].x;
+    if(id&&state.catalog.studies.some(s=>s.id===id)&&(id!==state.study.id||changedAxis||changedSetting||changedReference||changedValue)){
       params=current;chooseStudy(id,true);return;
     }
   }
-  document.querySelector('.workspace').hidden=appendixPage||state.page==='environments';
-  $('shared-controls').hidden=['appendix','methods','reports','environments'].includes(state.page);
-  document.querySelector('.result-tabs').hidden=['methods','environments'].includes(state.page);
+  document.querySelector('.workspace').hidden=appendixPage||['environments','robustness'].includes(state.page);
+  $('shared-controls').hidden=['appendix','methods','reports','environments','robustness'].includes(state.page);
+  document.querySelector('.result-tabs').hidden=['methods','environments','robustness'].includes(state.page);
+  $('evidence-page').hidden=state.page!=='robustness';
   $('environment-page').hidden=state.page!=='environments';
   $('appendix-root').hidden=!appendixPage;
   $('analysis-page').hidden=!['advanced','seeds'].includes(state.page);
@@ -255,7 +258,7 @@ async function loadReplay(){
     $('frame-label').textContent='No linked trajectory';drawScene();return;
   }
   $('playback-status').textContent='Loading checkpoint replay…';
-  const replayEntry=state.catalog.localPreview&&entry.startsWith('assets/replays/')?'https://arjunmahesh1.github.io/practical-drmdp/'+entry:entry;
+  const replayEntry=(state.catalog.localPreview||['localhost','127.0.0.1'].includes(location.hostname))&&entry.startsWith('assets/replays/')?'https://arjunmahesh1.github.io/practical-drmdp/'+entry:entry;
   try{const r=await fetch(replayEntry);if(!r.ok)throw Error('Replay unavailable');const replay=await r.json();if(ticket!==pendingReplay)return;state.replay=replay;
     if(replay.kind==='video'){
       $('replay-canvas').hidden=true;$('task-image').hidden=true;
@@ -277,7 +280,7 @@ async function loadReplay(){
       video.onloadedmetadata=()=>{video.loop=!replay.videoSegment;prepare();};video.oncanplay=prepare;video.onprogress=prepare;video.onseeked=()=>{prepare();if(prepared)syncVideo();};
       video.onerror=()=>{if(ticket!==pendingReplay)return;stopReplay();$('play').disabled=true;$('frame').disabled=true;$('playback-status').textContent='Recording could not load';$('scene-note').textContent='The matching video could not be loaded. No other policy or severity has been substituted.';};
       const videoSource=segmentSource(replay);
-      video.src=state.catalog.localPreview&&videoSource.startsWith('assets/replays/')?'https://arjunmahesh1.github.io/practical-drmdp/'+videoSource:videoSource;video.load();return;
+      video.src=(state.catalog.localPreview||['localhost','127.0.0.1'].includes(location.hostname))&&videoSource.startsWith('assets/replays/')?'https://arjunmahesh1.github.io/practical-drmdp/'+videoSource:videoSource;video.load();return;
     }
     $('playback-status').textContent='Saved-policy replay';$('scene-tag').textContent=label(state.model)+' · training seed '+replay.trainingSeed;
     $('scene-explanation').textContent='Episode '+replay.episodeSeed+' · return '+fmt(replay.return)+'. A checkpoint illustration; the plot uses the original evaluation cohort.';
@@ -343,6 +346,7 @@ $('download').onclick=()=>{const rows=[['study','environment','algorithm','famil
 
 try{
   const r=await fetch('data/catalog.json?v='+build);if(!r.ok)throw Error('Could not load the saved result catalog');state.catalog=await r.json();
+  if(params.get('archive')!=='1')state.catalog={...state.catalog,studies:state.catalog.studies.filter(visibleStudy),gallery:state.catalog.gallery.filter(g=>![...archivedStudies].some(id=>g.source?.includes('/'+id+'/'))&&!/physical-support KL|persistent-context KL/i.test(g.section))};
   $('catalog-summary').textContent=`${state.catalog.studies.length} saved study groups · ${state.catalog.studies.reduce((n,s)=>n+s.axisCount,0)} perturbation axes · exported ${state.catalog.updated}.`;
   $('sources').replaceChildren(...state.catalog.sources.map(source=>{const row=document.createElement('div');row.className='source-row';row.textContent=source.path;const hash=document.createElement('span');hash.textContent='SHA256 '+source.sha256;row.append(hash);return row;}));
   renderPaper();const initial=state.catalog.studies.find(s=>s.id===params.get('study'))?.id||'ppo_tv_walker';await chooseStudy(initial,true);

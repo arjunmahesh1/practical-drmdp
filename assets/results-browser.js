@@ -64,7 +64,7 @@ function shell(){
   select('analysis-value',study.axes.find(a=>a.id===context.axis).values[context.reference].map(p=>[String(p.x),String(p.x)]),String(point.x));
   $('analysis-kind').value=metric==='raw'?'raw':'reliability';
   const allowed=['gallery','suite','axis','condition','nominal'];
-  $('analysis-scope').value=allowed.includes(params.get('scope'))?params.get('scope'):(seeds?'suite':'gallery');
+  $('analysis-scope').value=allowed.includes(params.get('scope'))?params.get('scope'):(seeds?'suite':'condition');
   if(context.selection==='best'&&$('analysis-scope').value==='suite')$('analysis-scope').value='gallery';
   $('analysis-conditional').checked=params.get('conditional')==='1';
   root.dataset.metric=metric;
@@ -96,7 +96,9 @@ function render(){
   for(const o of $('analysis-scope').options)o.disabled=context.selection==='best'&&o.value==='suite';
   setQuery({metric:seeds?q().get('metric'):metric,scope,conditional:conditional?'1':null,value:scope==='condition'?value:null});
   const stamp=context.selection==='best'?'Best per axis · ex-post full-grid return selection':context.allSettings?'All settings':label(context.model);
-  $('analysis-caption').textContent=`${stamp} · reference: ${label(context.reference)} · ${study.intendedPolicies} intended policies / setting · descriptive`;
+  $('analysis-caption').textContent=`${stamp} · reference: ${label(context.reference)} · ${study.intendedPolicies} intended policies / setting · ${special?'aggregate comparison':scope==='condition'?'one measured severity':scope==='nominal'?'nominal':scope==='suite'?'aggregate across axes and shifted severities':'aggregate across shifted severities'} · descriptive`;
+  const back=new URL(location.href);back.search=new URLSearchParams({cohort:study.id,parameter:context.model,shift:axis,value});back.hash='environments';
+  $('analysis-caption').insertAdjacentHTML('beforeend',` <a class="analysis-back" href="${esc(back.pathname+back.search+back.hash)}">Back to environment & video ↗</a>`);
   if(metric==='aggregate'){renderCaps();return;}
   if(metric==='severity'){renderSeverity();return;}
   const axes=gallery?study.axes.filter(a=>(a.title+' '+a.id).toLowerCase().includes($('analysis-search').value.toLowerCase())):[study.axes.find(a=>a.id===axis)];
