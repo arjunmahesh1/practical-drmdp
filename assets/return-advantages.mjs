@@ -10,13 +10,15 @@ export function classify(point){
   const valid=[s,r,ss,rs].every(Number.isFinite)&&ss>=0&&rs>=0;
   const eps=valid?tolerance(s,r,ss,rs):0;
   return {...point,valid,delta:valid?r-s:null,gap:valid?r-rs-s-ss:null,
-    positive:valid&&r-s>eps,separated:valid&&r-rs-s-ss>eps};
+    positive:valid&&r-s>eps,separated:valid&&r-rs-s-ss>eps,
+    upperGap:valid?r+rs-s-ss:null,upper:valid&&r+rs-s-ss>eps};
 }
-export function ranges(row,screen='separated',includeSingles=false){
+export function ranges(row,screen='upper',includeSingles=false){
   if(row.warning)return [];
   const out=[];let run=[];
   const flush=()=>{if(run.length>=(includeSingles?1:2))out.push({from:run[0].x,to:run.at(-1).x,count:run.length,
-    minDelta:Math.min(...run.map(p=>p.delta)),maxDelta:Math.max(...run.map(p=>p.delta)),values:run.map(p=>p.x)});run=[];};
+    minDelta:Math.min(...run.map(p=>p.delta)),maxDelta:Math.max(...run.map(p=>p.delta)),
+    minUpperGap:Math.min(...run.map(p=>p.upperGap)),maxUpperGap:Math.max(...run.map(p=>p.upperGap)),values:run.map(p=>p.x)});run=[];};
   for(const p of row.points){
     // A nominal value between two saved samples also separates shift directions.
     if(run.length&&row.nominal!==null&&run.at(-1).x<row.nominal&&p.x>row.nominal)flush();
@@ -24,7 +26,7 @@ export function ranges(row,screen='separated',includeSingles=false){
   }
   flush();return out;
 }
-export function matchingRows(rows,{environment='all',method='all',screen='separated',selection='best',singles=false,search=''}={}){
+export function matchingRows(rows,{environment='all',method='all',screen='upper',selection='best',singles=false,search=''}={}){
   return rows.filter(r=>(environment==='all'||r.environmentId===environment)&&(method==='all'||r.method===method)&&
     (selection!=='best'||r.best)&&(!search||(r.environment+' '+r.method+' '+r.settingLabel+' '+r.axisTitle+' '+r.configuration).toLowerCase().includes(search.toLowerCase()))&&
     (screen==='all'||ranges(r,screen,singles).length));

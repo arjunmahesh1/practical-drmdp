@@ -15,6 +15,18 @@ test('higher means do not imply separated SD bands',()=>{
   assert.equal(point(0,4).separated,false);
   assert.equal(point(0,null).valid,false);
 });
+test('corrected default compares upper SD edges and allows overlapping bands',()=>{
+  const overlapping=point(.2,3);
+  assert.equal(overlapping.upper,true);assert.equal(overlapping.separated,false);
+  const lowerMean=point(.3,1,{robustSD:4});
+  assert.equal(lowerMean.positive,false);assert.equal(lowerMean.upper,true);
+  assert.equal(lowerMean.upperGap,2);
+  assert.equal(point(.4,3,{standardSD:10}).upper,false);
+  assert.equal(point(.5,1,{robustSD:2}).upper,false);
+  const row={nominal:1,points:[overlapping,lowerMean]};
+  assert.equal(ranges(row).length,1);assert.equal(ranges(row,'separated').length,0);
+  assert.equal(filtersFromQuery('').screen,'upper');
+});
 test('ranges break at nominal, a loss, or missing/incomplete observations',()=>{
   const r={nominal:1,points:[point(.2),point(.4),point(1,8,{nominal:true}),point(2),point(3,1),point(4),point(5),point(6,8,{complete:false}),point(7),point(8,null)]};
   assert.deepEqual(ranges(r).map(s=>s.values),[[.2,.4],[4,5]]);
@@ -38,7 +50,7 @@ test('links preserve setting, reference, axis and measured severity',()=>{
   assert.equal(supplied.searchParams.get('dataset'),'json7');assert.equal(supplied.searchParams.get('view'),'reliability');assert.equal(supplied.searchParams.get('value'),'0');
 });
 test('all-comparison mode survives query round trips and browser Back',()=>{
-  for(const screen of ['all','positive','separated']){
+  for(const screen of ['upper','all','positive','separated']){
     const f={environment:'pendulum',method:'all',source:'json6',screen,selection:'all',singles:false,search:''};
     assert.deepEqual(filtersFromQuery(filterQuery(f).toString()),f);
   }
@@ -53,7 +65,9 @@ test('published scan covers every axis, controls excluded, ordinary reference fi
     assert.ok(r.points.every((p,i)=>!i||p.x>r.points[i-1].x));
     for(const p of r.points)assert.deepEqual(p,classify(p));
   }
-  assert.equal(d.rows.filter(r=>ranges(r).length).length,6);
-  assert.equal(new Set(d.rows.filter(r=>ranges(r).length).map(r=>r.sourceId+'|'+r.setting)).size,4);
+  assert.equal(d.rows.filter(r=>ranges(r,'separated').length).length,6);
+  assert.equal(new Set(d.rows.filter(r=>ranges(r,'separated').length).map(r=>r.sourceId+'|'+r.setting)).size,4);
+  assert.equal(d.rows.filter(r=>ranges(r).length).length,1147);
+  assert.equal(new Set(d.rows.filter(r=>ranges(r).length).map(r=>r.sourceId+'|'+r.setting)).size,150);
   assert.ok(d.rows.filter(r=>r.warning).every(r=>ranges(r,'positive',true).length===0));
 });

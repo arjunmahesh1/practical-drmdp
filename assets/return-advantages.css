@@ -1,5 +1,6 @@
 #advantages-page{max-width:1540px;margin:0 auto;padding:28px 32px;color:#202c30}
 #advantages-page *{letter-spacing:0}.adv-table,.adv-definitions table{white-space:normal}
+.adv-detail .adv-values{grid-template-columns:repeat(2,minmax(0,1fr))}
 .adv-heading h1{font-size:27px;margin:0 0 8px}.adv-heading p{margin:0 0 18px;color:#526269}
 .adv-counts{display:flex;gap:24px;flex-wrap:wrap;border-bottom:1px solid #d9e0e3;padding:0 0 18px;margin-bottom:18px;font-size:13px}.adv-counts strong{font-size:18px;margin-right:5px}
 .adv-filters{display:grid;grid-template-columns:1fr 1fr 1.65fr 1.3fr;gap:14px}.adv-filters label,.adv-search,.adv-level-label{display:grid;gap:6px;font-size:12px;font-weight:500}.adv-filters select,.adv-search input,.adv-level-label select{min-width:0;width:100%;padding:9px;border:1px solid #bac8ce;border-radius:4px;background:#fff;color:#202c30;font:inherit;font-size:13px}
