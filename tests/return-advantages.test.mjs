@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {moments,classify,ranges,matchingRows} from '../assets/return-advantages.mjs';
+import {moments,classify,ranges,matchingRows,rankAdvantage,prioritizeRows} from '../assets/return-advantages.mjs';
 import {resultLink,filterQuery,filtersFromQuery} from '../assets/return-advantages-browser.mjs';
 const point=(x,r=8,extra={})=>classify({x,standard:2,robust:r,standardSD:1,robustSD:1,complete:true,nominal:false,...extra});
 test('native negative returns and sample SD are preserved',()=>{
@@ -51,9 +51,64 @@ test('links preserve setting, reference, axis and measured severity',()=>{
 });
 test('all-comparison mode survives query round trips and browser Back',()=>{
   for(const screen of ['upper','all','positive','separated']){
-    const f={environment:'pendulum',method:'all',source:'json6',screen,selection:'all',singles:false,search:''};
+    const f={environment:'pendulum',method:'all',source:'json6',screen,selection:'all',singles:false,search:'',tier:'all',threshold:.05};
     assert.deepEqual(filtersFromQuery(filterQuery(f).toString()),f);
   }
+});
+test('display tiers separate small differences and spread-led matches without rewriting evidence',()=>{
+  const row={id:'a',nominal:1,points:[point(.2,3),point(.4,3),point(1,100,{nominal:true})]};
+  assert.equal(rankAdvantage(row).tier,'small');
+  assert.equal(ranges(row).length,1);
+  const spread={...row,points:[point(.2,1,{robustSD:4}),point(.4,1,{robustSD:4})]};
+  assert.equal(rankAdvantage(spread).tier,'spread');
+  assert.equal(rankAdvantage(spread).allSpans.length,1);
+  assert.equal(rankAdvantage({...row,points:[point(.2),point(.4)]}).tier,'noticeable');
+  assert.equal(filtersFromQuery('').tier,'noticeable');
+  for(const tier of ['noticeable','small','spread','all'])for(const threshold of [.02,.05,.1]){
+    const f={...filtersFromQuery(''),tier,threshold};assert.deepEqual(filtersFromQuery(filterQuery(f).toString()),f);
+  }
+  assert.equal(filtersFromQuery('screen=all&view=noticeable').tier,'all');
+});
+test('magnitude normalization is stable under positive rescaling and offsets, including negative returns',()=>{
+  const row={nominal:1,points:[point(.2),point(.4),point(1,2,{nominal:true})]};
+  const a=rankAdvantage(row);
+  const shifted={...row,points:row.points.map(p=>classify({...p,standard:p.standard*20-1000,robust:p.robust*20-1000,standardSD:p.standardSD*20,robustSD:p.robustSD*20}))};
+  const b=rankAdvantage(shifted);
+  assert.equal(a.tier,b.tier);assert.equal(a.score,b.score);assert.equal(a.average,b.average);
+  assert.equal(b.scale,a.scale*20);
+  assert.equal(rankAdvantage({...row,points:[point(.2,2),point(.4,2)]}).tier,'none');
+});
+test('noticeable ranges require both gains at every adjacent measured level',()=>{
+  const row={id:'a',nominal:1,points:[point(.2,10),point(.4,2.001),point(.6,10),point(1,8,{nominal:true})]};
+  assert.equal(rankAdvantage(row).tier,'small');
+  assert.equal(rankAdvantage(row,{singles:true}).tier,'noticeable');
+  assert.equal(rankAdvantage({...row,warning:'Unverified'}).tier,'none');
+  assert.equal(rankAdvantage({...row,points:row.points.map(p=>({...p,complete:false}))}).tier,'none');
+  assert.equal(rankAdvantage({...row,points:[point(.5,10),point(2,10)]}).tier,'none');
+  const short={id:'short',nominal:1,points:[point(.2,8),point(.4,8),point(.6,2),point(1,8,{nominal:true})]};
+  const long={...short,id:'long',points:short.points.map(p=>p.x===.6?point(.6,8):p)};
+  assert.equal(prioritizeRows([short,long])[0].row.id,'long');
+  assert.ok(rankAdvantage(long).score>rankAdvantage(short).score);
+});
+test('ranking preserves published data and partitions every original match',()=>{
+  const d=JSON.parse(fs.readFileSync(new URL('../data/advantages/index.json',import.meta.url)));
+  const before=JSON.stringify(d),ranked=prioritizeRows(matchingRows(d.rows,{selection:'all'}));
+  assert.equal(ranked.length,1147);assert.equal(JSON.stringify(d),before);
+  assert.equal(ranked.filter(r=>r.rank.tier==='noticeable').length,285);
+  assert.equal(ranked.filter(r=>r.rank.tier==='small').length,688);
+  assert.equal(ranked.filter(r=>r.rank.tier==='spread').length,174);
+  assert.equal(new Set(ranked.filter(r=>r.rank.tier==='noticeable').map(r=>r.row.sourceId+'|'+r.row.setting)).size,69);
+  const narrow=ranked.filter(item=>item.row.sourceId==='ppo_tv_walker'&&item.row.axis==='actuator_gain'&&item.row.setting==='a2p85')[0];
+  assert.ok(narrow);assert.notEqual(narrow.rank.tier,'noticeable');
+  for(const {row,rank} of ranked){
+    assert.ok(rank.scale>0);assert.ok(Number.isFinite(rank.score));
+    if(rank.tier==='noticeable')for(const s of rank.spans)for(const x of s.values){
+      const p=row.points.find(p=>p.x===x);assert.ok(p.delta>=.05*rank.scale&&p.upperGap>=.05*rank.scale);
+      assert.ok(p.complete&&!p.nominal&&p.upper);
+    }
+  }
+  assert.ok(ranked.filter(item=>rankAdvantage(item.row,{threshold:.1}).tier==='noticeable').length<=285);
+  assert.ok(prioritizeRows(d.rows,{threshold:.02}).filter(item=>item.rank.tier==='noticeable').length>=285);
 });
 test('published scan covers every axis, controls excluded, ordinary reference fixed',()=>{
   const d=JSON.parse(fs.readFileSync(new URL('../data/advantages/index.json',import.meta.url)));

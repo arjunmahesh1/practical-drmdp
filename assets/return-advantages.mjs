@@ -31,3 +31,34 @@ export function matchingRows(rows,{environment='all',method='all',screen='upper'
     (selection!=='best'||r.best)&&(!search||(r.environment+' '+r.method+' '+r.settingLabel+' '+r.axisTitle+' '+r.configuration).toLowerCase().includes(search.toLowerCase()))&&
     (screen==='all'||ranges(r,screen,singles).length));
 }
+
+// Normalize against the whole curve, not a near-zero return at one severity.
+export function rankAdvantage(row,{threshold=.05,screen='upper',singles=false}={}){
+  const criterion=screen==='all'?'upper':screen;
+  const complete=row.points.filter(p=>p.valid&&p.complete);
+  const edges=complete.flatMap(p=>[p.standard-p.standardSD,p.standard+p.standardSD,p.robust-p.robustSD,p.robust+p.robustSD]);
+  const scale=edges.length?Math.max(...edges)-Math.min(...edges):0;
+  const strength=p=>criterion==='upper'?Math.min(p.delta,p.upperGap):criterion==='separated'?p.gap:p.delta;
+  const scored={...row,points:row.points.map(p=>({...p,
+    noticeable:scale>0&&p[criterion]&&p.positive&&strength(p)>=threshold*scale,
+    meanBacked:p[criterion]&&p.positive}))};
+  const allSpans=ranges(row,criterion,singles),noticeable=ranges(scored,'noticeable',singles);
+  const backed=ranges(scored,'meanBacked',singles);
+  const tier=noticeable.length?'noticeable':backed.length?'small':'spread';
+  const spans=tier==='noticeable'?noticeable:allSpans;
+  const total=complete.filter(p=>!p.nominal).length;
+  const segmentScores=spans.map(s=>{
+    const points=scored.points.filter(p=>s.values.includes(p.x));
+    const average=scale>0?mean(points.map(p=>Math.max(0,tier==='spread'?p.upperGap:strength(p))/scale)):0;
+    return {score:total?average*s.count/total:0,average,count:s.count};
+  }).sort((a,b)=>b.score-a.score);
+  return {tier:allSpans.length?tier:'none',scale,spans,allSpans,
+    score:segmentScores[0]?.score||0,average:segmentScores[0]?.average||0,
+    count:segmentScores[0]?.count||0,total};
+}
+
+export function prioritizeRows(rows,options={}){
+  const order={noticeable:0,small:1,spread:2,none:3};
+  return rows.map(row=>({row,rank:rankAdvantage(row,options)})).sort((a,b)=>
+    order[a.rank.tier]-order[b.rank.tier]||b.rank.score-a.rank.score||a.row.id.localeCompare(b.row.id));
+}
