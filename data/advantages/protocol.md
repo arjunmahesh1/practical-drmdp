@@ -1,5 +1,25 @@
 # Upper SD edge: corrected advantage definition
 
+## Current Website: Two Tabs
+
+The human requested consolidation after the initial gain-size display update.
+The website now has only Noticeable gains and Small differences. Remove the
+percentage selector, numerical display scores, separate spread-led category
+and All matches tab. Keep the existing default 5% display calculation below
+fixed for reproducibility; this is a browsing heuristic, not statistical evidence.
+
+Noticeable gains retains 285 comparisons across 69 setting records. Small
+differences combines the previous 688 small and 174 spread-led comparisons:
+862 total. Both tabs together retain all 1,147 originally qualifying comparisons
+across 150 setting records. Records can appear in both tabs on different axes.
+Larger and more sustained gains remain ranked first within each tab. Native
+return differences, full curves and mean-versus-SD distinction remain visible.
+Older spread-tab URLs map to Small differences; obsolete cutoff parameters
+are ignored. Every comparison remains an independent full-audit criterion.
+
+The rest of this document retains the exact arithmetic and dated history;
+the former adjustable controls and four-way interface are no longer current.
+
 The human explicitly corrected the definition on November 6, 2026:
 
     robust mean + robust sample SD > standard mean + standard sample SD

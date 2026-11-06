@@ -51,7 +51,7 @@ test('links preserve setting, reference, axis and measured severity',()=>{
 });
 test('all-comparison mode survives query round trips and browser Back',()=>{
   for(const screen of ['upper','all','positive','separated']){
-    const f={environment:'pendulum',method:'all',source:'json6',screen,selection:'all',singles:false,search:'',tier:'all',threshold:.05};
+    const f={environment:'pendulum',method:'all',source:'json6',screen,selection:'all',singles:false,search:'',tier:screen==='all'?'all':'small'};
     assert.deepEqual(filtersFromQuery(filterQuery(f).toString()),f);
   }
 });
@@ -64,10 +64,12 @@ test('display tiers separate small differences and spread-led matches without re
   assert.equal(rankAdvantage(spread).allSpans.length,1);
   assert.equal(rankAdvantage({...row,points:[point(.2),point(.4)]}).tier,'noticeable');
   assert.equal(filtersFromQuery('').tier,'noticeable');
-  for(const tier of ['noticeable','small','spread','all'])for(const threshold of [.02,.05,.1]){
-    const f={...filtersFromQuery(''),tier,threshold};assert.deepEqual(filtersFromQuery(filterQuery(f).toString()),f);
+  for(const tier of ['noticeable','small']){
+    const f={...filtersFromQuery(''),tier};assert.deepEqual(filtersFromQuery(filterQuery(f).toString()),f);
   }
   assert.equal(filtersFromQuery('screen=all&view=noticeable').tier,'all');
+  assert.equal(filtersFromQuery('view=spread&cutoff=10').tier,'small');
+  assert.equal(filterQuery(filtersFromQuery('cutoff=2')).has('cutoff'),false);
 });
 test('magnitude normalization is stable under positive rescaling and offsets, including negative returns',()=>{
   const row={nominal:1,points:[point(.2),point(.4),point(1,2,{nominal:true})]};
@@ -97,6 +99,7 @@ test('ranking preserves published data and partitions every original match',()=>
   assert.equal(ranked.filter(r=>r.rank.tier==='noticeable').length,285);
   assert.equal(ranked.filter(r=>r.rank.tier==='small').length,688);
   assert.equal(ranked.filter(r=>r.rank.tier==='spread').length,174);
+  assert.equal(ranked.filter(r=>r.rank.tier!=='noticeable').length,862);
   assert.equal(new Set(ranked.filter(r=>r.rank.tier==='noticeable').map(r=>r.row.sourceId+'|'+r.row.setting)).size,69);
   const narrow=ranked.filter(item=>item.row.sourceId==='ppo_tv_walker'&&item.row.axis==='actuator_gain'&&item.row.setting==='a2p85')[0];
   assert.ok(narrow);assert.notEqual(narrow.rank.tier,'noticeable');
