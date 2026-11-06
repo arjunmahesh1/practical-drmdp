@@ -15,7 +15,7 @@ export const belongsTo=(entry,text,source,scope)=>
   (entry.name+' '+entry.framework+' '+entry.simulator+' '+(entry.availableSimulators||[]).join(' ')+' '+entry.taskIds.join(' ')).toLowerCase().includes(text.toLowerCase())&&
   (source==='all'||entry.simulator===source||!!entry.availableSimulators?.includes(source))&&(scope==='all'||entry.stage===scope);
 
-export function previewChart(series,xlabel,ylabel,{unit=false,bands=false,nominal=null,current=null}={}){
+export function previewChart(series,xlabel,ylabel,{unit=false,bands=false,nominal=null,current=null,highlights=[]}={}){
   const points=series.flatMap(s=>s.points);
   if(!points.length)return '<p class="env-unavailable">No values available for this scope.</p>';
   const xs=points.map(p=>p.x),ys=points.flatMap(p=>bands?[p.y-(p.sd||0),p.y+(p.sd||0)]:[p.y]);
@@ -24,6 +24,7 @@ export function previewChart(series,xlabel,ylabel,{unit=false,bands=false,nomina
   const W=560,H=315,L=75,R=20,T=16,B=61;
   const x=v=>L+(v-xmin)/(xmax-xmin||1)*(W-L-R),y=v=>H-B-(v-ymin)/(ymax-ymin||1)*(H-B-T);
   let out=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(ylabel)} by ${esc(xlabel)}"><title>${esc(ylabel)} by ${esc(xlabel)}</title>`;
+  for(const range of highlights){const left=x(range.from),right=x(range.to);out+=`<rect x="${left===right?left-3:left}" y="${T}" width="${Math.max(6,right-left)}" height="${H-B-T}" fill="#21815d" opacity=".1"><title>Qualifying measured levels: ${esc(range.values.join(', '))}</title></rect>`;}
   for(let i=0;i<4;i++){
     const yy=ymin+i*(ymax-ymin)/3,xx=xmin+i*(xmax-xmin)/3;
     out+=`<line x1="${L}" x2="${W-R}" y1="${y(yy)}" y2="${y(yy)}" stroke="#e0e5e9"/><text x="${L-8}" y="${y(yy)+4}" text-anchor="end">${fmt(yy,unit?2:Math.abs(ymax-ymin)<4?2:0)}</text><text x="${x(xx)}" y="${H-B+24}" text-anchor="middle">${fmt(xx,Math.abs(xmax-xmin)<3?2:1)}</text>`;
@@ -130,6 +131,7 @@ async function selectCohort(id,initial=false){
     $('env-setting').value=model;$('env-shift').value=axis.id;
     $('env-setting').onchange=()=>{selection='fixed';model=$('env-setting').value;renderComparison();};
     $('env-results').insertBefore($('env-results').querySelector('.env-media'),$('env-results').querySelector('.env-plots'));
+    $('env-evidence').insertAdjacentHTML('afterend','<a id="env-advantages">Return advantages ↗</a>');
     $('env-shift').onchange=()=>{axis=data.axes.find(a=>a.id===$('env-shift').value);conditionIndex=nearestPoint(axis.curves[data.baseline],axis.nominal);renderComparison();};
     $('env-best-cap').onclick=()=>{selection='best';renderComparison();};
     $('env-severity').oninput=e=>{conditionIndex=Number(e.target.value);renderComparison();};
@@ -167,6 +169,7 @@ function renderComparison(){
   $('env-open-curves').href=href('returns');$('env-open-metrics').href=href('advanced',{scope:'condition',metric:normalized?'reliability':'raw'});
   $('env-axis-metrics').href=href('advanced',{scope:'axis',metric:normalized?'reliability':'raw'});$('env-suite-metrics').href=href('advanced',{scope:'suite',metric:normalized?'reliability':'raw'});$('env-cap-metrics').href=href('advanced',{metric:'aggregate'});
   $('env-evidence').href='?study='+data.id+'#robustness';
+  $('env-advantages').href='?environment='+environment.id+'&configuration='+data.id+'#advantages';
   $('env-policies').href='data/appendix/'+data.id+'.csv';$('env-figures').href=href('figures',{figureStudy:data.id});$('env-seeds').href=href('seeds',{scope:'condition'});
   recordings();
 }

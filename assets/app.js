@@ -79,7 +79,7 @@ function chooseModel(model) {
   state.model=model==='best'?bestModelOnAxis(state.study,state.axis):model;renderAll();
 }
 function syncURL() {
-  if(['environments','robustness','reports','appendix','methods'].includes(state.page))return;
+  if(['environments','robustness','advantages','reports','appendix','methods'].includes(state.page))return;
   const u=new URL(location.href);
   for(const key of ['environment','cohort','parameter','shift','selection'])u.searchParams.delete(key);
   for(const [k,v] of Object.entries({study:state.study.id,axis:state.axis.id,reference:state.reference,setting:state.selection==='best'?'best':state.model,point:state.index}))u.searchParams.set(k,v);
@@ -94,7 +94,7 @@ function syncURL() {
 function showPage(fromURL=false){
   if(state.page==='metrics')state.page='advanced';
   if(state.page==='evidence')state.page='appendix';
-  if(!['explore','returns','methods','appendix','advanced','seeds','figures','reports','environments','robustness'].includes(state.page))state.page='returns';
+  if(!['explore','returns','methods','appendix','advanced','seeds','figures','reports','environments','robustness','advantages'].includes(state.page))state.page='returns';
   const appendixPage=['appendix','figures','reports'].includes(state.page);
   if(fromURL&&state.study){
     const current=comparisonParams(location.search),id=current.get('study');
@@ -106,9 +106,10 @@ function showPage(fromURL=false){
       params=current;chooseStudy(id,true);return;
     }
   }
-  document.querySelector('.workspace').hidden=appendixPage||['environments','robustness'].includes(state.page);
-  $('shared-controls').hidden=['appendix','methods','reports','environments','robustness'].includes(state.page);
-  document.querySelector('.result-tabs').hidden=['methods','environments','robustness','reports','appendix'].includes(state.page);
+  document.querySelector('.workspace').hidden=appendixPage||['environments','robustness','advantages'].includes(state.page);
+  $('shared-controls').hidden=['appendix','methods','reports','environments','robustness','advantages'].includes(state.page);
+  document.querySelector('.result-tabs').hidden=['methods','environments','robustness','advantages','reports','appendix'].includes(state.page);
+  $('advantages-page').hidden=state.page!=='advantages';
   $('evidence-page').hidden=state.page!=='robustness';
   $('environment-page').hidden=state.page!=='environments';
   $('appendix-root').hidden=!appendixPage;
@@ -350,7 +351,7 @@ $('rollout-video').onplay=()=>{state.playing=true;$('play').textContent='Ⅱ';$(
 $('rollout-video').onpause=()=>{const v=$('rollout-video'),r=state.replay;state.playing=false;cancelAnimationFrame(animation);if(!v.hidden&&r?.videoSegment&&state.playbackWanted&&state.page==='explore'){const {start,end,fps}=segmentWindow(r);if(v.currentTime>=end-.5/fps){v.currentTime=start;v.play().catch(()=>{});return;}}$('play').textContent='▶';$('play').setAttribute('aria-label','Play recorded-policy replay');};
 window.addEventListener('hashchange',()=>{state.page=location.hash.slice(1);showPage(true);if(state.page==='explore'&&state.study&&!state.replay)loadReplay();});
 window.addEventListener('popstate',()=>{params=comparisonParams(location.search);state.page=location.hash.slice(1)||'environments';showPage(true);});
-document.querySelectorAll('[data-page]').forEach(a=>a.onclick=e=>{e.preventDefault();if(state.page!==a.dataset.page){const u=new URL(location.href);u.hash=a.dataset.page;history.pushState(null,'',u);}state.page=a.dataset.page;showPage(true);});
+document.querySelectorAll('[data-page]').forEach(a=>a.onclick=e=>{e.preventDefault();if(state.page!==a.dataset.page){const u=new URL(location.href);if(a.dataset.page==='advantages')u.search='';u.hash=a.dataset.page;history.pushState(null,'',u);}state.page=a.dataset.page;showPage(true);});
 $('share').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);$('toast').textContent='Comparison link copied';$('toast').classList.add('visible');setTimeout(()=>$('toast').classList.remove('visible'),2000);}catch{$('toast').textContent='Copy the current address to share this comparison';$('toast').classList.add('visible');}};
 $('download').onclick=()=>{const rows=[['study','environment','algorithm','family','setting','axis','value','mean_return','sample_sd','measured_policies']];for(const [model,ps] of Object.entries(state.axis.curves))for(const p of ps)rows.push([state.study.id,state.study.environment,state.study.algorithm,state.study.family,model,state.axis.id,p.x,p.mean,p.sd,p.n]);const csv=rows.map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\n');const u=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));const a=document.createElement('a');a.href=u;a.download=state.study.id+'-'+state.axis.id+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(u),200);};
 
