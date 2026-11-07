@@ -1,5 +1,6 @@
 import {escape as esc,label,fmt} from './model.mjs';
-import {showSettings} from './audited-settings.mjs?v=20261105-additions1';
+import {showSettings} from './audited-settings.mjs?v=20261107-cells1';
+import {showNewCellAudit} from './new-cell-audit.mjs';
 const root=document.getElementById('evidence-page');
 let index,limit=80,ticket=0;
 const $=id=>document.getElementById(id),q=()=>new URLSearchParams(location.search);
@@ -17,8 +18,9 @@ async function route(){
  root.hidden=location.hash!=='#robustness';root.dataset.active=root.hidden?'0':'1';if(root.hidden){++ticket;return;}
  const job=++ticket;root.innerHTML='<p role="status">Loading measured comparisons...</p>';
  try{
+  if(q().get('view')==='new-cells'){await showNewCellAudit(root,()=>job===ticket&&!root.hidden);return;}
   if(q().get('view')==='settings'||!q().has('level')){await showSettings(root,openView,()=>job===ticket&&!root.hidden);return;}
-  if(!index){const r=await fetch('data/evidence-index.json?v=20261104-flow1');if(!r.ok)throw Error('Comparison index unavailable');index=await r.json();}if(job!==ticket)return;shell();}
+  if(!index){const r=await fetch('data/evidence-index.json?v=20261107-cells1');if(!r.ok)throw Error('Comparison index unavailable');index=await r.json();}if(job!==ticket)return;shell();}
  catch(e){if(job===ticket)root.innerHTML=`<p role="alert">${esc(e.message)}</p>`;}
 }
 function openView(level){const u=new URL(location.href);if(level==='settings'){u.searchParams.set('view','settings');u.searchParams.delete('level');}else{u.searchParams.delete('view');u.searchParams.set('level',level);}history.pushState(null,'',u);route();}

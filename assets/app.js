@@ -1,4 +1,4 @@
-import {baselineColor,robustColor,fmt,escape as esc,label,activeModel,nearestPoint,bounds,factorLabel,gridMean,bestModelOnAxis,axisLabel,recordingCount} from './model.mjs?v=20261104-library1';
+import {baselineColor,robustColor,fmt,escape as esc,label,activeModel,nearestPoint,bounds,factorLabel,gridMean,bestModelOnAxis,axisLabel,recordingCount} from './model.mjs?v=20261107-cells1';
 import {episodeTraceSVG} from './replay-chart.mjs?v=20261023-replayaxes1';
 import {segmentWindow,segmentFrame,segmentTime,segmentSource} from './video-segment.mjs?v=20261023-fullmatrix1';
 import {environments,parameterNote} from './environments.mjs?v=20261104-library1';
@@ -8,7 +8,7 @@ import {comparisonParams,environmentLink} from './results-context.mjs';
 
 const $=id=>document.getElementById(id);
 let params=comparisonParams(location.search);
-const build='20261105-navigation1';
+const build='20261107-cells1';
 const cache=new Map();
 const state={catalog:null,study:null,axis:null,model:null,reference:null,selection:'fixed',allSettings:params.get('all')==='1',index:0,page:location.hash.slice(1)||(params.has('study')?'returns':'environments'),bands:true,replay:null,replayPolicy:params.get('policy')==='standard'?'standard':'selected',playbackWanted:true,playing:false,frame:0};
 let pendingStudy=0, pendingReplay=0, lastFrame=0, animation;
@@ -61,7 +61,7 @@ async function chooseStudy(id, initial=false) {
     const previous=state.axis?.id;
     state.study=cache.get(id);
     state.reference=initial&&state.study.models.includes(params.get('reference'))?params.get('reference'):state.study.baseline;
-    state.model=initial&&state.study.models.includes(params.get('setting'))?params.get('setting'):activeModel(state.study.models);
+    state.model=initial&&state.study.models.includes(params.get('setting'))?params.get('setting'):state.study.models.includes(state.study.defaultModel)?state.study.defaultModel:activeModel(state.study.models);
     state.axis=state.study.axes.find(a=>a.id===(initial?params.get('axis'):previous))||state.study.axes[0];
     if(initial){state.selection=params.get('setting')==='best'?'best':'fixed';state.allSettings=params.get('all')==='1';}
     if(state.selection==='best')state.model=bestModelOnAxis(state.study,state.axis);

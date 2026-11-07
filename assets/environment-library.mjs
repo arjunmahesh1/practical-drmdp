@@ -1,8 +1,9 @@
-import {escape as esc,fmt,label,activeModel,axisLabel,bestModelOnAxis,nearestPoint} from './model.mjs?v=20261104-library1';
+import {escape as esc,fmt,label,activeModel,axisLabel,bestModelOnAxis,nearestPoint} from './model.mjs?v=20261107-cells1';
+import {withNewOutcomes,hasNewCellAudit} from './new-cell-outcomes.mjs';
 import {visibleStudy,suppliedEnvironments,resultEnvironments} from './results-policy.mjs?v=20261105-additions1';
 import {withRecordings,recordingOverlay,libraryRecordingCoverage} from './recording-overlay.mjs';
 import {summarize,rawReliability} from './appendix-metrics.mjs';
-import {normalizedSurvival,reliabilityDisplay} from './browser-metrics.mjs?v=20261107-signed1';
+import {normalizedSurvival,reliabilityDisplay} from './browser-metrics.mjs?v=20261107-cells1';
 import {rankEnvironmentAlgorithms} from './environment-comparison.mjs?v=20261107-signed1';
 import {segmentWindow,segmentSource,segmentFrame,segmentTime} from './video-segment.mjs';
 import {episodeTraceSVG} from './replay-chart.mjs';
@@ -10,7 +11,7 @@ import {episodeTraceSVG} from './replay-chart.mjs';
 const root=typeof document==='undefined'?null:document.getElementById('environment-page'),$=id=>document.getElementById(id);
 const cache=new Map(),colors=['#003087','#d94b24'];
 let library,environment,cohort,data,policy,model,axis,selection='fixed',conditionIndex=0,evidence,ticket=0,mediaTicket=0,animation;
-let videoChoice='selected',methodComparison=null;
+let videoChoice='selected',methodComparison=null,reference;
 const query=()=>new URLSearchParams(location.search);
 const display=x=>x===null?'N/A':fmt(x,Math.abs(x)<1?3:1);
 export const belongsTo=(entry,text,source,scope)=>
@@ -42,20 +43,21 @@ export function previewChart(series,xlabel,ylabel,{unit=false,bands=false,nomina
 }
 
 function href(view,extra={}){
-  const u=new URL(location.href);u.search=new URLSearchParams({study:cohort.id,setting:model,axis:axis?.id||'',value:axis?.curves[data.baseline][conditionIndex].x,...extra});u.hash=view;
+  const u=new URL(location.href);u.search=new URLSearchParams({study:cohort.id,setting:model,reference,axis:axis?.id||'',value:axis?.curves[data.baseline][conditionIndex].x,...extra});u.hash=view;
   return u.pathname+u.search+u.hash;
 }
 function remember(){
   const u=new URL(location.href);u.search=new URLSearchParams({environment:environment.id});
   if(cohort)u.searchParams.set('cohort',cohort.id);
   if(model)u.searchParams.set('parameter',model);
+  if(reference&&reference!==data?.baseline)u.searchParams.set('reference',reference);
   if(axis)u.searchParams.set('shift',axis.id);
   if(axis)u.searchParams.set('value',axis.curves[data.baseline][conditionIndex].x);
   if(selection==='best')u.searchParams.set('selection','best');
   if(videoChoice==='standard')u.searchParams.set('video','standard');
   history.replaceState(null,'',u.pathname+u.search+'#environments');
 }
-async function json(path){if(!cache.has(path)){const r=await fetch(path);if(!r.ok)throw Error('Unavailable: '+path);cache.set(path,await r.json());}return cache.get(path);}
+async function json(path){if(!cache.has(path)){const r=await fetch(path+(path.includes('?')?'&':'?')+'v=20261107-cells1');if(!r.ok)throw Error('Unavailable: '+path);cache.set(path,await r.json());}return cache.get(path);}
 function pause(){++mediaTicket;cancelAnimationFrame(animation);const v=$('env-video');if(v){v.pause();v.removeAttribute('src');v.load();}}
 
 function shell(){
@@ -78,7 +80,7 @@ function directory(){
   if(!entries.length){pause();++ticket;$('env-detail').innerHTML='<p class="env-unavailable">No environment matches these filters.</p>';}
 }
 async function selectEnvironment(id,initial=false){
-  pause();environment=library.entries.find(e=>e.id===id)||library.entries[0];cohort=null;axis=null;model=null;selection='fixed';directory();
+  pause();environment=library.entries.find(e=>e.id===id)||library.entries[0];cohort=null;axis=null;model=null;reference=null;selection='fixed';directory();
   methodComparison=null;videoChoice=initial&&query().get('video')==='standard'?'standard':'selected';
   const entry=environment;
   if(entry.report){
@@ -112,12 +114,13 @@ async function selectCohort(id,initial=false,override=null){
   $('env-cohort').value=id;
   $('env-results').innerHTML='<p class="small" role="status">Loading saved results...</p>';
   try{
-    const nextData=await withRecordings(await json('data/'+cohort.id+'.json'));
-    const nextPolicy=await json('data/appendix/'+cohort.id+'.json');
+    const nextData=await withRecordings(await json('data/'+id+'.json'));
+    const nextPolicy=await withNewOutcomes(await json('data/appendix/'+id+'.json'));
     if(job!==ticket||location.hash!=='#environments')return;
     data=nextData;policy=nextPolicy;
+    reference=initial&&data.controls?.includes(query().get('reference'))?query().get('reference'):data.baseline;
     const requested=override?.model??(initial?(query().get('parameter')||query().get('setting')):null);
-    model=data.models.includes(requested)?requested:activeModel(data.models)||data.baseline;
+    model=data.models.includes(requested)?requested:data.models.includes(data.defaultModel)?data.defaultModel:activeModel(data.models)||data.baseline;
     axis=data.axes.find(a=>a.id===(override?.axis??(initial?(query().get('shift')||query().get('axis')):null)))||data.axes[0];
     conditionIndex=nearestPoint(axis.curves[data.baseline],override?.value??(initial&&query().has('value')?Number(query().get('value')):axis.nominal));
     selection=initial&&(query().get('selection')==='best'||requested==='best')?'best':'fixed';
@@ -134,6 +137,12 @@ async function selectCohort(id,initial=false,override=null){
       <section class="env-media"><div class="env-section-heading"><h3>Policy video</h3><a id="env-open-replay">Rollout explorer ↗</a></div><div class="env-media-controls"><label>Video policy<select id="env-video-policy"></select></label><label id="env-recorded-label">Recorded conditions<select id="env-recorded-condition"></select></label></div><p id="env-media-status" role="status"></p><div id="env-media-body"><div><div class="env-video-surface"><video id="env-video" playsinline muted controls preload="metadata" hidden aria-label="Same-cohort recorded policy"></video></div><label class="env-video-scrub" id="env-video-scrub" hidden>Episode<input id="env-video-frame" type="range" min="0" max="1" value="0" aria-label="Recorded episode frame"><output id="env-video-time"></output></label></div><div id="env-episode-trace"></div></div><p id="env-media-note" class="env-evidence-note"></p><details id="env-recording-details" hidden><summary>Recording details</summary><p id="env-recording-provenance" class="env-evidence-note"></p></details></section>
       <div class="env-artifacts"><a id="env-policies" download>Policy summaries CSV ↓</a>${cohort.archive?`<a href="${cohort.archive}" download>Overleaf package ↓</a>`:''}</div><details class="env-provenance"><summary>Data & interpretation</summary><p>${esc(data.note)}</p><p>Same setting across axes; sample SD, not a confidence interval. Return reliability is not physical task success. Failed runs receive no invented returns. Video coverage is cohort-specific.</p><p>${environment.taskIds.map(esc).join(' / ')}</p><code>${esc(data.id)}</code></details>`;
     $('env-setting').value=model;$('env-shift').value=axis.id;
+    const references=[...new Set([data.baseline,...(data.controls||[])])];
+    if(references.length>1){
+      $('env-setting').parentElement.insertAdjacentHTML('afterend',`<label>Compare with<select id="env-reference">${references.map(m=>`<option value="${esc(m)}">${esc(label(m))}</option>`).join('')}</select></label>`);
+      $('env-reference').value=reference;$('env-reference').onchange=()=>{reference=$('env-reference').value;renderComparison();};
+    }
+    if(hasNewCellAudit(data.id))$('env-results').querySelector('.env-analysis-links').insertAdjacentHTML('beforeend',`<a href="?view=new-cells&study=${esc(data.id)}#robustness">November 7 audit ↗</a>`);
     $('env-setting').onchange=()=>{selection='fixed';model=$('env-setting').value;renderComparison();};
     $('env-results').insertBefore($('env-results').querySelector('.env-media'),$('env-results').querySelector('.env-plots'));
     $('env-evidence').insertAdjacentHTML('afterend','<a id="env-advantages">Return advantages ↗</a>');
@@ -164,20 +173,20 @@ function renderComparison(){
   $('env-level').innerHTML=levels.map((p,i)=>`<option value="${i}">${p.x}${p.x===axis.nominal?' · nominal':''}</option>`).join('');$('env-level').value=conditionIndex;
   $('env-severity').parentElement.firstChild.textContent=axis.title;
   $('env-severity').max=levels.length-1;$('env-severity').value=conditionIndex;$('env-severity-value').textContent=axis.title+' = '+value;
-  pause();remember();const models=[...new Set([data.baseline,model])];
+  pause();remember();const models=[...new Set([reference,model])];
   $('env-curve').innerHTML=previewChart(models.map(m=>({name:label(m),points:axis.curves[m].map(p=>({x:p.x,y:p.mean,sd:p.sd}))})),axisLabel(axis,data.environment),'Episode-mean return',{bands:true,nominal:axis.nominal,current:value});
   $('env-legend').innerHTML=models.map((m,i)=>`<span style="--series:${colors[i]}">${esc(label(m))}</span>`).join('');
-  const {summaries,normalized,negative}=reliabilityDisplay(policy,models,data.baseline,'condition',axis.id,value);
-  const series=models.map(m=>({name:label(m),points:(normalized?normalizedSurvival(policy,m,data.baseline,'condition',axis.id,value):rawReliability(policy,m,data.baseline,'condition',axis.id,value)).points.map(([x,y])=>({x,y}))}));
+  const {summaries,normalized,negative}=reliabilityDisplay(policy,models,reference,'condition',axis.id,value);
+  const series=models.map(m=>({name:label(m),points:(normalized?normalizedSurvival(policy,m,reference,'condition',axis.id,value):rawReliability(policy,m,reference,'condition',axis.id,value)).points.map(([x,y])=>({x,y}))}));
   $('env-reliability').innerHTML=previewChart(series,normalized?'Retained-return threshold':'Native return threshold','Fraction of policies',{unit:true});
   $('env-metric-title').textContent=(normalized?'Return reliability':'Native-return survival')+' · '+value;
   $('env-metric-title').title='One measured severity only. Each observation is a trained policy’s episode-mean return, not a severity average.';
-  $('env-metric-summary').innerHTML=summaries.map((s,i)=>`<div><span>${esc(label(models[i]))}</span><strong>${normalized?display(s.auc):display(s.raw)}</strong><small>${normalized?'<dfn title="Mean clip(R / R₀, 0, 1) across trained policies at this severity. R₀ is the fixed standard nominal median; not a confidence interval.">Reliability AUC</dfn>':'Mean condition return'}</small></div>`).join('');
+  $('env-metric-summary').innerHTML=summaries.map((s,i)=>`<div><span>${esc(label(models[i]))}</span><strong>${normalized?display(s.auc):display(s.raw)}</strong><small>${normalized?'<dfn title="Mean clip(R / R₀, 0, 1) across trained policies at this severity. R₀ is the named comparator nominal median; not a confidence interval.">Reliability AUC</dfn>':'Mean condition return'}</small></div>`).join('');
   const counts=models.flatMap(m=>axis.curves[m].map(p=>p.n));
-  $('env-plot-note').textContent=(axis.warning?axis.warning+' ':'')+`Reliability at ${axis.title} = ${value} only · ${summaries.map(s=>s.minN).join(' / ')} of ${cohort.intendedPolicies} policies. Bands: sample SD, not CI.`+(normalized?' Reference: standard nominal median.':negative?' Negative returns: native thresholds preserve their ordering. Higher (less negative) is better.':' Nonpositive or unavailable reference: native-return thresholds.');
+  $('env-plot-note').textContent=(axis.warning?axis.warning+' ':'')+`Reliability at ${axis.title} = ${value} only · ${summaries.map(s=>s.minN).join(' / ')} of ${cohort.intendedPolicies} policies. Bands: sample SD, not CI.`+(normalized?' Reference: '+label(reference)+' nominal median.':negative?' Negative returns: native thresholds preserve their ordering. Higher (less negative) is better.':' Nonpositive or unavailable reference: native-return thresholds.');
   $('env-open-curves').href=href('returns');$('env-open-metrics').href=href('advanced',{scope:'condition',metric:normalized?'reliability':'raw'});
   $('env-axis-metrics').href=href('advanced',{scope:'axis',metric:normalized?'reliability':'raw'});$('env-suite-metrics').href=href('advanced',{scope:'suite',metric:normalized?'reliability':'raw'});$('env-cap-metrics').href=href('advanced',{metric:'aggregate'});
-  $('env-evidence').href='?study='+data.id+'#robustness';
+  $('env-evidence').href='?study='+data.id+(hasNewCellAudit(data.id)?'&view=new-cells':'')+'#robustness';
   $('env-advantages').href='?environment='+environment.id+'&configuration='+data.id+'#advantages';
   $('env-policies').href='data/appendix/'+data.id+'.csv';$('env-figures').href=href('figures',{figureStudy:data.id});$('env-seeds').href=href('seeds',{scope:'condition'});
   recordings();

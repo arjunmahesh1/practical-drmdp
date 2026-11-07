@@ -1,5 +1,5 @@
 import {escape as esc} from './model.mjs';
-import {previewChart} from './environment-library.mjs?v=20261107-signed1';
+import {previewChart} from './environment-library.mjs?v=20261107-cells1';
 import {matchingRows,rankAdvantage,prioritizeRows} from './return-advantages.mjs?v=20261106-simple2';
 
 const root=typeof document==='undefined'?null:document.getElementById('advantages-page');
@@ -120,7 +120,7 @@ async function route(){
   filter=filtersFromQuery(location.search);page=0;selected=null;
   if(data){shell();return;}
   loading=true;root.innerHTML='<p role="status">Loading curve audit...</p>';
-  try{const response=await fetch('data/advantages/index.json?v=20261106-upper1');if(!response.ok)throw Error('Curve audit unavailable');data=await response.json();if(location.hash==='#advantages')shell();}
+  try{const response=await fetch('data/advantages/index.json?v=20261107-cells1');if(!response.ok)throw Error('Curve audit unavailable');data=await response.json();if(location.hash==='#advantages')shell();}
   catch(e){root.innerHTML=`<p role="alert">${esc(e.message)}</p>`;}finally{loading=false;}
 }
 if(root){window.addEventListener('hashchange',route);window.addEventListener('popstate',route);window.addEventListener('results-context',e=>{if(e.detail.page==='advantages')route();});route();}

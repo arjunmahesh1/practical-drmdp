@@ -36,7 +36,7 @@ export function bestFixedSetting(study,reference){
 }
 
 export function recordedOutcomes(study,model,reference,scope,axis,value){
-  const groups=conditions(study,model,reference,scope,axis,value);
+  const groups=conditions(study,model,reference,scope==='nominal'?'condition':scope,axis,scope==='nominal'?study.axes.find(a=>a.id===axis)?.nominal:value);
   const keys=[...new Set(groups.flatMap(g=>g.points.flatMap(p=>Object.keys(p.outcomes||{}))))];
   return Object.fromEntries(keys.map(key=>[key,groups.every(g=>g.points.length&&g.points.every(p=>Number.isFinite(p.outcomes?.[key])))?mean(groups.map(g=>mean(g.points.map(p=>p.outcomes[key])))):null]));
 }

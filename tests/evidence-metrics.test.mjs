@@ -34,7 +34,7 @@ test('only the three old custom-support/context TD3-KL cohorts are archived',()=
 });
 test('derived index binds unchanged sources and discloses inactive paper comparator',()=>{
  const root=new URL('../',import.meta.url),index=JSON.parse(fs.readFileSync(new URL('data/evidence-index.json',root)));
- assert.equal(index.sources.length,72);
+ assert.equal(index.sources.length,80);
  for(const source of index.sources)assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL(source.file,root))).digest('hex'),source.sha256);
  assert(index.rows.every(r=>visibleStudy(r.study)));
  const paper=index.rows.find(r=>r.paperLabel==='fig:level3-td3-full-suite');assert.equal(paper.reference,'tvc500');assert.equal(paper.referenceIsStandard,false);

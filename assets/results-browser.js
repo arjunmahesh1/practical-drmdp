@@ -1,6 +1,7 @@
-import {label,escape as esc,fmt,bestModelOnAxis} from './model.mjs?v=20261104-library1';
+import {label,escape as esc,fmt,bestModelOnAxis} from './model.mjs?v=20261107-cells1';
+import {withNewOutcomes,hasNewCellAudit} from './new-cell-outcomes.mjs';
 import {summarize,severity,rawReliability} from './appendix-metrics.mjs';
-import {normalizedSurvival,returnDistribution,capSummaries,bestFixedSetting,recordedOutcomes,reliabilityDisplay} from './browser-metrics.mjs?v=20261107-signed1';
+import {normalizedSurvival,returnDistribution,capSummaries,bestFixedSetting,recordedOutcomes,reliabilityDisplay} from './browser-metrics.mjs?v=20261107-cells1';
 
 const root=document.getElementById('analysis-page'),$=id=>document.getElementById(id),cache=new Map();
 const palette=['#17806b','#9463a0','#ad7a20','#587bba','#b94d72','#677449','#7b4c31','#2287a0','#ab4d9c','#7074b2','#d66d24','#2f766e','#9c783c','#7d565f','#4b6986'];
@@ -42,10 +43,12 @@ async function receive(e){
   const key=JSON.stringify([context.study.id,context.model,context.reference,context.selection,context.allSettings,context.axis,context.index,context.page,q().get('scope'),q().get('metric'),q().get('value')]);
   if(key===latestKey)return;latestKey=key;
   const ticket=++request;
+  const id=context.study.id;
   root.innerHTML='<p class="load-state" role="status">Loading policy summaries...</p>';
   try{
-    if(!cache.has(context.study.id)){const r=await fetch('data/appendix/'+context.study.id+'.json');if(!r.ok)throw Error('Policy summaries unavailable.');cache.set(context.study.id,await r.json());}
-    if(ticket!==request)return;study=cache.get(context.study.id);shell();
+    if(!cache.has(id)){const r=await fetch('data/appendix/'+id+'.json');if(!r.ok)throw Error('Policy summaries unavailable.');cache.set(id,await r.json());}
+    const next=await withNewOutcomes(cache.get(id));
+    if(ticket!==request)return;study=next;shell();
   }catch(error){if(ticket===request)root.innerHTML=`<p role="alert">${esc(error.message)}</p>`;}
 }
 
@@ -60,6 +63,7 @@ function shell(){
     <div id="analysis-caption" class="analysis-caption"></div><div id="analysis-content" role="tabpanel"></div>
     <details class="analysis-definitions"><summary>Definitions & provenance</summary><p>Each observation is a trained policy's episode-mean return. Reliability uses the reference nominal median R₀ and Z = R / R₀. AUC = mean clip(Z, 0, 1); low-return probability = P(Z &lt; 0.5). Normalized metrics are undefined for R₀ ≤ 0. Native-return survival remains available.</p><p>Levels are equally weighted within each axis; full-suite summaries weight axes equally and exclude nominal levels. Conditional analyses use each method's own nominally competent policies. Missing finals are not imputed. Matching seed indices do not establish a paired design. All interactive metrics are descriptive, not confidence intervals, significance or task-success claims.</p><p>Source: ${esc(study.source)}<br>SHA256 ${esc(study.sourceSha256)}</p></details>`;
   select('analysis-axis',study.axes.map(a=>[a.id,a.title]),context.axis);
+  if(hasNewCellAudit(study.id))root.querySelector('.analysis-heading').insertAdjacentHTML('afterend',`<p class="analysis-caption"><a href="?view=new-cells&study=${esc(study.id)}#robustness">November 7 exploratory audit ↗</a> · Recorded task outcomes are separate from return reliability. Pusher uses recorded success_once; Drawer uses drawer-opening success, not a native success flag.</p>`);
   const point=context.study.axes.find(a=>a.id===context.axis).curves[context.reference][context.index];
   select('analysis-value',study.axes.find(a=>a.id===context.axis).values[context.reference].map(p=>[String(p.x),String(p.x)]),String(point.x));
   $('analysis-kind').value=metric==='raw'?'raw':'reliability';

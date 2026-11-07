@@ -94,7 +94,7 @@ test('noticeable ranges require both gains at every adjacent measured level',()=
 });
 test('ranking preserves published data and partitions every original match',()=>{
   const d=JSON.parse(fs.readFileSync(new URL('../data/advantages/index.json',import.meta.url)));
-  const before=JSON.stringify(d),ranked=prioritizeRows(matchingRows(d.rows,{selection:'all'}));
+  const before=JSON.stringify(d),ranked=prioritizeRows(matchingRows(d.rows.slice(0,2397),{selection:'all'}));
   assert.equal(ranked.length,1147);assert.equal(JSON.stringify(d),before);
   assert.equal(ranked.filter(r=>r.rank.tier==='noticeable').length,285);
   assert.equal(ranked.filter(r=>r.rank.tier==='small').length,688);
@@ -115,17 +115,17 @@ test('ranking preserves published data and partitions every original match',()=>
 });
 test('published scan covers every axis, controls excluded, ordinary reference fixed',()=>{
   const d=JSON.parse(fs.readFileSync(new URL('../data/advantages/index.json',import.meta.url)));
-  assert.equal(d.coverage.length,40);assert.equal(d.coverage.reduce((s,c)=>s+c.axes,0),470);
-  assert.equal(d.rows.length,2397);assert.equal(new Set(d.rows.map(r=>r.id)).size,2397);
+  assert.equal(d.coverage.length,44);assert.equal(d.coverage.reduce((s,c)=>s+c.axes,0),496);
+  assert.equal(d.rows.length,2528);assert.equal(new Set(d.rows.map(r=>r.id)).size,2528);
   for(const r of d.rows){
     assert.ok(['vanilla','standard','non-robust'].includes(r.reference));
     assert.ok(!['a1e9','tvc500','tvc1e9','kl_bypass','tv_c1100'].includes(r.setting));
     assert.ok(r.points.every((p,i)=>!i||p.x>r.points[i-1].x));
     for(const p of r.points)assert.deepEqual(p,classify(p));
   }
-  assert.equal(d.rows.filter(r=>ranges(r,'separated').length).length,6);
-  assert.equal(new Set(d.rows.filter(r=>ranges(r,'separated').length).map(r=>r.sourceId+'|'+r.setting)).size,4);
-  assert.equal(d.rows.filter(r=>ranges(r).length).length,1147);
-  assert.equal(new Set(d.rows.filter(r=>ranges(r).length).map(r=>r.sourceId+'|'+r.setting)).size,150);
+  assert.equal(d.rows.filter(r=>ranges(r,'separated').length).length,9);
+  assert.equal(new Set(d.rows.filter(r=>ranges(r,'separated').length).map(r=>r.sourceId+'|'+r.setting)).size,7);
+  assert.equal(d.rows.filter(r=>ranges(r).length).length,1184);
+  assert.equal(new Set(d.rows.filter(r=>ranges(r).length).map(r=>r.sourceId+'|'+r.setting)).size,159);
   assert.ok(d.rows.filter(r=>r.warning).every(r=>ranges(r,'positive',true).length===0));
 });

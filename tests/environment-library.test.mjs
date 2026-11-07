@@ -14,7 +14,7 @@ test('all thirteen task implementations distinguish main, pilot and development 
   assert.equal(library.entries.filter(e=>e.stage==='main').length,9);
   assert.equal(library.entries.filter(e=>e.stage==='pilot').length,1);
   assert.equal(library.entries.filter(e=>e.stage==='development').length,3);
-  assert.equal(library.entries.flatMap(e=>e.cohorts).length,39);
+  assert.equal(library.entries.flatMap(e=>e.cohorts).length,43);
 });
 test('engine labels separate ManiSkill, Isaac and classic control',()=>{
   const get=id=>library.entries.find(e=>e.id===id);
@@ -64,7 +64,7 @@ test('manuscript downloads exist for all ten packaged comparisons',()=>{
   const cohorts=library.entries.flatMap(e=>e.cohorts).filter(c=>c.archive);
   assert.equal(cohorts.length,10);
   for(const c of cohorts)assert(fs.existsSync(new URL(c.archive,root)));
-  assert.equal(json('data/appendix/index.json').deliveries.length,5);
+  assert.equal(json('data/appendix/index.json').deliveries.length,6);
 });
 test('negative references retain native-unit summaries and never obtain normalized AUC',()=>{
   const s=json('data/appendix/pusher_ppo_tv30.json');
