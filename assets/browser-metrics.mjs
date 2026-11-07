@@ -15,6 +15,12 @@ export function normalizedSurvival(study,model,reference,scope,axis,value,condit
   return {points,summary};
 }
 
+export function reliabilityDisplay(study,models,reference,scope,axis,value){
+  const summaries=models.map(model=>summarize(study,model,reference,scope,axis,value));
+  const negative=models.some(model=>conditions(study,model,reference,scope,axis,value).some(g=>g.points.some(p=>p.seeds.some(([,r])=>r<0))));
+  return {normalized:summaries.every(s=>s.valid)&&!negative,negative,summaries};
+}
+
 export function returnDistribution(study,model,reference,scope,axis,value){
   return rawReliability(study,model,reference,scope,axis,value).points.map(([r,p])=>[r,1-p]);
 }

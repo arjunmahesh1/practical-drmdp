@@ -1,6 +1,6 @@
 import {label,escape as esc,fmt,bestModelOnAxis} from './model.mjs?v=20261104-library1';
 import {summarize,severity,rawReliability} from './appendix-metrics.mjs';
-import {normalizedSurvival,returnDistribution,capSummaries,bestFixedSetting,recordedOutcomes} from './browser-metrics.mjs';
+import {normalizedSurvival,returnDistribution,capSummaries,bestFixedSetting,recordedOutcomes,reliabilityDisplay} from './browser-metrics.mjs?v=20261107-signed1';
 
 const root=document.getElementById('analysis-page'),$=id=>document.getElementById(id),cache=new Map();
 const palette=['#17806b','#9463a0','#ad7a20','#587bba','#b94d72','#677449','#7b4c31','#2287a0','#ab4d9c','#7074b2','#d66d24','#2f766e','#9c783c','#7d565f','#4b6986'];
@@ -65,6 +65,7 @@ function shell(){
   $('analysis-kind').value=metric==='raw'?'raw':'reliability';
   const allowed=['gallery','suite','axis','condition','nominal'];
   $('analysis-scope').value=allowed.includes(params.get('scope'))?params.get('scope'):(seeds?'suite':'condition');
+  if(!params.has('metric')&&reliabilityDisplay(study,modelsFor(context.axis),context.reference,$('analysis-scope').value==='gallery'?'axis':$('analysis-scope').value,context.axis,point.x).normalized===false){metric='raw';$('analysis-kind').value='raw';}
   if(context.selection==='best'&&$('analysis-scope').value==='suite')$('analysis-scope').value='gallery';
   $('analysis-conditional').checked=params.get('conditional')==='1';
   root.dataset.metric=metric;
@@ -104,6 +105,7 @@ function render(){
   $('analysis-content').innerHTML=`<div class="${gallery?'metrics-gallery':'metrics-single'}">${panels.join('')||'<p class="metric-unavailable">No matching perturbations.</p>'}</div>`;
   root.querySelectorAll('[data-open-axis]').forEach(b=>b.onclick=()=>{setQuery({scope:'axis'});choose({axis:b.dataset.openAxis});});
   root.querySelectorAll('[data-seed-download]').forEach(b=>b.onclick=()=>downloadSeeds(scope,axis,value));
+  root.querySelectorAll('[data-native-returns]').forEach(b=>b.onclick=()=>{root.dataset.metric='raw';$('analysis-kind').value='raw';setQuery({metric:'raw'});render();});
   if(!gallery&&['reliability','raw'].includes(metric)){
     const slider=$('metric-threshold');
     if(slider){slider.oninput=()=>{$('metric-threshold-label').textContent=metric==='raw'?num(Number(slider.value)):pct(Number(slider.value));updateThreshold(metric,scope,axis,value,conditional,Number(slider.value));};slider.oninput();}
@@ -119,6 +121,9 @@ function panel(metric,scope,axis,value,conditional){
     const series=models.map(model=>({model,points:metric==='raw'?rawReliability(study,model,context.reference,scope,axis.id,value).points:normalizedSurvival(study,model,context.reference,scope,axis.id,value,conditional).points}));
     plot=chart(series,metric==='raw'?'Native return threshold':'Retained-return threshold','Fraction of policies',metric==='raw'?{}:{xr:[0,1],threshold:.5});
     if(metric==='reliability'&&!series.some(s=>s.points.length))plot='<div class="metric-unavailable">Nonpositive nominal reference or unavailable policies.<br>Native-return survival is available.</div>';
+    const display=reliabilityDisplay(study,models,context.reference,scope,axis.id,value);
+    if(metric==='reliability'&&display.negative)plot=`<p class="compact-note">Negative returns lie left of this 0–1 view, so different negative outcomes can look identical here. <button type="button" class="download-link" data-native-returns>Show native returns</button></p>`+plot;
+    if(metric==='raw'&&display.negative)plot='<p class="compact-note">Native thresholds preserve negative returns. Higher (less negative) is better.</p>'+plot;
     if(!gallery&&series.some(s=>s.points.length)){
       const all=series.flatMap(s=>s.points.map(p=>p[0])),lo=metric==='raw'?Math.min(...all):0,hi=metric==='raw'?Math.max(...all):1;
       extra=`<label class="threshold-control">${metric==='raw'?'Return':'Retention'} threshold <output id="metric-threshold-label"></output><input id="metric-threshold" type="range" min="${lo}" max="${hi}" step="${metric==='raw'?(hi-lo)/200||1:.01}" value="${metric==='raw'?(lo+hi)/2:.5}"></label><div id="threshold-readout"></div>`;

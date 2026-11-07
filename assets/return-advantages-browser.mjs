@@ -1,5 +1,5 @@
 import {escape as esc} from './model.mjs';
-import {previewChart} from './environment-library.mjs?v=20261106-advantages1';
+import {previewChart} from './environment-library.mjs?v=20261107-signed1';
 import {matchingRows,rankAdvantage,prioritizeRows} from './return-advantages.mjs?v=20261106-simple2';
 
 const root=typeof document==='undefined'?null:document.getElementById('advantages-page');

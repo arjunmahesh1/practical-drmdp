@@ -2,13 +2,15 @@ import {escape as esc,fmt,label,activeModel,axisLabel,bestModelOnAxis,nearestPoi
 import {visibleStudy,suppliedEnvironments,resultEnvironments} from './results-policy.mjs?v=20261105-additions1';
 import {withRecordings,recordingOverlay,libraryRecordingCoverage} from './recording-overlay.mjs';
 import {summarize,rawReliability} from './appendix-metrics.mjs';
-import {normalizedSurvival} from './browser-metrics.mjs';
+import {normalizedSurvival,reliabilityDisplay} from './browser-metrics.mjs?v=20261107-signed1';
+import {rankEnvironmentAlgorithms} from './environment-comparison.mjs?v=20261107-signed1';
 import {segmentWindow,segmentSource,segmentFrame,segmentTime} from './video-segment.mjs';
 import {episodeTraceSVG} from './replay-chart.mjs';
 
 const root=typeof document==='undefined'?null:document.getElementById('environment-page'),$=id=>document.getElementById(id);
 const cache=new Map(),colors=['#003087','#d94b24'];
 let library,environment,cohort,data,policy,model,axis,selection='fixed',conditionIndex=0,evidence,ticket=0,mediaTicket=0,animation;
+let videoChoice='selected',methodComparison=null;
 const query=()=>new URLSearchParams(location.search);
 const display=x=>x===null?'N/A':fmt(x,Math.abs(x)<1?3:1);
 export const belongsTo=(entry,text,source,scope)=>
@@ -50,6 +52,7 @@ function remember(){
   if(axis)u.searchParams.set('shift',axis.id);
   if(axis)u.searchParams.set('value',axis.curves[data.baseline][conditionIndex].x);
   if(selection==='best')u.searchParams.set('selection','best');
+  if(videoChoice==='standard')u.searchParams.set('video','standard');
   history.replaceState(null,'',u.pathname+u.search+'#environments');
 }
 async function json(path){if(!cache.has(path)){const r=await fetch(path);if(!r.ok)throw Error('Unavailable: '+path);cache.set(path,await r.json());}return cache.get(path);}
@@ -76,6 +79,7 @@ function directory(){
 }
 async function selectEnvironment(id,initial=false){
   pause();environment=library.entries.find(e=>e.id===id)||library.entries[0];cohort=null;axis=null;model=null;selection='fixed';directory();
+  methodComparison=null;videoChoice=initial&&query().get('video')==='standard'?'standard':'selected';
   const entry=environment;
   if(entry.report){
     const saved=initial?query().get('reportState'):null;
@@ -88,7 +92,7 @@ async function selectEnvironment(id,initial=false){
   if(!entry.cohorts.length){++ticket;remember();return;}
   const requested=initial?(query().get('cohort')||query().get('study')):null;
   $('env-cohort').value=entry.cohorts.some(c=>c.id===requested)?requested:entry.preferred||entry.cohorts[0].id;
-  $('env-cohort').onchange=()=>selectCohort($('env-cohort').value);
+  $('env-cohort').onchange=()=>{methodComparison=null;selectCohort($('env-cohort').value);};
   await selectCohort($('env-cohort').value,initial);
 }
 function showSupplied(entry,requested,saved=null){
@@ -103,37 +107,39 @@ function showSupplied(entry,requested,saved=null){
     <details class="env-provenance"><summary>Data & source details</summary><p>Source: ${esc(chosen.dataset)}. Separate evaluation sets; rows are not pooled.${chosen.sourceNote?' '+esc(chosen.sourceNote)+' / MuJoCo, as identified by the supplied notes.':''} Algorithm and numeric training-seed IDs are unreported. No rollout recording is linked.</p>${chosen.sourceNote?'<p>The human confirms additional evaluations of earlier policies, not extra independent training runs. Exact row mapping for these added files is not supplied. Earlier L2/L3 decisions do not transfer to the new axes.</p>':'<p>The human confirmed independent policies and row identity within this original result set.</p>'}</details>`;
   $('env-result-set').value=chosen.dataset;$('env-result-set').onchange=()=>showSupplied(entry,$('env-result-set').value);
 }
-async function selectCohort(id,initial=false){
+async function selectCohort(id,initial=false,override=null){
   const job=++ticket;pause();cohort=environment.cohorts.find(s=>s.id===id);
+  $('env-cohort').value=id;
   $('env-results').innerHTML='<p class="small" role="status">Loading saved results...</p>';
   try{
     const nextData=await withRecordings(await json('data/'+cohort.id+'.json'));
     const nextPolicy=await json('data/appendix/'+cohort.id+'.json');
     if(job!==ticket||location.hash!=='#environments')return;
     data=nextData;policy=nextPolicy;
-    const requested=initial?(query().get('parameter')||query().get('setting')):null;
+    const requested=override?.model??(initial?(query().get('parameter')||query().get('setting')):null);
     model=data.models.includes(requested)?requested:activeModel(data.models)||data.baseline;
-    axis=data.axes.find(a=>a.id===(initial?(query().get('shift')||query().get('axis')):null))||data.axes[0];
-    conditionIndex=nearestPoint(axis.curves[data.baseline],initial&&query().has('value')?Number(query().get('value')):axis.nominal);
+    axis=data.axes.find(a=>a.id===(override?.axis??(initial?(query().get('shift')||query().get('axis')):null)))||data.axes[0];
+    conditionIndex=nearestPoint(axis.curves[data.baseline],override?.value??(initial&&query().has('value')?Number(query().get('value')):axis.nominal));
     selection=initial&&(query().get('selection')==='best'||requested==='best')?'best':'fixed';
     $('env-coverage').textContent=`${cohort.models.length} settings · ${cohort.axisCount} perturbations · ${cohort.intendedPolicies} intended policies per setting${cohort.gridComplete===false?' · grid incomplete':''}`;
     const gains=evidence.summary[cohort.id]?.suiteGains||0;
     $('env-coverage').insertAdjacentHTML('beforeend',` · <a href="?study=${cohort.id}&level=L3${gains?'&result=gain':''}#robustness">${gains?gains+' suite gains':'Compare robustness'} ↗</a>`);
     $('env-results').innerHTML=`<div class="env-comparison-controls"><label>Setting<select id="env-setting">${data.models.map(m=>`<option value="${esc(m)}">${esc(label(m))}</option>`).join('')}</select></label><label>Perturbation<select id="env-shift">${data.axes.map(a=>`<option value="${a.id}">${esc(a.title)}</option>`).join('')}</select></label></div>
-      <div class="env-cap-selection"><button id="env-best-cap" type="button" class="text-button" aria-pressed="false" aria-describedby="env-cap-note"></button><span id="env-cap-note"></span></div>
+      <div class="env-cap-selection"><button id="env-best-cap" type="button" class="text-button" aria-pressed="false" aria-describedby="env-cap-note"></button><button id="env-best-algorithm" type="button" class="text-button" title="Select the highest saved full-axis mean among compatible algorithms and settings">Best algorithm</button><span id="env-cap-note"></span></div><details id="env-method-comparison" hidden><summary>Algorithm comparison</summary><div id="env-method-results"></div></details>
       <div class="env-severity-controls"><label>Severity<select id="env-level"></select></label><label class="env-severity-slider">${esc(axis.title)}<input id="env-severity" type="range" min="0" step="1" aria-label="Perturbation severity"><output id="env-severity-value"></output></label><button id="env-nominal" type="button" class="text-button">Nominal ↺</button></div>
       <nav class="env-view-links" aria-label="Analyze this selection"><a id="env-open-curves">Return curves</a><a id="env-open-metrics">Advanced metrics</a><a id="env-cap-metrics">Compare caps</a><a id="env-figures">Figures</a><a id="env-seeds">Seeds</a></nav>
       <div class="env-plots"><section><div class="env-section-heading"><h3>Return curve</h3></div><div id="env-curve"></div><div id="env-legend" class="env-legend"></div></section><section><div class="env-section-heading"><h3 id="env-metric-title">Return reliability</h3></div><div id="env-reliability"></div><div id="env-metric-summary" class="env-metric-summary"></div></section></div>
       <div class="env-analysis-links"><a id="env-axis-metrics">Aggregate: this perturbation ↗</a><a id="env-suite-metrics">Aggregate: full suite ↗</a><a id="env-evidence">Robustness hierarchy ↗</a></div>
       <p id="env-plot-note" class="env-evidence-note"></p>
-      <section class="env-media"><div class="env-section-heading"><h3>Policy video</h3><a id="env-open-replay">Rollout explorer ↗</a></div><p id="env-media-status" role="status"></p><div id="env-media-body"><div><div class="env-video-surface"><video id="env-video" playsinline muted controls preload="metadata" hidden aria-label="Same-cohort recorded policy"></video></div><label class="env-video-scrub" id="env-video-scrub" hidden>Episode<input id="env-video-frame" type="range" min="0" max="1" value="0" aria-label="Recorded episode frame"><output id="env-video-time"></output></label></div><div id="env-episode-trace"></div></div><p id="env-media-note" class="env-evidence-note"></p><details id="env-recording-details" hidden><summary>Recording details</summary><p id="env-recording-provenance" class="env-evidence-note"></p></details></section>
+      <section class="env-media"><div class="env-section-heading"><h3>Policy video</h3><a id="env-open-replay">Rollout explorer ↗</a></div><div class="env-media-controls"><label>Video policy<select id="env-video-policy"></select></label><label id="env-recorded-label">Recorded conditions<select id="env-recorded-condition"></select></label></div><p id="env-media-status" role="status"></p><div id="env-media-body"><div><div class="env-video-surface"><video id="env-video" playsinline muted controls preload="metadata" hidden aria-label="Same-cohort recorded policy"></video></div><label class="env-video-scrub" id="env-video-scrub" hidden>Episode<input id="env-video-frame" type="range" min="0" max="1" value="0" aria-label="Recorded episode frame"><output id="env-video-time"></output></label></div><div id="env-episode-trace"></div></div><p id="env-media-note" class="env-evidence-note"></p><details id="env-recording-details" hidden><summary>Recording details</summary><p id="env-recording-provenance" class="env-evidence-note"></p></details></section>
       <div class="env-artifacts"><a id="env-policies" download>Policy summaries CSV ↓</a>${cohort.archive?`<a href="${cohort.archive}" download>Overleaf package ↓</a>`:''}</div><details class="env-provenance"><summary>Data & interpretation</summary><p>${esc(data.note)}</p><p>Same setting across axes; sample SD, not a confidence interval. Return reliability is not physical task success. Failed runs receive no invented returns. Video coverage is cohort-specific.</p><p>${environment.taskIds.map(esc).join(' / ')}</p><code>${esc(data.id)}</code></details>`;
     $('env-setting').value=model;$('env-shift').value=axis.id;
     $('env-setting').onchange=()=>{selection='fixed';model=$('env-setting').value;renderComparison();};
     $('env-results').insertBefore($('env-results').querySelector('.env-media'),$('env-results').querySelector('.env-plots'));
     $('env-evidence').insertAdjacentHTML('afterend','<a id="env-advantages">Return advantages ↗</a>');
-    $('env-shift').onchange=()=>{axis=data.axes.find(a=>a.id===$('env-shift').value);conditionIndex=nearestPoint(axis.curves[data.baseline],axis.nominal);renderComparison();};
+    $('env-shift').onchange=()=>{methodComparison=null;axis=data.axes.find(a=>a.id===$('env-shift').value);conditionIndex=nearestPoint(axis.curves[data.baseline],axis.nominal);renderComparison();};
     $('env-best-cap').onclick=()=>{selection='best';renderComparison();};
+    $('env-best-algorithm').onclick=bestAlgorithm;
     $('env-severity').oninput=e=>{conditionIndex=Number(e.target.value);renderComparison();};
     $('env-level').onchange=e=>{conditionIndex=Number(e.target.value);renderComparison();};
     $('env-nominal').onclick=()=>{conditionIndex=nearestPoint(axis.curves[data.baseline],axis.nominal);renderComparison();};
@@ -150,6 +156,10 @@ function renderComparison(){
   $('env-best-cap').setAttribute('aria-pressed',String(selection==='best'));
   $('env-best-cap').title='Select the active setting with the highest mean return over this perturbation grid; controls are excluded.';
   $('env-cap-note').textContent=selection==='best'?'Highest axis mean · ex post':'Best uses the full-axis mean · ex post';
+  const algorithms=new Set(environment.cohorts.filter(c=>c.environment===data.environment).map(c=>c.algorithm));
+  $('env-best-algorithm').disabled=algorithms.size<2;
+  $('env-best-algorithm').title=algorithms.size<2?'Only '+cohort.algorithm+' is published for this task.':'Choose the highest saved axis mean; same task, controller and severity grid. Training recipes may differ.';
+  renderMethodComparison();
   const levels=axis.curves[data.baseline],value=levels[conditionIndex].x;
   $('env-level').innerHTML=levels.map((p,i)=>`<option value="${i}">${p.x}${p.x===axis.nominal?' · nominal':''}</option>`).join('');$('env-level').value=conditionIndex;
   $('env-severity').parentElement.firstChild.textContent=axis.title;
@@ -157,15 +167,14 @@ function renderComparison(){
   pause();remember();const models=[...new Set([data.baseline,model])];
   $('env-curve').innerHTML=previewChart(models.map(m=>({name:label(m),points:axis.curves[m].map(p=>({x:p.x,y:p.mean,sd:p.sd}))})),axisLabel(axis,data.environment),'Episode-mean return',{bands:true,nominal:axis.nominal,current:value});
   $('env-legend').innerHTML=models.map((m,i)=>`<span style="--series:${colors[i]}">${esc(label(m))}</span>`).join('');
-  const summaries=models.map(m=>summarize(policy,m,data.baseline,'condition',axis.id,value));
-  const normalized=summaries.every(s=>s.valid);
+  const {summaries,normalized,negative}=reliabilityDisplay(policy,models,data.baseline,'condition',axis.id,value);
   const series=models.map(m=>({name:label(m),points:(normalized?normalizedSurvival(policy,m,data.baseline,'condition',axis.id,value):rawReliability(policy,m,data.baseline,'condition',axis.id,value)).points.map(([x,y])=>({x,y}))}));
   $('env-reliability').innerHTML=previewChart(series,normalized?'Retained-return threshold':'Native return threshold','Fraction of policies',{unit:true});
   $('env-metric-title').textContent=(normalized?'Return reliability':'Native-return survival')+' · '+value;
   $('env-metric-title').title='One measured severity only. Each observation is a trained policy’s episode-mean return, not a severity average.';
   $('env-metric-summary').innerHTML=summaries.map((s,i)=>`<div><span>${esc(label(models[i]))}</span><strong>${normalized?display(s.auc):display(s.raw)}</strong><small>${normalized?'<dfn title="Mean clip(R / R₀, 0, 1) across trained policies at this severity. R₀ is the fixed standard nominal median; not a confidence interval.">Reliability AUC</dfn>':'Mean condition return'}</small></div>`).join('');
   const counts=models.flatMap(m=>axis.curves[m].map(p=>p.n));
-  $('env-plot-note').textContent=(axis.warning?axis.warning+' ':'')+`Reliability at ${axis.title} = ${value} only · ${summaries.map(s=>s.minN).join(' / ')} of ${cohort.intendedPolicies} policies. Bands: sample SD, not CI.`+(normalized?' Reference: standard nominal median.':' Nonpositive reference: native-return thresholds.');
+  $('env-plot-note').textContent=(axis.warning?axis.warning+' ':'')+`Reliability at ${axis.title} = ${value} only · ${summaries.map(s=>s.minN).join(' / ')} of ${cohort.intendedPolicies} policies. Bands: sample SD, not CI.`+(normalized?' Reference: standard nominal median.':negative?' Negative returns: native thresholds preserve their ordering. Higher (less negative) is better.':' Nonpositive or unavailable reference: native-return thresholds.');
   $('env-open-curves').href=href('returns');$('env-open-metrics').href=href('advanced',{scope:'condition',metric:normalized?'reliability':'raw'});
   $('env-axis-metrics').href=href('advanced',{scope:'axis',metric:normalized?'reliability':'raw'});$('env-suite-metrics').href=href('advanced',{scope:'suite',metric:normalized?'reliability':'raw'});$('env-cap-metrics').href=href('advanced',{metric:'aggregate'});
   $('env-evidence').href='?study='+data.id+'#robustness';
@@ -173,16 +182,47 @@ function renderComparison(){
   $('env-policies').href='data/appendix/'+data.id+'.csv';$('env-figures').href=href('figures',{figureStudy:data.id});$('env-seeds').href=href('seeds',{scope:'condition'});
   recordings();
 }
+async function bestAlgorithm(){
+  const current=data,axisId=axis.id,entry=environment,job=++ticket;
+  const button=$('env-best-algorithm');button.disabled=true;button.textContent='Comparing...';
+  try{
+    const studies=[];
+    for(const c of entry.cohorts.filter(c=>c.environment===current.environment))studies.push(await json('data/'+c.id+'.json'));
+    if(job!==ticket||data!==current||axis.id!==axisId||root.hidden)return;
+    const rows=rankEnvironmentAlgorithms(studies,current,axisId);
+    methodComparison={rows,axis:axisId,title:axis.title,task:current.environment};
+    if(new Set(rows.map(r=>r.algorithm)).size<2){renderMethodComparison();$('env-cap-note').textContent='No other complete algorithm on the same controller and grid.';return;}
+    const winner=rows[0],value=axis.curves[data.baseline][conditionIndex].x;
+    await selectCohort(winner.study,false,{model:winner.model,axis:axisId,value});
+    $('env-method-comparison').open=true;
+  }catch(e){if(job===ticket)$('env-cap-note').textContent=e.message;}
+  finally{if(button.isConnected){button.disabled=false;button.textContent='Best algorithm';}}
+}
+function renderMethodComparison(){
+  const box=$('env-method-comparison');box.hidden=!methodComparison;
+  if(!methodComparison)return;
+  const {rows,title,task}=methodComparison;
+  $('env-method-results').innerHTML=`<p class="env-evidence-note">Highest saved mean over ${esc(title)} · ${esc(task)}. Same controller and measured grid, 30 policies per setting. Recipes and budgets may differ; ex-post comparison, not a controlled algorithm test.</p><div class="table-scroll"><table><thead><tr><th>Method</th><th>Setting</th><th>Axis mean</th><th>Recipe</th></tr></thead><tbody>${rows.map(r=>`<tr><td><button type="button" class="text-button" data-env-method="${esc(r.study)}">${esc(r.algorithm+(['vanilla','standard'].includes(r.model)?'':'-'+r.family))}</button></td><td>${esc(label(r.model))}</td><td>${display(r.mean)}</td><td>${esc(r.branch)}</td></tr>`).join('')}</tbody></table></div>`;
+  box.querySelectorAll('[data-env-method]').forEach(b=>b.onclick=()=>{const row=rows.find(r=>r.study===b.dataset.envMethod);selectCohort(row.study,false,{model:row.model,axis:methodComparison.axis,value:axis.curves[data.baseline][conditionIndex].x});});
+}
+const videoModel=()=>videoChoice==='standard'?data.baseline:model;
 function recordings(){
-  pause();const chosen=model,value=axis.curves[data.baseline][conditionIndex].x;
-  $('env-open-replay').href=href('explore',{policy:chosen===data.baseline?'standard':'selected'});
+  pause();const chosen=videoModel(),value=axis.curves[data.baseline][conditionIndex].x;
+  $('env-video-policy').innerHTML=[...new Set([data.baseline,model])].map(m=>`<option value="${esc(m)}">${esc(label(m))}${m===data.baseline?'':' · selected setting'}</option>`).join('');$('env-video-policy').value=chosen;
+  $('env-video-policy').onchange=()=>{videoChoice=$('env-video-policy').value===data.baseline?'standard':'selected';remember();recordings();};
+  const keys=Object.keys(data.replays?.[chosen]||{});
+  $('env-recorded-condition').innerHTML='<option value="">Current condition</option>'+keys.map(key=>{const [id,x]=key.split('|');return `<option value="${esc(key)}">${esc(data.axes.find(a=>a.id===id)?.title||id)} = ${esc(x)}</option>`;}).join('');
+  $('env-recorded-condition').value=keys.includes(axis.id+'|'+value)?axis.id+'|'+value:'';
+  $('env-recorded-label').hidden=!keys.length;
+  $('env-recorded-condition').onchange=()=>{const key=$('env-recorded-condition').value;if(!key)return;const [id,x]=key.split('|');if(id!==axis.id)methodComparison=null;axis=data.axes.find(a=>a.id===id);$('env-shift').value=id;conditionIndex=nearestPoint(axis.curves[data.baseline],Number(x));renderComparison();};
+  $('env-open-replay').href=href('explore',{setting:chosen,policy:chosen===data.baseline?'standard':'selected'});
   $('env-recording-details').hidden=true;
   const available=!!data.replays?.[chosen]?.[axis.id+'|'+value];$('env-media-body').hidden=!available;
   if(!available){$('env-media-status').textContent='No video for '+label(chosen)+' · '+axis.title+' = '+value+'.';$('env-media-note').textContent='Curves and metrics are available below.';return;}
   loadVideo();
 }
 async function loadVideo(){
-  pause();const job=mediaTicket,chosen=model,value=axis.curves[data.baseline][conditionIndex].x;
+  pause();const job=mediaTicket,chosen=videoModel(),value=axis.curves[data.baseline][conditionIndex].x;
   const relative=data.replays[chosen][axis.id+'|'+value];
   $('env-media-status').textContent='Loading matched recording...';$('env-media-note').textContent='';
   const video=$('env-video');video.hidden=true;$('env-video-scrub').hidden=true;$('env-video-frame').disabled=true;$('env-episode-trace').innerHTML='';
