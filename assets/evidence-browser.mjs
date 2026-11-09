@@ -1,6 +1,6 @@
 import {escape as esc,label,fmt} from './model.mjs';
 import {showSettings} from './audited-settings.mjs?v=20261107-cells1';
-import {showNewCellAudit} from './new-cell-audit.mjs';
+import {showNewCellAudit} from './pairing-audit.mjs?v=20261108-pairing1';
 const root=document.getElementById('evidence-page');
 let index,limit=80,ticket=0;
 const $=id=>document.getElementById(id),q=()=>new URLSearchParams(location.search);

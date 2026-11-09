@@ -10,6 +10,9 @@
 .new-cell-section td:last-child a{display:block;margin-bottom:7px}
 #evidence-page .new-cell-section details{margin-top:9px;padding-top:9px;min-width:130px}
 .new-cell-section li{margin-bottom:12px;overflow-wrap:anywhere}
+.new-cell-section .pairing-sensitive{color:#8a5d14;font-weight:600}
+.pairing-details{min-width:180px;max-width:280px}
+.new-cell-section details summary{font-size:12px;line-height:1.5;white-space:normal;overflow-wrap:anywhere}
 .new-cell-section ul{padding-left:15px}
 .env-comparison-controls:has(#env-reference){grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:700px){.env-comparison-controls:has(#env-reference){grid-template-columns:repeat(2,minmax(0,1fr))}}
