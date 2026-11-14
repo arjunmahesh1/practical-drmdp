@@ -1,7 +1,7 @@
 import {escape as esc,fmt,label,activeModel,axisLabel,bestModelOnAxis,nearestPoint} from './model.mjs?v=20261107-cells1';
 import {withNewOutcomes,hasNewCellAudit} from './new-cell-outcomes.mjs';
 import {visibleStudy,suppliedEnvironments,resultEnvironments} from './results-policy.mjs?v=20261105-additions1';
-import {withRecordings,recordingOverlay,libraryRecordingCoverage} from './recording-overlay.mjs';
+import {withRecordings,recordingOverlay,libraryRecordingCoverage} from './recording-overlay.mjs?v=20261114-drawer1';
 import {summarize,rawReliability} from './appendix-metrics.mjs';
 import {normalizedSurvival,reliabilityDisplay} from './browser-metrics.mjs?v=20261107-cells1';
 import {rankEnvironmentAlgorithms} from './environment-comparison.mjs?v=20261107-signed1';
@@ -126,7 +126,7 @@ async function selectCohort(id,initial=false,override=null){
     selection=initial&&(query().get('selection')==='best'||requested==='best')?'best':'fixed';
     $('env-coverage').textContent=`${cohort.models.length} settings · ${cohort.axisCount} perturbations · ${cohort.intendedPolicies} intended policies per setting${cohort.gridComplete===false?' · grid incomplete':''}`;
     const gains=evidence.summary[cohort.id]?.suiteGains||0;
-    $('env-coverage').insertAdjacentHTML('beforeend',` · <a href="?study=${cohort.id}&level=L3${gains?'&result=gain':''}#robustness">${gains?gains+' suite gains':'Compare robustness'} ↗</a>`);
+    $('env-coverage').insertAdjacentHTML('beforeend',` · <a href="?view=profiles&study=${cohort.id}#robustness">Robustness profiles ↗</a>`);
     $('env-results').innerHTML=`<div class="env-comparison-controls"><label>Setting<select id="env-setting">${data.models.map(m=>`<option value="${esc(m)}">${esc(label(m))}</option>`).join('')}</select></label><label>Perturbation<select id="env-shift">${data.axes.map(a=>`<option value="${a.id}">${esc(a.title)}</option>`).join('')}</select></label></div>
       <div class="env-cap-selection"><button id="env-best-cap" type="button" class="text-button" aria-pressed="false" aria-describedby="env-cap-note"></button><button id="env-best-algorithm" type="button" class="text-button" title="Select the highest saved full-axis mean among compatible algorithms and settings">Best algorithm</button><span id="env-cap-note"></span></div><details id="env-method-comparison" hidden><summary>Algorithm comparison</summary><div id="env-method-results"></div></details>
       <div class="env-severity-controls"><label>Severity<select id="env-level"></select></label><label class="env-severity-slider">${esc(axis.title)}<input id="env-severity" type="range" min="0" step="1" aria-label="Perturbation severity"><output id="env-severity-value"></output></label><button id="env-nominal" type="button" class="text-button">Nominal ↺</button></div>
@@ -186,7 +186,8 @@ function renderComparison(){
   $('env-plot-note').textContent=(axis.warning?axis.warning+' ':'')+`Reliability at ${axis.title} = ${value} only · ${summaries.map(s=>s.minN).join(' / ')} of ${cohort.intendedPolicies} policies. Bands: sample SD, not CI.`+(normalized?' Reference: '+label(reference)+' nominal median.':negative?' Negative returns: native thresholds preserve their ordering. Higher (less negative) is better.':' Nonpositive or unavailable reference: native-return thresholds.');
   $('env-open-curves').href=href('returns');$('env-open-metrics').href=href('advanced',{scope:'condition',metric:normalized?'reliability':'raw'});
   $('env-axis-metrics').href=href('advanced',{scope:'axis',metric:normalized?'reliability':'raw'});$('env-suite-metrics').href=href('advanced',{scope:'suite',metric:normalized?'reliability':'raw'});$('env-cap-metrics').href=href('advanced',{metric:'aggregate'});
-  $('env-evidence').href='?study='+data.id+(hasNewCellAudit(data.id)?'&view=new-cells':'')+'#robustness';
+  $('env-evidence').textContent='Robustness profile ↗';
+  $('env-evidence').href='?view=profiles&study='+data.id+'&setting='+model+'&reference='+reference+'#robustness';
   $('env-advantages').href='?environment='+environment.id+'&configuration='+data.id+'#advantages';
   $('env-policies').href='data/appendix/'+data.id+'.csv';$('env-figures').href=href('figures',{figureStudy:data.id});$('env-seeds').href=href('seeds',{scope:'condition'});
   recordings();

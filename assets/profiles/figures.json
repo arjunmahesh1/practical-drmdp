@@ -1,0 +1,39 @@
+{
+  "figures": [
+    {
+      "id": "fixed-setting-profiles",
+      "title": "Five-dimensional profiles",
+      "description": "Six fixed-setting pentagons against ordinary standard. The band vertex uses the documented degraded band, never the most favorable band.",
+      "png": "assets/profiles/fixed-setting-profiles.png",
+      "pdf": "assets/profiles/fixed-setting-profiles.pdf"
+    },
+    {
+      "id": "suite-effects",
+      "title": "Suite effect sizes and confidence intervals",
+      "description": "Mean-return effects, reliability, catastrophe reduction and consistency, including the Drawer TD3 trade-off and KL-on versus KL-off.",
+      "png": "assets/profiles/suite-effects.png",
+      "pdf": "assets/profiles/suite-effects.pdf"
+    },
+    {
+      "id": "consistency-severity",
+      "title": "Consistency by deployment severity",
+      "description": "Separate mild, moderate and severe win fractions. Severe-level coverage and uncertainty stay visible.",
+      "png": "assets/profiles/consistency-severity.png",
+      "pdf": "assets/profiles/consistency-severity.pdf"
+    },
+    {
+      "id": "reliability-bands",
+      "title": "Reliability-band decomposition",
+      "description": "Width-weighted band contributions sum to total reliability change. Stronger near-nominal performance is not automatically a rescue of collapsed policies.",
+      "png": "assets/profiles/reliability-bands.png",
+      "pdf": "assets/profiles/reliability-bands.pdf"
+    },
+    {
+      "id": "competence-deployment",
+      "title": "Nominal competence and deployment failure",
+      "description": "Separates nominal learning failure from shifted return-threshold failure within each method's competent subset; descriptive, not a causal decomposition.",
+      "png": "assets/profiles/competence-deployment.png",
+      "pdf": "assets/profiles/competence-deployment.pdf"
+    }
+  ]
+}

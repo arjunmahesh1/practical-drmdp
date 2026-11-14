@@ -163,3 +163,18 @@ Existing study exports and recordings remain unchanged. New Isaac recordings
 are pending; no historical video is reassigned to a newer cohort. Availability
 is recorded in the catalog and index. Individual study files retain their
 original export-stage provenance, which is not a current publication status.
+
+# November 14: Independent Robustness Profiles
+
+`#robustness` now opens five-dimensional fixed-setting profiles with sortable
+scope evidence and exact-cohort videos. Paper recommendations are delivered
+separately in chat, not in website tabs. Every vertex uses the same setting and
+named comparator; banded reliability has an explicit band selector. Return advantages
+remain descriptive and separate. Historical combined gates are still linked.
+
+The audit covers 43 catalog cohorts (three archived opt-in), with 10,000-draw
+whole-policy bootstrap intervals and explicit paired/independent designs.
+No new training or scientific evaluations were run. Existing source curves,
+policy summaries and old figures are unchanged. Three previously approved,
+completed Drawer SAC recordings were delivered with full decode/identity QA.
+See `data/profiles/README.md` and `data/profiles/PROTOCOL.md`.

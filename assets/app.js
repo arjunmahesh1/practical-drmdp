@@ -3,7 +3,7 @@ import {episodeTraceSVG} from './replay-chart.mjs?v=20261023-replayaxes1';
 import {segmentWindow,segmentFrame,segmentTime,segmentSource} from './video-segment.mjs?v=20261023-fullmatrix1';
 import {environments,parameterNote} from './environments.mjs?v=20261104-library1';
 import {visibleStudy,archivedStudies} from './results-policy.mjs';
-import {withRecordings} from './recording-overlay.mjs';
+import {withRecordings} from './recording-overlay.mjs?v=20261114-drawer1';
 import {comparisonParams,environmentLink} from './results-context.mjs';
 
 const $=id=>document.getElementById(id);

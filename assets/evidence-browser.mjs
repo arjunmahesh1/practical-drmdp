@@ -1,6 +1,7 @@
 import {escape as esc,label,fmt} from './model.mjs';
 import {showSettings} from './audited-settings.mjs?v=20261107-cells1';
 import {showNewCellAudit} from './pairing-audit.mjs?v=20261108-pairing1';
+import {showProfiles} from './robustness-profiles.mjs?v=20261114-profiles1';
 const root=document.getElementById('evidence-page');
 let index,limit=80,ticket=0;
 const $=id=>document.getElementById(id),q=()=>new URLSearchParams(location.search);
@@ -19,7 +20,8 @@ async function route(){
  const job=++ticket;root.innerHTML='<p role="status">Loading measured comparisons...</p>';
  try{
   if(q().get('view')==='new-cells'){await showNewCellAudit(root,()=>job===ticket&&!root.hidden);return;}
-  if(q().get('view')==='settings'||!q().has('level')){await showSettings(root,openView,()=>job===ticket&&!root.hidden);return;}
+  if(q().get('view')==='settings'){await showSettings(root,openView,()=>job===ticket&&!root.hidden);return;}
+  if(!q().has('level')){await showProfiles(root,()=>job===ticket&&!root.hidden);return;}
   if(!index){const r=await fetch('data/evidence-index.json?v=20261107-cells1');if(!r.ok)throw Error('Comparison index unavailable');index=await r.json();}if(job!==ticket)return;shell();}
  catch(e){if(job===ticket)root.innerHTML=`<p role="alert">${esc(e.message)}</p>`;}
 }

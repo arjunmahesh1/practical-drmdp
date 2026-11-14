@@ -1,0 +1,10 @@
+{
+  "curveArithmeticChecks": 125823,
+  "maxCurveAbsoluteError": 3.637978807091713e-12,
+  "mismatches": [],
+  "independentlyReconstructedIntervalBounds": 168,
+  "maxIntervalAbsoluteError": 3.410605131648481e-13,
+  "maxBandDecompositionError": 2.220446049250313e-16,
+  "unit": "Trained policy; no episode-level resampling",
+  "source": "Published saved summary vectors only"
+}
