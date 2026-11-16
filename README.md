@@ -2,6 +2,33 @@
 
 Static paper-results website for GitHub Pages. No build service, backend, account, or paid domain is required.
 
+## Current Interface: November 16, 2026
+
+Start with **Environments** for curves, matching available videos, and the
+highest measured fixed-setting return on compatible suites. **Robustness**
+orders improvements against each named reference and shows independent
+five-dimensional evidence scopes. **Downloads** holds packages and CSVs.
+Search, additional comparisons and statistical options are collapsed by default;
+older views remain under More or contextual details. No paper-finding tabs.
+
+The published inventory has 43 catalog cohorts (three archived by default) plus
+four separately identified Yiting evaluation sets. There are 333 named-reference
+comparisons: all previous 297 are unchanged, with 18 original Pendulum
+independent-policy comparisons and 18 added-axis descriptive records.
+
+Original `json` is DoublePendulum (8 axes); `json 2` is Pendulum (7 axes).
+The human confirmed 30 independent policies per setting and within-setting
+identity across axes, but not cross-method pairing. Their new intervals use
+independent whole-policy resampling. Additional `json6` and `json7` are 16-axis
+Pendulum and 12-axis DoublePendulum evaluations of earlier policies, not extra
+training runs. Without their cross-file row map, no bootstrap scopes transfer.
+The base algorithm and original runtime remain unreported; no Pendulum video
+was supplied. See `data/profiles/pendulum-protocol.md` and `data/site-status.json`.
+
+This inventory describes published validated exports, not a fresh collection of
+all launcher-owned experiments. Video coverage remains partial. Historical
+packages and the dated notes below retain their original scope.
+
 ## Run and test
 
 ```sh

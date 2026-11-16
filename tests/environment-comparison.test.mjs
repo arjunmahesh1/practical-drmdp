@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {compatibleAxis,rankEnvironmentAlgorithms} from '../assets/environment-comparison.mjs';
+import {compatibleAxis,rankEnvironmentAlgorithms,rankEnvironmentSuite} from '../assets/environment-comparison.mjs';
 import {reliabilityDisplay,normalizedSurvival} from '../assets/browser-metrics.mjs';
 import {rawReliability} from '../assets/appendix-metrics.mjs';
 const load=id=>JSON.parse(fs.readFileSync(new URL('../data/'+id+'.json',import.meta.url)));
@@ -45,4 +45,17 @@ test('best algorithm can select ordinary standard, excludes no-ops, and preserve
  assert.equal(JSON.stringify(studies),before);
  const inactive=structuredClone(studies[0]);inactive.models.push('tv_noop');inactive.axes.forEach(a=>a.curves.tv_noop=a.curves.vanilla.map(p=>({...p,mean:1e12})));
  assert.notEqual(rankEnvironmentAlgorithms([inactive],inactive,'action_delay')[0].model,'tv_noop');
+});
+test('suite ranking holds one fixed setting across compatible complete axes',()=>{
+ const studies=['ant_ppo_tv30','ant_sac_tv30','ant_td3_tv30'].map(load),before=JSON.stringify(studies);
+ const rows=rankEnvironmentSuite(studies,studies[0]);assert.equal(rows.length,3);
+ for(const row of rows){const s=studies.find(s=>s.id===row.study);const expected=s.axes.reduce((sum,a)=>{const p=a.curves[row.model].filter(p=>Math.abs(p.x-a.nominal)>1e-9);return sum+p.reduce((n,p)=>n+p.mean,0)/p.length;},0)/s.axes.length;assert.ok(Math.abs(row.mean-expected)<1e-10);}
+ assert.equal(JSON.stringify(studies),before);
+ const wrong=structuredClone(studies[1]);wrong.axes.pop();assert.equal(rankEnvironmentSuite([wrong],studies[0]).length,0);
+ const incomplete=structuredClone(studies[0]);incomplete.axes[0].curves[incomplete.baseline][0].n=29;
+ incomplete.models=[incomplete.baseline];assert.equal(rankEnvironmentSuite([incomplete],studies[0]).length,0);
+ const flagged=structuredClone(studies[0]);flagged.axes[0].warning='Unverified';assert.equal(rankEnvironmentSuite([flagged],studies[0]).length,0);
+ const inactive=structuredClone(studies[0]);inactive.models.push('ctxkl0');inactive.axes.forEach(a=>a.curves.ctxkl0=a.curves.vanilla.map(p=>({...p,mean:1e12})));
+ assert.notEqual(rankEnvironmentSuite([inactive],inactive)[0].model,'ctxkl0');
+ assert.equal(rankEnvironmentSuite([load('sac_tv_pickcube_20261028')],load('ppo_tv_pickcube_20261028')).length,0);
 });

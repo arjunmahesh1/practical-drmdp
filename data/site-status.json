@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-16",
+  "scope": "Currently published and validated exports, not a fresh inventory of all launcher-owned experiments",
+  "catalogCohorts": 43,
+  "suppliedOriginalEvaluationSets": 2,
+  "suppliedAdditionalEvaluationSets": 2,
+  "comparisons": 333,
+  "originalPendulumComparisonsWithIndependentPolicyIntervals": 18,
+  "additionalPendulumComparisonsDescriptiveOnly": 18,
+  "navigation": ["Environments", "Robustness", "Downloads"],
+  "remainingGaps": [
+    "Yiting base algorithm, training recipe, parameter units and original exact runtime are unreported.",
+    "Additional json6/json7 cross-file policy mapping is unconfirmed; no suite bootstrap or scope transfer.",
+    "No Pendulum or DoublePendulum videos were supplied.",
+    "Exact-cohort Drawer TD3 and newer PickCube KL comparison videos remain unavailable.",
+    "Video coverage is partial, not all settings or perturbations.",
+    "The wider scientific campaign remains incomplete; publication does not establish physical success, activation or multiplicity-adjusted significance."
+  ]
+}

@@ -27,3 +27,14 @@ export function rankEnvironmentAlgorithms(studies,current,axisId){
     return best?[{study:study.id,algorithm:best===study.baseline&&study.algorithm==='RSC-SAC'?'SAC':study.algorithm,family:study.family,branch:study.branch,model:best,mean:gridMean(axis.curves[best]),environment:study.environment}]:[];
   }).sort((a,b)=>b.mean-a.mean||a.study.localeCompare(b.study));
 }
+
+export function rankEnvironmentSuite(studies,current){
+ return studies.flatMap(study=>{
+  if(study.axes.length!==current.axes.length||!study.axes.every(a=>compatibleAxis(study,current,a.id)))return [];
+  const inactive=new Set([...(study.controls||[]),'a1e9','tvc1e9','tvc500','tv_noop','rsc_noop','ctxkl0','ctxkluniform','klprho0','kl_bypass','tv_c1100']);inactive.delete(study.baseline);
+  const candidates=study.models.filter(m=>!inactive.has(m)&&study.axes.every(a=>a.curves[m]?.length===a.curves[study.baseline].length&&a.curves[m].every(p=>p.n===30&&Number.isFinite(p.mean))));
+  const scores=candidates.map(model=>({study:study.id,model,algorithm:study.algorithm,family:study.family,branch:study.branch,
+   mean:study.axes.reduce((sum,a)=>sum+gridMean(a.curves[model].filter(p=>Math.abs(p.x-a.nominal)>1e-9)),0)/study.axes.length})).filter(r=>Number.isFinite(r.mean));
+  return scores.sort((a,b)=>b.mean-a.mean).slice(0,1);
+ }).sort((a,b)=>b.mean-a.mean||a.study.localeCompare(b.study));
+}
