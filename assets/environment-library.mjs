@@ -58,7 +58,21 @@ function remember(){
   if(videoChoice==='standard')u.searchParams.set('video','standard');
   history.replaceState(null,'',u.pathname+u.search+'#environments');
 }
-async function json(path){if(!cache.has(path)){const r=await fetch(path+(path.includes('?')?'&':'?')+'v=20261107-cells1');if(!r.ok)throw Error('Unavailable: '+path);cache.set(path,await r.json());}return cache.get(path);}
+async function json(path){
+  if(!cache.has(path)){
+    const pending=(async()=>{
+      for(let attempt=0;attempt<2;attempt++){
+        let response;
+        try{response=await fetch(path+(path.includes('?')?'&':'?')+'v=20261116-simple1',{signal:AbortSignal.timeout(15000)});}
+        catch(error){if(attempt)throw Error('Could not load saved results: '+path,{cause:error});continue;}
+        if(!response.ok)throw Error('Unavailable: '+path);
+        return response.json();
+      }
+    })();
+    cache.set(path,pending);pending.catch(()=>{if(cache.get(path)===pending)cache.delete(path);});
+  }
+  return cache.get(path);
+}
 function pause(){++mediaTicket;cancelAnimationFrame(animation);const v=$('env-video');if(v){v.pause();v.removeAttribute('src');v.load();}}
 
 function shell(){
