@@ -5,6 +5,12 @@ import {compatibleAxis,rankEnvironmentAlgorithms,rankEnvironmentSuite} from '../
 import {reliabilityDisplay,normalizedSurvival} from '../assets/browser-metrics.mjs';
 import {rawReliability} from '../assets/appendix-metrics.mjs';
 const load=id=>JSON.parse(fs.readFileSync(new URL('../data/'+id+'.json',import.meta.url)));
+test('shared preview chart does not initialize two environment controllers',()=>{
+ const entry=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
+ const consumer=fs.readFileSync(new URL('../assets/return-advantages-browser.mjs',import.meta.url),'utf8');
+ const version=consumer.match(/environment-library\.mjs\?v=([^']+)/)[1];
+ assert.ok(entry.includes('src="assets/environment-library.mjs?v='+version+'"'));
+});
 test('ANYmal negative condition returns remain distinguishable without changing normalized metrics',()=>{
  const s=load('appendix/anymal_ppo_tv30'),models=['vanilla','tv_c2.5'];
  const view=reliabilityDisplay(s,models,'vanilla','condition','motor_strength',.5);
