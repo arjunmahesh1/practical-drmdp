@@ -256,11 +256,11 @@ async function loadVideo(){
     $('env-recording-details').hidden=false;
     const source=segmentSource(replay);video.src=source.startsWith('assets/replays/')?'https://arjunmahesh1.github.io/practical-drmdp/'+source:source;
     let ready=false;
-    const prepare=()=>{if(job!==mediaTicket||ready||video.readyState<1)return;ready=true;video.currentTime=start;};
-    const sync=()=>{if(job!==mediaTicket)return;if(video.readyState>=2){video.hidden=false;$('env-video-frame').disabled=false;$('env-media-status').textContent=caption;}const frame=segmentFrame(replay,video.currentTime);$('env-video-frame').value=frame;$('env-video-time').textContent=fmt(replay.timeline[frame].time,2)+' / '+fmt(replay.timeline.at(-1).time,2)+' s';$('env-episode-trace').innerHTML=episodeTraceSVG(replay.timeline,frame,chosen===data.baseline?colors[0]:colors[1],true);};
+    const prepare=()=>{if(job!==mediaTicket||!video.isConnected||ready||video.readyState<1)return;ready=true;video.currentTime=start;};
+    const sync=()=>{if(job!==mediaTicket||!video.isConnected)return;if(video.readyState>=2){video.hidden=false;$('env-video-frame').disabled=false;$('env-media-status').textContent=caption;}const frame=segmentFrame(replay,video.currentTime);$('env-video-frame').value=frame;$('env-video-time').textContent=fmt(replay.timeline[frame].time,2)+' / '+fmt(replay.timeline.at(-1).time,2)+' s';$('env-episode-trace').innerHTML=episodeTraceSVG(replay.timeline,frame,chosen===data.baseline?colors[0]:colors[1],true);};
     $('env-video-scrub').hidden=false;$('env-video-frame').max=replay.timeline.length-1;
     $('env-video-frame').oninput=e=>{video.pause();video.currentTime=segmentTime(replay,Number(e.target.value));sync();};
-    const clamp=()=>{if(job!==mediaTicket)return;if(video.currentTime<start-.05||video.currentTime>=end){const playing=!video.paused;video.currentTime=start;if(playing)video.play().catch(()=>{});}sync();};
+    const clamp=()=>{if(job!==mediaTicket||!video.isConnected)return;if(video.currentTime<start-.05||video.currentTime>=end){const playing=!video.paused;video.currentTime=start;if(playing)video.play().catch(()=>{});}sync();};
     const watch=()=>{if(job!==mediaTicket||video.paused)return;clamp();animation=requestAnimationFrame(watch);};
     video.onloadedmetadata=prepare;video.oncanplay=()=>{prepare();sync();};video.ontimeupdate=clamp;video.onseeking=clamp;video.onseeked=sync;
     video.onplay=()=>{cancelAnimationFrame(animation);watch();};video.onpause=()=>cancelAnimationFrame(animation);
